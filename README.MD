@@ -1,0 +1,1 @@
+Phoca Email is Joomla! CMS extension. Component which allows sending emails and newsletters in Joomla! administration.
