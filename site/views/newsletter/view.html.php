@@ -32,6 +32,10 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 		$uToken					= $app->input->get('u', '', 'string');
 		// READ ONLINE
 		$nToken					= $app->input->get('n', '', 'string');
+		
+		
+		//$this->t['display_form']	= $this->p->get('display_form', 0);
+		$this->t['description']		= $this->p->get('description', '');
 
 		
 		$error = 0;
@@ -168,6 +172,8 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 				// No message, no error, no info about it
 			}
 		
+		} else if ($this->t['description'] != '') {
+			$this->t['text'] = '<div class="ph-desc" >'.JHTML::_('content.prepare', $this->t['description']).'</div>';			
 		}
 		
 		parent::display($tpl);
