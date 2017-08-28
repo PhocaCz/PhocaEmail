@@ -150,16 +150,34 @@ class PhocaEmailSendNewsletterEmail
 	}
 	
 	public static function getRightPathLink($link) {
+		
+		// Test if this link is absolute http:// then do not change it
+		$pos1 			= strpos($link, 'http://');
+		if ($pos1 === false) {
+		} else {
+			return $link;
+		}
+		
+		// Test if this link is absolute https:// then do not change it
+		$pos2 			= strpos($link, 'https://');
+		if ($pos2 === false) {
+		} else {
+			return $link;
+		}
+		
 		$app    		= JApplication::getInstance('site');
 		$router 		= $app->getRouter();
 		$uri 			= $router->build($link);
 		$uriS			= $uri->toString();
 		
+		// Test if administrator is included in URL - to remove it
 		$pos 			= strpos($uriS, 'administrator');
 		
 		if ($pos === false) {
 			
-			$uriL = str_replace(JURI::root(true), '', $uriS);
+			$uriL = self::ph_str_replace_first(JURI::root(true), '', $uriS);
+			
+
 			$uriL = ltrim($uriL, '/');
 			$formatLink = JURI::root(false). $uriL;
 			//$formatLink = $uriS;
@@ -167,8 +185,12 @@ class PhocaEmailSendNewsletterEmail
 			$formatLink = JURI::root(false). str_replace(JURI::root(true).'/administrator/', '', $uri->toString());
 		}
 		
-
 		return $formatLink;
+	}
+	
+	public static function ph_str_replace_first($from, $to, $subject) {
+		$from = '/'.preg_quote($from, '/').'/';
+		return preg_replace($from, $to, $subject, 1);
 	}
 	
 	public static function activateUser($uToken) {

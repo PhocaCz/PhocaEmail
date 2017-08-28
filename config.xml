@@ -67,6 +67,8 @@
 	<field name="unsubscribe_email" default="&lt;div&gt;Hello,&lt;br /&gt; &lt;br /&gt; You recently requested an unsubscription from our newsletter.&lt;br /&gt;This email confirms that you have been successfully unsubscribed from our newsletter.&lt;/div&gt;" type="editor" label="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_LABEL" description="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_DESC" filter="safehtml" />
 	
 	
+	<field name="description" default="" type="editor" label="COM_PHOCAEMAIL_MAIN_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_MAIN_DESCRIPTION_DESC" filter="safehtml" />
+	
 	
 	</fieldset>
 	

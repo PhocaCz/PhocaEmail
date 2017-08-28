@@ -2,12 +2,12 @@
 <extension method="upgrade" type="component" version="3">
 	<name>com_phocaemail</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>29/01/2015</creationDate>
+	<creationDate>02/07/2016</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.4</version>
+	<version>3.0.5</version>
 	<description>Phoca Email</description>
 	<scriptfile>install/script.php</scriptfile>
 
