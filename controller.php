@@ -13,10 +13,11 @@ jimport('joomla.application.component.controller');
 
 $l['cp']	= array('COM_PHOCAEMAIL_CONTROL_PANEL', '');
 $l['w']		= array('COM_PHOCAEMAIL_SEND_EMAIL', 'phocaemailwrite');
-$l['sn']		= array('COM_PHOCAEMAIL_SEND_NEWSLETTER', 'phocaemailsendnewsletter');
+$l['sn']	= array('COM_PHOCAEMAIL_SEND_NEWSLETTER', 'phocaemailsendnewsletter');
 $l['n']		= array('COM_PHOCAEMAIL_NEWSLETTERS', 'phocaemailnewsletters');
 $l['s']		= array('COM_PHOCAEMAIL_SUBSCRIBERS', 'phocaemailsubscribers');
 $l['l']		= array('COM_PHOCAEMAIL_MAILING_LISTS', 'phocaemaillists');
+$l['com']	= array('COM_PHOCAEMAIL_COMPROBAR', 'phocaemailcomprobars'); // Creo opción comprobar
 $l['in']	= array('COM_PHOCAEMAIL_INFO', 'phocaemailinfo');
 
 $view	= JFactory::getApplication()->input->get('view');
@@ -28,7 +29,11 @@ if ($layout == 'edit') {
 } else {
 
 	foreach ($l as $k => $v) {
-		
+		// Aquí controla las vistas que va mostrar y en la que está
+		//~ echo 'vista:'.$view;
+		//~ echo '<pre>';
+		//~ print_r($v);
+		//~ echo '</pre>';
 		if ($v[1] == '') {
 			$link = 'index.php?option=com_phocaemail';
 		} else {
@@ -36,6 +41,7 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
+			// Clase para renderizar slider ( barra lateral);
 			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1], true );
 		} else {
 			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1]);

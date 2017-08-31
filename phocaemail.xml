@@ -7,7 +7,7 @@
 	<authorUrl>www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.5</version>
+	<version>3.0.5 - Rama Desarrollo</version>
 	<description>Phoca Email</description>
 	<scriptfile>install/script.php</scriptfile>
 
@@ -58,7 +58,9 @@
 			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="phocaemailnewsletters" link="option=com_phocaemail&amp;view=phocaemailnewsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
 			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="phocaemailsubscribers" link="option=com_phocaemail&amp;view=phocaemailsubscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>
 			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-lists.png" alt="COM_PHOCAEMAIL_MAILING_LISTS" view="phocaemaillists" link="option=com_phocaemail&amp;view=phocaemaillists">COM_PHOCAEMAIL_MAILING_LISTS</menu>
+			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_COMPROBAR" view="phocaemailcomprobars" link="option=com_phocaemail&amp;view=phocaemailcomprobars">COM_PHOCAEMAIL_COMPROBAR</menu>
 			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-info.png" alt="COM_PHOCAEMAIL_INFO" view="phocaemailinfo" link="option=com_phocaemail&amp;view=phocaemailinfo">COM_PHOCAEMAIL_INFO</menu>
+			
 		</submenu>
 
 		<files folder="admin">
@@ -81,6 +83,7 @@
 		<languages>
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_phocaemail.ini</language>
 		</languages>
 
 	</administration>
