@@ -18,7 +18,7 @@ class PhocaEmailCpControllerPhocaEmailComprobars extends JControllerAdmin
 		parent::__construct($config);	
 	}
 	
-	public function &getModel($name = 'PhocaEmailcomprobar', $prefix = 'PhocaEmailCpModel', $config = array())
+	public function &getModel($name = 'PhocaEmailcomprobars', $prefix = 'PhocaEmailCpModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
@@ -35,7 +35,16 @@ class PhocaEmailCpControllerPhocaEmailComprobars extends JControllerAdmin
 		if ($return) { echo "1";}
 		JFactory::getApplication()->close();
 	}
-	
+	public function comprobarUsuarios(){
+			// Simplemente enviamos opcion de actualizarUsuarios	
+			
+			
+			$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=actualizarUsuarios');
+			
+			//~ return $pp;
+		
+		
+		}
 	
 }
 ?>
