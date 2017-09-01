@@ -200,7 +200,10 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		
 		return $query;
 	}
+	
+	
 	public function getEmailphNoUsuario() {
+		// Obtenemos array de email de aquellos usuarios que no tiene id de usuario de joomla
 		$respuesta = array();
 		$query	= $this->getListQuery();
 		//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
@@ -210,35 +213,133 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$i = 0;
 		
 		foreach ($items as $item){
-			if (isset($item->userid)){
+			if (!isset($item->userid)){
 				$respuesta[$i] = $item->email;
 				$i++;
-			}
+			} 
 		}
 		return $respuesta;
 		}
-	public function getActualizarUsuarios() {
+	public function getActualizarUsuariosEmail() {
+		// El objetivo es cubrir campo userid  de tabla phoca_subscribers ( tablas de registrados en newsletter)
+		// Comprobamos que su email exista en la tabla usuarios de joomla (#__users) y obtenemos id para añadir.
 		$respuesta = array();
-		// Items que a comprobar que si existen como usuarios.
+		// Obtenemos los usuarios que no tienen userid.
 		$itemsSinusuario = $this->getEmailphNoUsuario();
 		$strImSu = '"'.implode('","',$itemsSinusuario).'"';
-		$query = "SELECT id,email FROM `#__users` WHERE `email` in (".$strImSu.")";
-		
+		$query = "SELECT n.email as news_email,`date`,u.email as user_email,u.id as id_user 
+					FROM `#__phocaemail_subscribers`as n  
+					LEFT JOIN `#__users` as u ON u.email=n.email 
+					WHERE n.email in (".$strImSu.")";
+		//~ echo nl2br(str_replace('#__', 'mw3xj_', $query));
+		// VISTA: Con esta consulta obtenemos los mismo registros ($itemsSinusuario) con un campo a mayores
+		// llamodo id_user que es id  de la tabla #__users, si los email son iguales , sino muestra null
 		$idUsuarios = $this->_getList($query);
-		if (count($idUsuarios)>0){
-			// Quiere decir que si hay usuario de jooomla que no estan registrados en phocanewletters
-			$query = "UPDATE `mw3xj_phocaemail_subscribers` SET email=[value-1";
+		// Montamos consulta para UPDATE y ademas array de usuarios registrados en newsletter pero no 
+		// su email no existe en la tabla #__users
+		$when = array();
+		$where = array();
+		$NoExistenUsuario = array();
+		$i = 0;
+		foreach ($idUsuarios as $idUsuario){
+			if ( isset($idUsuario->id_user)) {
+			$when[] = 'WHEN "'.$idUsuario->user_email.'" THEN '.$idUsuario->id_user;
+			$where[] = $idUsuario->user_email;
+			$i ++;
+			
+			} else {
+				// Quiere decir que No se encontro email tabla de usuarios joomla.
+				$NoExistenUsuario[] = $idUsuario->news_email;
+			}
+		}
+		if (count($where) >0 ){
+			// Solo ejecutamos si hay usuarios para añadir id,sino es excusado... no :-)
+			$strNEUsu = '"'.implode('","',$where).'"';
+			$query = "UPDATE `#__phocaemail_subscribers` SET userid = CASE email 
+					".implode(' 
+					',$when). '
+					END
+					WHERE `email` IN ('.$strNEUsu .')';
+					
+			
 			/* Ejemplo de update que tengo montar... 
 			 * ver : https://www.ajimix.net/blog/actualizar-diferentes-filas-en-una-sola-consulta-sql/
 			 * */
-			
+			$AnhadirId = $this->_getList($query);	
 		}
-		
-		
-		
-		
-		return $idUsuarios;
-	} 
+		// Ahora tengo que poner el campo (active) con valor uno a los email que cambie.
+			// Este es el metodo de joomla... pero me da error.
+			//https://docs.joomla.org/Inserting,_Updating_and_Removing_data_using_JDatabase/es
+			$db		= $this->getDbo();
+			$query = $db->getQuery(true);
+			// Fields to update.
+			$fields = array(
+				$db->quoteName('active') . ' = 1 '
+			);
+			// Conditions for which records should be updated.
+			//~ $conditions = array(
+				//~ $db->quoteName('email') . ' IN ('.$strNEUsu .')'
+			//~ );
+			//~ 
+			if (count($where) >0){
+				foreach ( $where as $w) {
+					$conditions[] = ' email ="'.$w.'"';
+				}
+			}
+			
+			
+			
+			
+			$query->update($db->quoteName('#__phocaemail_subscribers'))->set($fields)->where($conditions);
+			$db->setQuery($query);
+			$result = $db->execute();
 
+		
+		
+		$respuesta['CambioActivo'] = $result;
+		$respuesta['NoEncontrados'] = $NoExistenUsuario;
+		$respuesta['Encontrados'] = $i;
+		
+		return $respuesta;
+	} 
+	
+	public function getResumen() {
+		//	Esta funcion es la que utilizamos para contar:
+		//  Cuantos de estos no tienen id de tabla user
+		// 	Cuantos usuarios hay en la tabla de user.
+		$respuesta = array();
+		// Obtenemos Email de usuarios de newletter que no tiene iduser
+		$respuesta['EmailEnvioNoUsuarios'] = $this->getEmailphNoUsuario();
+		$query = 'SELECT count(id) as cuantos FROM #__users ';
+		$cuantos = $this->_getList($query);
+		$respuesta['CuantosUsuarioJoomla'] = $cuantos[0]->cuantos;
+		$cuantos = $this->getObtenerUsuariosLista();
+		$respuesta['SuscriptoresLista'] = $cuantos[0]->cuantos;
+		return $respuesta;
+	}
+	
+	
+	public function getObtenerUsuariosLista(){
+		// Comprobamos que usuarios hay en la lista 1 ( Iniciacion).
+		$respuesta = array();
+		$query = 'SELECT count(id) as cuantos FROM #__phocaemail_subscriber_lists WHERE `id_list`=1';
+		$respuesta = $this->_getList($query);
+		return $respuesta;
+	}
+	
+	public function getEliminarUsuariosLista(){
+		// Eliminamos usuarios de la lista 1 ( Iniciacion).
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+		// delete all custom keys for user 1001.
+		$conditions = array(
+		$db->quoteName('id_list') . ' = 1'
+		);
+		$query->delete($db->quoteName('#__phocaemail_subscriber_lists'));
+		$query->where($conditions);
+		$db->setQuery($query);
+		$result = $db->execute();
+		return $result;
+	}
 }
 ?>

@@ -43,8 +43,11 @@ echo $r->endFilter();
 echo $r->startMainContainer();
 echo '<div>';
 echo ' <h2>Resumen de datos</h2>';
+echo '<p>Mas info en ayuda...</p>';
 echo '<pre>';
 print_r($resumen);
+
+
 //~ print_r($this);
 echo '</pre>';
 echo '</div>';

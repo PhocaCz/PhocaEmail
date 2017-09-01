@@ -20,23 +20,39 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		//~ echo '<pre>';
 		//~ print_r($this->t);
 		//~ echo '</pre>';
-
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		
 		$resumen= array();
-		$resumen['totalSubscriptos'] = count($this->items);
 		//Para ello tengo que hacer una consulta en que haga la busqueda de aquellos que falte y lo identifique en items.
-		$resumen['EmailEnvioNoUsuarios'] = $this->get('EmailphNoUsuario');
-		$resumen['NoUsuarios'] = count($resumen['EmailEnvioNoUsuarios']);
-		// Ahora comprobamos si hicimo alguna opción... ya bottones
+		$resumen = $this->get('Resumen');
 		if (isset($_GET['opcion'])){
-			if ($_GET['opcion'] === 'actualizarUsuarios'){
+			if ($_GET['opcion'] === 'actualizarUsuariosEmail'){
+				// Pulsaste en Btn Actualizar Usuario Email.
 				$resumen['Realizado'] = $_GET['opcion'];
 				// Ejecutamos modelo funcion actualizarUsuarios
-				$resumen['Respuesta'] = $this->get('ActualizarUsuarios');
-			}
+				$resumen['Respuesta'] = $this->get('ActualizarUsuariosEmail');
+				$resumen['NoUsuarios'] = count($resumen['Respuesta']['NoEncontrados']);
+			} 
+			if ($_GET['opcion'] === 'eliminaUsuariosLista'){
+				// Pulsaste en Btn Eliminar usuarios de la lista inicio.
+				$resumen['Realizado'] = $_GET['opcion'];
+				// Ejecutamos modelo funcion actualizarUsuarios
+				$resumen['Respuesta'] = $this->get('EliminarUsuariosLista');
+			} 
+
+		} else {
+			$resumen['SinComprobarUsuarios'] = count($resumen['EmailEnvioNoUsuarios']);
 		}
+		
+		
+		
+		
+		$this->items		= $this->get('Items');
+		
+		$resumen['totalSubscriptos'] = count($this->items);
+
+		$this->pagination	= $this->get('Pagination');
+		$this->state		= $this->get('State');
+		
 
 		$this->resumen = $resumen;
 		// Check for errors.
@@ -51,38 +67,44 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		}
 
 		JHTML::stylesheet( $this->t['s'] );
+		$a = 0 ;// Si mostramos botton [Añadir Id de Usuarios de Joomla]
+		$b = 0 ;// Si mostramos botton [Añadir Usuarios de Joomla]
+		$c = 1 ;// No se muestra botton [Eliminar Usuarios de Joomla de la lista]
 
-		$this->addToolbar();
+		if ( $resumen['SuscriptoresLista']){
+			$a = 1 ;
+			$b = 1 ;
+			$c = 0 ;
+		}
+		$this->addToolbar($a,$b,$c);
 		parent::display($tpl);
 
 	}
 
-	function addToolbar() {
+	function addToolbar($a=0,$b=0,$c=0) {
 
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['tasks']).'Helper';
 
 		$canDo	= $class::getActions($this->t, $state->get('filter.subscriber_id'));
-		// Titulo de opcion ..
+		// Titulo de opcion
+		
 		JToolBarHelper::title( JText::_( $this->t['l'].'_COMPROBAR' ), 'loop' );
-
-		JToolBarHelper::custom('phocaemailcomprobars.comprobarUsuarios','loop.png','','Añadir Id de Usuarios Joomla',false);
-
-
-		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
+		if ( $a == 0 ){
+			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
+			JToolBarHelper::custom('phocaemailcomprobars.ComprobarUsuarios','loop.png','','Añadir Id de Usuarios Joomla',false);
 		}
-		if ($canDo->get('core.edit.state')) {
-
-			JToolBarHelper::divider();
-			JToolBarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+		if ( $b == 0 ){
+			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
+			JToolBarHelper::custom('phocaemailcomprobars.AnhadirUsuariosJooomla','users.png','','Añadir Usuariod de Joomla',false);
 		}
-
-		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList( $this->t['l'].'_WARNING_DELETE_ITEMS', 'phocaemailsubscribers.delete', $this->t['l'].'_DELETE');
+		if ( $c == 0 ){
+			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
+			JToolBarHelper::custom('phocaemailcomprobars.EliminaUsuariosLista','purge.png','','Eliminar de lista 1 los Usuarios',false);
 		}
+		
+	
 		JToolBarHelper::divider();
 		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
 	}

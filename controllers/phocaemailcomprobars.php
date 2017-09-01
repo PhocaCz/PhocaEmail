@@ -36,14 +36,20 @@ class PhocaEmailCpControllerPhocaEmailComprobars extends JControllerAdmin
 		if ($return) { echo "1";}
 		JFactory::getApplication()->close();
 	}
-	public function comprobarUsuarios(){
+	public function ComprobarUsuarios(){
 			// Simplemente enviamos opcion de actualizarUsuarios	
+			$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=actualizarUsuariosEmail');
 			
-			
-			$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=actualizarUsuarios');
-			
-			//~ return $pp;
+	}
 		
+	public function AnhadirUsuariosJooomla(){
+		// Simplemente enviamos opcion de actualizarUsuarios	
+		$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=anhadirUsuariosJoomla');
+		//~ return $pp;
+		}
+	public function EliminaUsuariosLista(){
+			// Simplemente enviamos opcion de actualizarUsuarios	
+			$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=eliminaUsuariosLista');
 		
 		}
 	
