@@ -20,6 +20,7 @@ class PhocaEmailCpControllerPhocaEmailComprobars extends JControllerAdmin
 	
 	public function &getModel($name = 'PhocaEmailcomprobars', $prefix = 'PhocaEmailCpModel', $config = array())
 	{
+		// Carga del modelo.
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
