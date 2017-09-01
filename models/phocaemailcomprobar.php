@@ -19,7 +19,7 @@ class PhocaEmailCpModelPhocaEmailComprobar extends JModelAdmin
 		$user = JFactory::getUser();
 
 		if (!empty($record->catid)) {
-			return $user->authorise('core.delete', 'com_phocaemail.phocaemailsubscriber.'.(int) $record->catid);
+			return $user->authorise('core.delete', 'com_phocaemail.phocaemailcomprobar.'.(int) $record->catid);
 		} else {
 			return parent::canDelete($record);
 		}
