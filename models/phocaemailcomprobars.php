@@ -200,11 +200,45 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		
 		return $query;
 	}
-	public function getContarNoUsuario() {
-		$ppp = "algo que devolver desde el contrador";
-		return $ppp;
-		}
+	public function getEmailphNoUsuario() {
+		$respuesta = array();
+		$query	= $this->getListQuery();
+		//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
 
+		$items	= $this->_getList($query);
+		// Contamos los registros que no tiene usuario asignado.
+		$i = 0;
+		
+		foreach ($items as $item){
+			if (isset($item->userid)){
+				$respuesta[$i] = $item->email;
+				$i++;
+			}
+		}
+		return $respuesta;
+		}
+	public function getActualizarUsuarios() {
+		$respuesta = array();
+		// Items que a comprobar que si existen como usuarios.
+		$itemsSinusuario = $this->getEmailphNoUsuario();
+		$strImSu = '"'.implode('","',$itemsSinusuario).'"';
+		$query = "SELECT id,email FROM `#__users` WHERE `email` in (".$strImSu.")";
+		
+		$idUsuarios = $this->_getList($query);
+		if (count($idUsuarios)>0){
+			// Quiere decir que si hay usuario de jooomla que no estan registrados en phocanewletters
+			$query = "UPDATE `mw3xj_phocaemail_subscribers` SET email=[value-1";
+			/* Ejemplo de update que tengo montar... 
+			 * ver : https://www.ajimix.net/blog/actualizar-diferentes-filas-en-una-sola-consulta-sql/
+			 * */
+			
+		}
+		
+		
+		
+		
+		return $idUsuarios;
+	} 
 
 }
 ?>

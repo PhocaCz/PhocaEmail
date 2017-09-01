@@ -27,18 +27,27 @@ if ($saveOrder) {
 }
 $sortFields = $this->getSortFields();
 
-echo '<pre>';
-print_r($resumen);
-echo '</pre>';
+
 echo $r->jsJorderTable($listOrder);
 
 
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
+
+
+
+
 echo $r->startFilter();
 echo $r->endFilter();
 
 echo $r->startMainContainer();
+echo '<div>';
+echo ' <h2>Resumen de datos</h2>';
+echo '<pre>';
+print_r($resumen);
+//~ print_r($this);
+echo '</pre>';
+echo '</div>';
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($this->t['l'].'_FILTER_SEARCH_LABEL', $this->t['l'].'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
