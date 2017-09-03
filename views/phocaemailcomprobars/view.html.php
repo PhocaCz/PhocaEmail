@@ -30,13 +30,22 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 				$resumen['Realizado'] = $_GET['opcion'];
 				// Ejecutamos modelo funcion actualizarUsuarios
 				$resumen['Respuesta'] = $this->get('ActualizarUsuariosEmail');
+				// Ahora cambiamos el numero usuarios que hay en la lista Subscriptores, ya que hemos añadido alguno... o no.. :-)
+				// Si hay entonces luego solo muestra botton de eliminar usuarios de lista.
+				$resumen['SuscriptoresLista'] .= $resumen['Respuesta']['IdsAnhadirLista'];
+				
+				
 				$resumen['NoUsuarios'] = count($resumen['Respuesta']['NoEncontrados']);
 			} 
-			if ($_GET['opcion'] === 'eliminaUsuariosLista'){
-				// Pulsaste en Btn Eliminar usuarios de la lista inicio.
+			if ($_GET['opcion'] === 'eliminaUsuariosLista') {
 				$resumen['Realizado'] = $_GET['opcion'];
 				// Ejecutamos modelo funcion actualizarUsuarios
-				$resumen['Respuesta'] = $this->get('EliminarUsuariosLista');
+				$resumen['EliminadosLista'] = $this->get('EliminarUsuariosLista');
+				// Quiere decir que eliminaron usuarios de la lista Inicio, por lo que
+				// cambiamos cantidad de Suscriptores de Lista inicio restando los Eliminados.
+				// Asi si los Suscriptores de la lista son 0 , se muestra bottones actualizar.
+				$resumen['SuscriptoresLista'] = $resumen['SuscriptoresLista'] - $resumen['EliminadosLista'];
+				
 			} 
 
 		} else {

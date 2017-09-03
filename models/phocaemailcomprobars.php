@@ -219,7 +219,23 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 			} 
 		}
 		return $respuesta;
-		}
+	}
+	public function getResumen() {
+		//	Esta funcion es la que utilizamos para contar:
+		//  Cuantos de estos no tienen id de tabla user
+		// 	Cuantos usuarios hay en la tabla de user.
+		$respuesta = array();
+		// Obtenemos Email de usuarios de newletter que no tiene iduser
+		$respuesta['EmailEnvioNoUsuarios'] = $this->getEmailphNoUsuario();
+		$query = 'SELECT count(id) as cuantos FROM #__users ';
+		$cuantos = $this->_getList($query);
+		$respuesta['UsuarioJoomla'] = $cuantos[0]->cuantos;
+		$cuantos = $this->getObtenerUsuariosLista();
+		$respuesta['SuscriptoresLista'] = $cuantos[0]->cuantos;
+		return $respuesta;
+	}
+		
+	
 	public function getActualizarUsuariosEmail() {
 		// El objetivo es cubrir campo userid  de tabla phoca_subscribers ( tablas de registrados en newsletter)
 		// Comprobamos que su email exista en la tabla usuarios de joomla (#__users) y obtenemos id para añadir.
@@ -266,57 +282,21 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 			 * ver : https://www.ajimix.net/blog/actualizar-diferentes-filas-en-una-sola-consulta-sql/
 			 * */
 			$AnhadirId = $this->_getList($query);	
-		}
-		// Ahora tengo que poner el campo (active) con valor uno a los email que cambie.
-			// Este es el metodo de joomla... pero me da error.
-			//https://docs.joomla.org/Inserting,_Updating_and_Removing_data_using_JDatabase/es
-			$db		= $this->getDbo();
-			$query = $db->getQuery(true);
-			// Fields to update.
-			$fields = array(
-				$db->quoteName('active') . ' = 1 '
-			);
-			// Conditions for which records should be updated.
-			//~ $conditions = array(
-				//~ $db->quoteName('email') . ' IN ('.$strNEUsu .')'
-			//~ );
-			//~ 
-			if (count($where) >0){
-				foreach ( $where as $w) {
-					$conditions[] = ' email ="'.$w.'"';
-				}
-			}
-			
-			
-			
-			
-			$query->update($db->quoteName('#__phocaemail_subscribers'))->set($fields)->where($conditions);
-			$db->setQuery($query);
-			$result = $db->execute();
+			// Ahora tengo que poner el campo (active) con valor uno a los email que cambie.
+			$respuesta['CambioActivo'] = $this->getPonerActive($where);
 
-		
-		
-		$respuesta['CambioActivo'] = $result;
+			// Ahora obtengo IDs para añadir a la lista 
+			$ids = $this->getObtenerIds($where);
+			// Añado a la lista
+			$respuesta['IdsAnhadirLista'] = $this->getAnhadirLista($ids);
+		}
 		$respuesta['NoEncontrados'] = $NoExistenUsuario;
 		$respuesta['Encontrados'] = $i;
 		
 		return $respuesta;
 	} 
 	
-	public function getResumen() {
-		//	Esta funcion es la que utilizamos para contar:
-		//  Cuantos de estos no tienen id de tabla user
-		// 	Cuantos usuarios hay en la tabla de user.
-		$respuesta = array();
-		// Obtenemos Email de usuarios de newletter que no tiene iduser
-		$respuesta['EmailEnvioNoUsuarios'] = $this->getEmailphNoUsuario();
-		$query = 'SELECT count(id) as cuantos FROM #__users ';
-		$cuantos = $this->_getList($query);
-		$respuesta['CuantosUsuarioJoomla'] = $cuantos[0]->cuantos;
-		$cuantos = $this->getObtenerUsuariosLista();
-		$respuesta['SuscriptoresLista'] = $cuantos[0]->cuantos;
-		return $respuesta;
-	}
+	
 	
 	
 	public function getObtenerUsuariosLista(){
@@ -338,8 +318,92 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$query->delete($db->quoteName('#__phocaemail_subscriber_lists'));
 		$query->where($conditions);
 		$db->setQuery($query);
-		$result = $db->execute();
+		$db->execute();
+		$result = $db-> getAffectedRows();
 		return $result;
+	}
+	
+	public function getPonerActive($emails){
+		// Este es el metodo de joomla... pero me da error.
+			//https://docs.joomla.org/Inserting,_Updating_and_Removing_data_using_JDatabase/es
+			if (count($emails >0)){
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true);
+				// Fields to update.
+				$fields = array(
+					$db->quoteName('active') . ' = 1 '
+					
+				);
+				// Conditions for which records should be updated.
+				$conditions = array();
+				$wheres = array();
+				foreach ($emails as $email){
+					$wheres[] = '"'.$email.'"';
+				}
+				$conditions [] = $db->quoteName('email') . ' IN ('.implode(',',$wheres).')';
+				$query->update($db->quoteName('#__phocaemail_subscribers'))->set($fields)->where($conditions);
+				$db->setQuery($query);
+				$db->execute();
+				//~ $result = $query();;
+			} else {
+				$result = 0;
+			}
+			$result = $db-> getAffectedRows();
+		return $result;
+		}
+		
+
+		
+	public function getObtenerIds($emails){
+		
+		// Buscamos los id de tabla __phocaemail_subscriber buscando por emails
+
+		// Get a db connection.
+		$db = JFactory::getDbo();
+
+		// Create a new query object.
+		$query = $db->getQuery(true);
+
+		// Select all records from the user profile table where key begins with "custom.".
+		// Order it by the ordering field.
+		$query->select($db->quoteName(array('id')));
+		$query->from($db->quoteName('#__phocaemail_subscribers'));
+		//~ $query->where($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'custom.%\''));
+		//~ $query->order('ordering ASC');
+
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+
+		// Load the results as a list of stdClass objects (see later for more options on retrieving data).
+		$results = $db->loadObjectList();
+
+		
+		return $results; 
+		
+		
+	}	
+	
+	public function getAnhadirLista($ids){
+		// Añadimos a la lista subscriptores Iniciacion (1) los id recibidos.
+		// https://joomla.stackexchange.com/questions/5661/can-multiple-records-be-inserted-all-at-once-with-the-jdatabase#5665
+		// Get a db connection.
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$columns = array('id_subscriber','id_list');
+		$values = array();
+		foreach ($ids as $id){
+			$values[] =$id->id.",1";
+		}
+		// unico valor, a ver que pasa...
+		//~ $valor= implode(',',$values);
+		$query->insert($db->quoteName('#__phocaemail_subscriber_lists'));
+		$query->columns($columns);
+		$query->values($values);
+		$db->setQuery($query);
+		$db->execute();
+		$num_rows = $db->getAffectedRows();
+		
+		return $num_rows; 
 	}
 }
 ?>
