@@ -233,7 +233,9 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		// 	Cuantos usuarios hay en la tabla de user.
 		$respuesta = array();
 		// Obtenemos Email de usuarios de newletter que no tiene iduser
-		$respuesta['EmailEnvioNoUsuarios'] = $this->getEmailphNoUsuario();
+		$usuariosNewsletter = $this->getEmailphUsuario();
+		$respuesta['EmailEnvioNoUsuarios'] = $usuariosNewsletter['NoUserid'];
+		$respuesta['UsuarioNewCuserid'] = $usuariosNewsletter['UserID'];
 		$query = 'SELECT count(id) as cuantos FROM #__users ';
 		$cuantos = $this->_getList($query);
 		$respuesta['UsuarioJoomla'] = $cuantos[0]->cuantos;
@@ -247,8 +249,10 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		// El objetivo es cubrir campo userid  de tabla phoca_subscribers ( tablas de registrados en newsletter)
 		// Comprobamos que su email exista en la tabla usuarios de joomla (#__users) y obtenemos id para añadir.
 		$respuesta = array();
-		// Obtenemos los usuarios que no tienen userid.
-		$itemsSinusuario = $this->getEmailphNoUsuario();
+		// Obtenemos los usuarios que no tienen userid y los que tiene
+		$usuariosNewsletter = $this->getEmailphUsuario();
+		$itemsConUserID = $usuariosNewsletter['UserID'];
+		$itemsSinusuario = $usuariosNewsletter['NoUserid'];
 		$strImSu = '"'.implode('","',$itemsSinusuario).'"';
 		$query = "SELECT n.email as news_email,`date`,u.email as user_email,u.id as id_user 
 					FROM `#__phocaemail_subscribers`as n  
@@ -298,7 +302,16 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 			$respuesta['IdsAnhadirLista'] = $this->getAnhadirLista($ids);
 		}
 		$respuesta['NoEncontrados'] = $NoExistenUsuario;
-		$respuesta['Encontrados'] = $i;
+		$respuesta['IDAnhadido'] = $i;
+		// Ahora vamos obtenemos Usuarios que no están en newsletter (max 100),
+		$respuesta['UsJoomla'] = $this->getObtenerUsuariosNoLista();
+		// Ahora añadimos token a usuarios para añadir uno a uno.
+		$respuesta['NuevosUsuarios'] = $this->getAnhadirUsuarios($respuesta['UsJoomla']);
+		if ($respuesta['NuevosUsuarios']['Anhadidos'] >0 ){
+			// Quiere decir que añadio usuarios a tabla phocaemail_subcripts, por lo debemos obtener ids para añadir lista.
+			$ids = $this->getObtenerIds($respuesta['NuevosUsuarios']['email_anhadidos']);
+			$respuesta['NuevoIdsAnhadirLista'] = $this->getAnhadirLista($ids);
+		}
 		
 		return $respuesta;
 	} 
@@ -373,20 +386,24 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 
 		// Select all records from the user profile table where key begins with "custom.".
 		// Order it by the ordering field.
-		$query->select($db->quoteName(array('id')));
+		$query->select(array('id'));
 		$query->from($db->quoteName('#__phocaemail_subscribers'));
-		//~ $query->where($db->quoteName('profile_key') . ' LIKE '. $db->quote('\'custom.%\''));
-		//~ $query->order('ordering ASC');
-
+		$where = array();
+		foreach ($emails as $email) {
+			$where[] = '(`email` = "'.$email.'")';
+			
+		}
+		$query->where(implode(' OR ',$where));
 		// Reset the query using our newly populated query object.
 		$db->setQuery($query);
 
 		// Load the results as a list of stdClass objects (see later for more options on retrieving data).
 		$results = $db->loadObjectList();
-
+		//~ echo '<pre>';
+		//~ print_r($query);
+		//~ echo '</pre>';
 		
 		return $results; 
-		
 		
 	}	
 	
@@ -412,5 +429,99 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		
 		return $num_rows; 
 	}
+	
+	public function getObtenerUsuariosNoLista () {
+		// Objetivo obtener:
+		// SELECT u.id, u.name, u.email, u.block, p.userid FROM `mw3xj_users` AS u LEFT JOIN `mw3xj_phocaemail_subscribers` AS p ON u.id = p.userid  where  p.userid is null
+		// limitamos la consulta a 100 para no saturar servidor.
+		// Get a db connection.
+		$db = JFactory::getDbo();
+
+		// Create a new query object.
+		$query = $db->getQuery(true);
+
+		// Select all articles for users who have a username which starts with 'a'.
+		// Order it by the created date.
+		// Note by putting 'a' as a second parameter will generate `#__content` AS `a`
+		$query
+			->select(array('u.id','u.name','u.email','u.block','p.userid'))
+			->from($db->quoteName('#__users', 'u'))
+			->join('LEFT', $db->quoteName('#__phocaemail_subscribers', 'p') . ' ON (' . $db->quoteName('u.id') . ' = ' . $db->quoteName('p.userid') . ')')
+			->where($db->quoteName('p.userid') . ' IS NULL')
+			->setLimit('100');
+		// Reset the query using our newly populated query object.
+		$db->setQuery($query);
+
+		// Load the results as a list of stdClass objects (see later for more options on retrieving data).
+		$results = $db->loadObjectList();
+		
+		
+		return $results;
+			
+	}
+	
+	public function getAnhadirUsuarios ($usuarios){
+		// Recibimos objectos de usuarios que no está en newletter.
+		// Ejemplo:
+		// [id] => 0
+		//		[name] => RAMON GUTIERREZ
+		// 		[email] => monchuflo@hotmail.com
+		//		[block] => 0
+		// 		[userid] => 
+		$respuesta = array();
+		// Conexion : 
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$date = date("Y-m-d H:i:s");
+		$columns = array('name','email','userid','token','date','hits','published','active','access');
+		$values = array();
+		// Email array () es para luego poder buscar ids y poder añadir a lista.
+		$emails = array();
+		$i = 0;
+		foreach ($usuarios as $usuario){
+			
+				// Quiere decir que no esta bloqueado...por lo que lo añadimos.
+				// model phocaemailsubscriber.php obtengo.
+				$tokenArray = array('token');
+				//~ $manager = new $tokenArray;
+				$token = PhocaEmailHelper::getToken($tokenArray);
+				$respuesta[] = $token;
+				$usuarios[$i]->token = $token;
+				$usuarios[$i]->date = date("Y-m-d H:i:s");
+				$usuarios[$i]->active = 1;
+				$usuarios[$i]->hits = 1;
+				if ($usuario->block !== 0){
+					$usuarios[$i]->published = 1;
+				} else {
+					// Quiere decir que el usuario esta bloqueado por no no publicamos este.
+					$usuarios[$i]->published = 0;
+				}
+				$usuarios[$i]->userid = $usuarios[$i]->id;
+				unset( $usuarios[$i]->id);
+				unset( $usuarios[$i]->block);
+
+				// Ahora montamos los valores.
+				$values[] ='"'.$usuarios[$i]->name.'","'.$usuarios[$i]->email.'",'.$usuarios[$i]->userid.',"'
+							.$usuarios[$i]->token.'","'.$usuarios[$i]->date.'",'.
+							'1,'.$usuarios[$i]->published.',1,1';
+				$emails[] = $usuarios[$i]->email;
+
+			
+			$i ++;
+		}
+		
+		// Ahora añadimos los datos...
+		$query->insert($db->quoteName('#__phocaemail_subscribers'));
+		$query->columns($columns);
+		$query->values($values);
+		$db->setQuery($query);
+		$db->execute();
+		$num_rows = $db->getAffectedRows();
+		$respuesta['Anhadidos'] = $num_rows;
+		$respuesta['email_anhadidos'] = $emails;
+	
+	return $respuesta;
+	}
+	
 }
 ?>
