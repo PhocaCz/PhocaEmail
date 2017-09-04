@@ -41,8 +41,10 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 	
 	public function getForm($data = array(), $loadData = true) {
 		
+		// Aquí carga formulario pero aun no cargo token.
 		$app	= JFactory::getApplication();
 		$form 	= $this->loadForm('com_phocaemail.phocaemailsubscriber', 'phocaemailsubscriber', array('control' => 'jform', 'load_data' => $loadData));
+		
 		if (empty($form)) { 
 			return false;
 		}
@@ -108,6 +110,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 
 			// Trigger the onContentBeforeSave event.
 			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
+			
 
 			if (in_array(false, $result, true))
 			{
