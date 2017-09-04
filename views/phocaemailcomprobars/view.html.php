@@ -17,6 +17,9 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 
 	function display($tpl = null) {
 		$this->t			= PhocaEmailUtils::setVars('comprobar');
+		// Montamos los link a plantilla vistas interiores.
+		
+		
 		//~ echo '<pre>';
 		//~ print_r($this->t);
 		//~ echo '</pre>';
@@ -30,9 +33,14 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 				$resumen['Realizado'] = $_GET['opcion'];
 				// Ejecutamos modelo funcion actualizarUsuarios
 				$resumen['Respuesta'] = $this->get('ActualizarUsuariosEmail');
-				// Ahora cambiamos el numero usuarios que hay en la lista Subscriptores, ya que hemos añadido alguno... o no.. :-)
-				// Si hay entonces luego solo muestra botton de eliminar usuarios de lista.
-				$resumen['SuscriptoresLista'] .= $resumen['Respuesta']['IdsAnhadirLista'];
+				// Ahora debería actualizar el numero usuarios que hay en la lista Subscriptores (iniciacion).
+
+				if (isset($resumen['Respuesta']['IdsAnhadirLista'])){
+					$resumen['SuscriptoresLista'] .= $resumen['Respuesta']['IdsAnhadirLista'];
+				}
+				if (isset($resumen['Respuesta']['NuevoIdsAnhadirLista'])){
+					$resumen['SuscriptoresLista'] .= $resumen['Respuesta']['NuevoIdsAnhadirLista'];
+				}
 				
 				
 				$resumen['NoUsuarios'] = count($resumen['Respuesta']['NoEncontrados']);
@@ -48,10 +56,20 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 				
 			} 
 
+		} 
+		if ($resumen['SuscriptoresLista'] > 0){
+			// Quiere decir que hay registros en Lista Iniciacion, por lo que entonces, debemos mostrar alert
+			// Si acaba de realizar la opcion de actualizar , la alerta es una notice.
+			if ($_GET['opcion'] === 'actualizarUsuariosEmail'){
+				$typeAlerta = 'notice';
+			} else {
+				$typeAlerta = 'warning';
+			}
+			JFactory::getApplication()->enqueueMessage('Hay Registros en la lista Iniciacion, antes de eliminarlos enviar el  newsletter de iniciacion', $typeAlerta);
 		} else {
+			JFactory::getApplication()->enqueueMessage('Sin comprobar email , si existen como usuarios de joomla', 'warning');
 			$resumen['SinComprobarUsuarios'] = count($resumen['EmailEnvioNoUsuarios']);
 		}
-		
 		
 		
 		
@@ -76,21 +94,19 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		}
 
 		JHTML::stylesheet( $this->t['s'] );
-		$a = 0 ;// Si mostramos botton [Añadir Id de Usuarios de Joomla]
-		$b = 0 ;// Si mostramos botton [Añadir Usuarios de Joomla]
+		$a = 0 ;// Si mostramos botton [Añadir Id de Usuarios de Joomla y Añadir usuarios de Joomla que no esten]
 		$c = 1 ;// No se muestra botton [Eliminar Usuarios de Joomla de la lista]
 
 		if ( $resumen['SuscriptoresLista']){
 			$a = 1 ;
-			$b = 1 ;
 			$c = 0 ;
 		}
-		$this->addToolbar($a,$b,$c);
+		$this->addToolbar($a,$c);
 		parent::display($tpl);
 
 	}
 
-	function addToolbar($a=0,$b=0,$c=0) {
+	function addToolbar($a=0,$c=0) {
 
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		$state	= $this->get('State');
@@ -102,12 +118,9 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		JToolBarHelper::title( JText::_( $this->t['l'].'_COMPROBAR' ), 'loop' );
 		if ( $a == 0 ){
 			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
-			JToolBarHelper::custom('phocaemailcomprobars.ComprobarUsuarios','loop.png','','Añadir Id de Usuarios Joomla',false);
+			JToolBarHelper::custom('phocaemailcomprobars.ComprobarUsuarios','loop.png','','Añadir Id y Usuarios de Joomla',false);
 		}
-		if ( $b == 0 ){
-			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
-			JToolBarHelper::custom('phocaemailcomprobars.AnhadirUsuariosJooomla','users.png','','Añadir Usuariod de Joomla',false);
-		}
+		
 		if ( $c == 0 ){
 			// Botont de Añadir Id de Usuarios Joomla  si no has subcriptores en la lista iniciacion.
 			JToolBarHelper::custom('phocaemailcomprobars.EliminaUsuariosLista','purge.png','','Eliminar de lista 1 los Usuarios',false);
