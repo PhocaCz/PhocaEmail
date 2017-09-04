@@ -60,8 +60,10 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		if ($resumen['SuscriptoresLista'] > 0){
 			// Quiere decir que hay registros en Lista Iniciacion, por lo que entonces, debemos mostrar alert
 			// Si acaba de realizar la opcion de actualizar , la alerta es una notice.
-			if ($_GET['opcion'] === 'actualizarUsuariosEmail'){
-				$typeAlerta = 'notice';
+			if (isset ($_GET['opcion'])){
+				if ($_GET['opcion'] === 'actualizarUsuariosEmail'){
+					$typeAlerta = 'notice';
+				}
 			} else {
 				$typeAlerta = 'warning';
 			}

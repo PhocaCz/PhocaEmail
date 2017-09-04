@@ -11,8 +11,10 @@ defined('_JEXEC') or die;
 
 echo '<div>';
 echo '<ul>';
-foreach ($resumen['EmailEnvioNoUsuarios'] as $email){
-	echo '<li>'.$email.'</li>';
+if (isset($resumen['EmailEnvioNoUsuarios'])){
+	foreach ($resumen['EmailEnvioNoUsuarios'] as $email){
+		echo '<li>'.$email.'</li>';
+	}
 }
 echo '</ul>';
 echo '</div>';

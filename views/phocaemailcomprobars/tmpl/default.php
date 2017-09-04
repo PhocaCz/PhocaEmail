@@ -14,8 +14,9 @@ JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 $resumen = $this->resumen;
 $SinComprobar = (isset($resumen['SinComprobarUsuarios']) ?$resumen['SinComprobarUsuarios'] : 0);
-$opcionRealizada =  $resumen['Realizado'];
-$Respuesta = $resumen['Respuesta'];
+
+$opcionRealizada = (isset($resumen['Realizado']) ? $resumen['Realizado'] : '');
+$Respuesta = (isset($resumen['Respuesta']) ? $resumen['Respuesta'] : '');
 $class		= $this->t['n'] . 'RenderAdminViews';
 $r 			=  new $class();
 $user		= JFactory::getUser();
@@ -60,7 +61,10 @@ echo '<pre>';
 //~ print_r($this);
 echo '</pre>';
 echo '</div>';
-echo $r->formInputs($listOrder, $listDirn, $originalOrders);
+//~ echo $r->formInputs($this->t['o'], $this->t['tasks'], 'adminForm');
+echo '<input type="hidden" name="task" value="" />'. "\n".JHtml::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="adminForm	" />'. "\n";
+
 echo $r->endMainContainer();
 echo $r->endForm();
 
