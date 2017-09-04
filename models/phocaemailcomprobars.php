@@ -202,7 +202,7 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 	}
 	
 	
-	public function getEmailphNoUsuario() {
+	public function getEmailphUsuario() {
 		// Obtenemos array de email de aquellos usuarios que no tiene id de usuario de joomla
 		$respuesta = array();
 		$query	= $this->getListQuery();
@@ -211,13 +211,20 @@ class PhocaEmailCpModelPhocaEmailComprobars extends JModelList
 		$items	= $this->_getList($query);
 		// Contamos los registros que no tiene usuario asignado.
 		$i = 0;
-		
+		$x = 0;
+		$NoUsuarios = array();
+		$Usuarios = array();
 		foreach ($items as $item){
 			if (!isset($item->userid)){
-				$respuesta[$i] = $item->email;
+				$NoUsuarios[$i] = $item->email;
 				$i++;
-			} 
+			} else{
+				$Usuarios[$x] = $item->userid;
+				$x++;
+			}
 		}
+		$respuesta['NoUserid'] = $NoUsuarios;
+		$respuesta['UserID'] = $Usuarios;
 		return $respuesta;
 	}
 	public function getResumen() {

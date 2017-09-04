@@ -25,17 +25,17 @@ class PhocaEmailCpControllerPhocaEmailComprobars extends JControllerAdmin
 		return $model;
 	}
 	
-	public function saveOrderAjax() {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		$pks = $this->input->post->get('cid', array(), 'array');
-		$order = $this->input->post->get('order', array(), 'array');
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
-		$model = $this->getModel();
-		$return = $model->saveorder($pks, $order);
-		if ($return) { echo "1";}
-		JFactory::getApplication()->close();
-	}
+	//~ public function saveOrderAjax() {
+		//~ JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		//~ $pks = $this->input->post->get('cid', array(), 'array');
+		//~ $order = $this->input->post->get('order', array(), 'array');
+		//~ JArrayHelper::toInteger($pks);
+		//~ JArrayHelper::toInteger($order);
+		//~ $model = $this->getModel();
+		//~ $return = $model->saveorder($pks, $order);
+		//~ if ($return) { echo "1";}
+		//~ JFactory::getApplication()->close();
+	//~ }
 	public function ComprobarUsuarios(){
 			// Simplemente enviamos opcion de actualizarUsuarios	
 			$this->setRedirect('index.php?option=com_phocaemail&view=phocaemailcomprobars&opcion=actualizarUsuariosEmail');
