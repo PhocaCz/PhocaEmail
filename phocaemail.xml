@@ -48,6 +48,8 @@
 	<languages>
 		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaemail.ini</language>
 		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
+		<language tag="es-ES" client="site">language/es-ES/es-ES.com_phocaemail.ini</language>
+		<language tag="es-ES" client="site">language/es-ES/es-ES.com_phocaemail.sys.ini</language>
 	</languages>
 
 	<administration>
@@ -84,6 +86,8 @@
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
 			<language tag="es-ES">language/es-ES/es-ES.com_phocaemail.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_phocaemail.sys.ini</language>
+
 		</languages>
 
 	</administration>
