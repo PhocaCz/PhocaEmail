@@ -91,9 +91,9 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 
 		// Load the list items.
 		$query	= $this->getListQuery();
-		//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
-
-		$items	= $this->_getList($query);
+		$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
+	
+		//~ $items	= $this->_getList($query);
 		
 		// Check for a database error.
 		if ($this->_db->getErrorNum()) {
