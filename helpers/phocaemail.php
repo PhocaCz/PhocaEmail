@@ -110,7 +110,6 @@ class PhocaEmailHelper
 		$db->setQuery( $query );
 		
 		$newsletters = $db->loadObjectList();
-		
 		if (!empty($newsletters)) {
 			foreach ($newsletters as $k => $v) {
 				if (isset($v->mlist) && $v->mlist != '') {
@@ -125,9 +124,12 @@ class PhocaEmailHelper
 					if (!empty($subscribers)) {
 						$newsletters[$k]->slist = new stdClass();
 						$newsletters[$k]->slist = implode(',', $subscribers);
+						$newsletters[$k]->text = $newsletters[$k]->text .'('.count($subscribers).')';
+
 					} else {
 						$newsletters[$k]->slist = new stdClass();
 						$newsletters[$k]->slist = null;
+						$newsletters[$k]->text = $newsletters[$k]->text .'(Ninguno)';
 					}
 				} else {
 					// In this newsletter no list is selected, means, it should be sent to all
@@ -141,12 +143,14 @@ class PhocaEmailHelper
 					if (!empty($subscribers)) {
 						$newsletters[$k]->slist = new stdClass();
 						$newsletters[$k]->slist = implode(',', $subscribers);
+						$newsletters[$k]->text = $newsletters[$k]->text .'(Todos)';
 					}
 				}
 			}
 		}
 		
 		$newsletterList['list']			= $newsletters;
+		
 		$newsletterList['genericlist'] 	= JHTML::_('select.genericlist',   $newsletters, 'newsletter', 'class="inputbox" size="4"'. '', 'value', 'text', '' );
 
 		return $newsletterList;
