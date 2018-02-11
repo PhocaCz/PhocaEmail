@@ -12,7 +12,13 @@
 $this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. JSession::getFormToken().'=1';
 
 ?><script language="javascript" type="text/javascript">
-
+var contador = 0; // variable global para hacer bucle.
+var dataPost = {};
+var url;
+var nId;
+var subscribers	= [];
+var subcriptor;
+var slength = 0;
 Joomla.submitbutton = function(task) {
 	var form = document.adminForm;
 	if (task == 'phocaemailsendnewsletter.send') {
@@ -20,18 +26,14 @@ Joomla.submitbutton = function(task) {
 			alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true) ?>" );
 		} else {
 			
-			var url 						= '<?php echo $this->t['url']; ?>';	
-			var dataPost 					= {};
-			var nId							= form.newsletter.value;
+			url 						= '<?php echo $this->t['url']; ?>';	
+			//~ var dataPost 					= {};
+			nId							= form.newsletter.value;
 			dataPost['newsletterid']		= nId;
-			
-			var subscribers	= [];
 			<?php echo '		' . $this->t['subscribersjs']; ?>
 			if (typeof subscribers[nId] !== 'undefined') {
-				var slength = subscribers[nId].length;
-			} else {
-				var slength = 0;
-			}
+				slength = subscribers[nId].length;
+			} 
 			
 			var txtSending = "";
 			var txtSendingFinished = "";
@@ -39,40 +41,60 @@ Joomla.submitbutton = function(task) {
 				alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true) ?>" );
 			} else {
 				jQuery("#phsendoutput").empty();
-				for (var i = 0; i < slength; i++) {
-					
-					var j = i + 1;
-					txtSending = '<div class="ph-sending-msg"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true) ?> (' + j + '/' + slength + ') ...</div>';
-					jQuery("#phsendoutput").append(txtSending);
-					
-					dataPost['subscriberid']	= subscribers[nId][i];
-					jQuery.ajax({
-					   url: url,
-					   type:'POST',
-					   data:dataPost,
-					   dataType:'JSON',
-					   async: false,
-					   success:function(data){
-							if ( data.status == 1 ){
-								jQuery("#phsendoutput").append(data.message);
-								//txtSending += data.message;
-							} else {
-								jQuery("#phsendoutput").append(data.error); 
-								//txtSending += data.error;
-							}
-						}
-					});
-					//jQuery("#phsendoutput").append(txtSending);
-				}
+				controladorEnvio(subscribers,slength);
 				
-				txtSendingFinished = '<div class="ph-sending-msg-finish"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true) ?></div>';
-				jQuery("#phsendoutput").append(txtSendingFinished);
+				
 				
 			}
 		
 		}
 	} else if (task == 'phocaemailsendnewsletter.cancel') {
 		Joomla.submitform(task, document.getElementById('adminForm'));
+	}
+}
+function envioEmail(){
+	// Ejecutamos envio si contador es mejor al numero items.. 
+		var i = contador;
+		// Retraso la ejecucion durante 20 s
+		var j = i + 1;
+		txtSending = '<div class="ph-sending-msg"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true) ?> (' + j + '/' + slength + ') ...</div>';
+		jQuery("#phsendoutput").append(txtSending);
+			
+		dataPost['subscriberid']	= subcriptor;
+			
+		jQuery.ajax({
+			url: url,
+			type:'POST',
+			data:dataPost,
+			dataType:'JSON',
+			async: false,
+			success:function(data){
+				if ( data.status == 1 ){
+					jQuery("#phsendoutput").append(data.message);
+					//txtSending += data.message;
+				} else {
+					jQuery("#phsendoutput").append(data.error); 
+					//txtSending += data.error;
+				}
+			contador ++;
+			}
+		});
+		//jQuery("#phsendoutput").append(txtSending);
+		// Tiempo que esperamos para enviar un email, debería ser un parametro del componente, 
+		setTimeout(controladorEnvio,10000);
+	
+	
+}
+function controladorEnvio(){
+	if (contador < slength){
+		subcriptor = subscribers[nId][contador];
+		console.log(contador);
+		console.log(typeof(subcriptor));
+		envioEmail();
+	} else {
+		// Entonces termino
+		txtSendingFinished = '<div class="ph-sending-msg-finish"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true) ?></div>';
+		jQuery("#phsendoutput").append(txtSendingFinished);
 	}
 }
 </script>
