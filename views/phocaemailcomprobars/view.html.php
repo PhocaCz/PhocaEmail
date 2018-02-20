@@ -79,8 +79,8 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		
 		$resumen['totalSubscriptos'] = count($this->items);
 
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		//~ $this->pagination	= $this->get('Pagination');
+		//~ $this->state		= $this->get('State');
 		
 
 		$this->resumen = $resumen;
@@ -114,7 +114,7 @@ class PhocaEmailCpViewPhocaEmailComprobars extends JViewLegacy
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['tasks']).'Helper';
 
-		$canDo	= $class::getActions($this->t, $state->get('filter.subscriber_id'));
+		//~ $canDo	= $class::getActions($this->t, $state->get('filter.subscriber_id'));
 		// Titulo de opcion
 		
 		JToolBarHelper::title( JText::_( $this->t['l'].'_COMPROBAR' ), 'loop' );
