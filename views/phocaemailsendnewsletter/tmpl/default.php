@@ -8,10 +8,12 @@
  */
 ?>
 <?php JHTML::_('behavior.tooltip');
-
+$params 			= JComponentHelper::getParams('com_phocaemail') ;
+$tiempo_espera = $params->get('tiempo_espera') *1000;
 $this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. JSession::getFormToken().'=1';
 
 ?><script language="javascript" type="text/javascript">
+var tiempo_espera = <?php echo $tiempo_espera;?>;
 var contador = 0; // variable global para hacer bucle.
 var dataPost = {};
 var url;
@@ -81,7 +83,7 @@ function envioEmail(){
 		});
 		//jQuery("#phsendoutput").append(txtSending);
 		// Tiempo que esperamos para enviar un email, debería ser un parametro del componente, 
-		setTimeout(controladorEnvio,10000);
+		setTimeout(controladorEnvio,tiempo_espera);
 	
 	
 }
@@ -99,8 +101,10 @@ function controladorEnvio(){
 }
 </script>
 
+
 <form action="index.php?option=com_phocaemail&view=phocaemailsendnewsletter" method="post" name="adminForm" id="adminForm">
 <?php echo '<div class="span10 form-horizontal">';
+
 
 echo '<div class="control-group">';
 echo '<div class="control-label">'.JText::_('COM_PHOCAEMAIL_NEWSLETTER').'</div>';

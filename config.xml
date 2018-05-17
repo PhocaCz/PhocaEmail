@@ -31,7 +31,7 @@
 	<option value="0">COM_PHOCAEMAIL_NO</option>
 	<option value="1">COM_PHOCAEMAIL_YES</option>
 </field>
-	
+<field name="tiempo_espera" type ="text" default="10" label="Tiempo espera" description="Tiempo espera entre cada email"></field>
 	</fieldset>
 	
 	<fieldset name="newsletter" label="COM_PHOCAEMAIL_CONFIG_HEAD_NEWSLETTER_LABEL">
