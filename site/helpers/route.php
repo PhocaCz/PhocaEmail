@@ -50,7 +50,7 @@ class PhocaEmailHelperRoute
 				$link .= '&Itemid='.$item->id;
 			}
 		}
-		
+	
 		return $link;
 	}
 	
@@ -62,7 +62,7 @@ class PhocaEmailHelperRoute
 		$items	= $menus->getItems('component', 'com_phocaemail');
 
 		if(!$items) {
-			return JRequest::getVar('Itemid', 0, '', 'int');
+			return $app->input->get('Itemid', 0, '', 'int');
 			//return null;
 		}
 		

@@ -70,6 +70,24 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 		{
 			$table->newTags = $data['tags'];
 		}
+		
+	/*	if ($data['active'] == 1 && !isset($data['date_register'])) {
+			
+			$date 			= gmdate('Y-m-d H:i:s');
+			$db	= JFactory::getDBO();
+	
+			$query = 'SELECT a.active FROM #__phocaemail_subscribers AS a'
+					. ' WHERE a.id = '.(int)$data['id']
+					. ' LIMIT 1';
+			$db->setQuery( (string)$query );
+			$subscriber = $db->loadObject();
+			if (isset($subscriber->active) && $subscriber->active == 1) {
+				// Already active, don't set date for activation
+			} else {
+				$data['date_register'] = $date;
+			}
+			
+		}*/
 
 		$key = $table->getKeyName();
 		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');

@@ -36,12 +36,18 @@ class PhocaEmailRenderAdminViews
 		return '</form>'."\n".'</div>'."\n";
 	}
 	
-	public function startFilter($txtFilter){
-		$o = '<div id="j-sidebar-container" class="span2">'."\n"
-		. JHtmlSidebar::render()."\n"
-		. '<hr />'."\n";
-		$o .= '<div class="filter-select hidden-phone">'."\n"
-		. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+	public function startFilter($txtFilter = ''){
+		$o = '<div id="j-sidebar-container" class="span2">'."\n". JHtmlSidebar::render()."\n";
+
+		
+		if ($txtFilter != '') {
+			$o .= '<hr />'."\n" . '<div class="filter-select ">'."\n"
+
+			. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+		} else {
+			$o .= '<div>';
+		}
+		
 		return $o;
 	}
 
@@ -50,31 +56,86 @@ class PhocaEmailRenderAdminViews
 	}
 	
 	public function selectFilterPublished($txtSp, $state) {
-		return'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right ph-select-status">'. "\n"
+		.'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
 		. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
+	}
+	
+	public function selectFilterActived($txtSp, $state) {
+		
+		
+		switch($state) {
+			case '0':
+				$aS = '';
+				$nS = 'selected';
+				$n = '';
+				
+			break;
+			case '1':
+				$aS = 'selected';
+				$nS = '';
+				$n = '';
+			break;
+			default:
+				$aS = '';
+				$nS = '';
+				$n = 'selected';
+			break;
+		}
+		
+		return '<div class="btn-group pull-right ph-select-status">'. "\n"
+		.'<select name="filter_actived" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="" '.$n.'>- '.JText::_($txtSp).' -</option>'
+		. '<option value="0" '.$nS.'>'.JText::_('COM_PHOCAEMAIL_NOT_ACTIVE').'</option>'
+		. '<option value="1" '.$aS.'>'.JText::_('COM_PHOCAEMAIL_ACTIVE').'</option>'
+		//. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array()), 'value', 'text', $state, true)
+		.'</select></div>'. "\n";
 	}
 	
 	public function selectFilterType($txtSp, $type, $typeList) {
-		return'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
 		. JHtml::_('select.options', $typeList, 'value', 'text', $type, true)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
 	}
 	
 	public function selectFilterLanguage($txtLng, $state) {
-		return'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
 		. JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $state)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
 	}
 	
 	public function selectFilterCategory($categoryList, $txtLng, $state) {
-		return '<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right ">'. "\n"
+		.'<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
 		. JHtml::_('select.options', $categoryList, 'value', 'text', $state)
-		. '</select>'. "\n";
+		. '</select></div>'. "\n";
+	}
+	
+	public function selectFilterMailingList($mailingList, $txtLng, $state) {
+		
+	
+		return '<div class="btn-group pull-right ">'. "\n"
+		.'<select name="filter_mailing_list" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="">- '.JText::_($txtLng).' -</option>'
+		. JHtml::_('select.options', $mailingList, 'value', 'text', $state)
+		. '</select></div>'. "\n";
+	}
+	
+	public function selectFilterLevels($txtLng, $state) {
+		$levelList = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5);
+		return 
+		'<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_level" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="">'.JText::_($txtLng).'</option>'
+		. JHtml::_('select.options', $levelList, 'value', 'text', $state)
+		. '</select></div>'. "\n";
 	}
 	
 	public function startMainContainer() {
@@ -85,8 +146,13 @@ class PhocaEmailRenderAdminViews
 		return '</div>'. "\n";
 	}
 	
-	public function startFilterBar() {
-		return '<div id="filter-bar" class="btn-toolbar">'. "\n";
+	public function startFilterBar($id = 0) {
+		if ((int)$id > 0) {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar ph-btn-toolbar-'.$id.'">'. "\n";
+		} else {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar">'. "\n";
+		}
+		
 	}
 	
 	public function endFilterBar() {
@@ -101,10 +167,18 @@ class PhocaEmailRenderAdminViews
 		.'</div>'. "\n";
 	}
 	
-	public function inputFilterSearchClear($txtFs, $txtFc) {
+	/*public function inputFilterSearchClear($txtFs, $txtFc) {
 		return '<div class="btn-group pull-left hidden-phone">'. "\n"
 		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
 		.'<button class="btn tip hasTooltip" type="button" onclick="document.id(\'filter_search\').value=\'\';this.form.submit();"'
+		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
+		.'</div>'. "\n";
+	}*/
+	
+	public function inputFilterSearchClear($txtFs, $txtFc) {
+		return '<div class="btn-group pull-left hidden-phone">'. "\n"
+		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
+		.'<button class="btn tip hasTooltip" type="button" onclick="document.getElementById(\'filter_search\').value=\'\';this.form.submit();"'
 		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
 		.'</div>'. "\n";
 	}
@@ -170,7 +244,7 @@ class PhocaEmailRenderAdminViews
 		.'</th>'. "\n";
 	}
 	
-	public function tdOrder($canChange, $saveOrder, $orderkey){
+	public function tdOrder($canChange, $saveOrder, $orderkey, $ordering = 0){
 	
 		$o = '<td class="order nowrap center hidden-phone">'. "\n";
 		if ($canChange) {
@@ -184,7 +258,7 @@ class PhocaEmailRenderAdminViews
 		} else {
 			$o .= '<span class="sortable-handler inactive"><i class="icon-menu"></i></span>'."\n";
 		}
-		$orderkeyPlus = $orderkey + 1;
+		$orderkeyPlus = $ordering;//$orderkey + 1;
 		$o .= '<input type="text" style="display:none" name="order[]" size="5" value="'.$orderkeyPlus.'" />'. "\n"
 		.'</td>'. "\n"; 
 		return $o;
@@ -222,12 +296,22 @@ class PhocaEmailRenderAdminViews
 		return $o;
 	}
 	
-	public function formInputs($listOrder, $originalOrders) {
+	/*public function formInputs($listOrder, $originalOrders) {
 	
 		return '<input type="hidden" name="task" value="" />'. "\n"
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="" />'. "\n"
+		. JHtml::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
+	}*/
+	
+	public function formInputs($listOrder, $listDirn, $originalOrders) {
+	
+		return '<input type="hidden" name="task" value="" />'. "\n"
+		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
+		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
+		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
 		. JHtml::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
 	}

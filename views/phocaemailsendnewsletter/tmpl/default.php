@@ -112,7 +112,10 @@ echo '</div>';
 echo '</div>';//end span10
 // Second Column
 echo '<div class="span2">';
-echo JText::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO');
+echo '<ul>';
+echo '<li>'.JText::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO'). '</li>';
+echo '<li>'.JText::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO_2'). '</li>';
+echo '</ul>';
 echo '</div>';//end span2 ?>
 
 <input type="hidden" name="task" value="" />

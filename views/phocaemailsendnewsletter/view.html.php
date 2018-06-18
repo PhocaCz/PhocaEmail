@@ -20,12 +20,18 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 	function display($tpl = null) {
 		
 		$this->t	= PhocaEmailUtils::setVars('sendnewsletter');
-		JHtml::_('bootstrap.loadCss');
+		/*JHtml::_('bootstrap.loadCss');
 		JHtml::_('bootstrap.tooltip');
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.formvalidation');
 		JHtml::_('behavior.keepalive');
+		JHtml::_('formbehavior.chosen', 'select');*/
+		
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.formvalidation');
+		JHtml::_('behavior.keepalive');
 		JHtml::_('formbehavior.chosen', 'select');
+		
 		JHTML::stylesheet( $this->t['s'] );
 		$app				= JFactory::getApplication();
 		$doc 				= JFactory::getDocument();
@@ -34,7 +40,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 		$params 			= JComponentHelper::getParams('com_phocaemail') ;
 
 		// GET IDs of Subscribers
-		$db = JFactory::getDBO();
+	/*	$db = JFactory::getDBO();
 		$query = 'SELECT a.id'
 				.' FROM #__phocaemail_subscribers AS a'
 			    .' WHERE a.published = 1'
@@ -47,9 +53,10 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 		$this->t['subscriberlist']	= '';
 		if (!empty($subscribers)) {
 			$this->t['subscriberlist']	= implode(',', $subscribers);
-		}
+		}*/
 		
 		$newsletterList 	= PhocaEmailHelper::newsletterList();
+		
 		$this->t['newsletterlist'] = $newsletterList['genericlist'];//select box
 		
 		// CHECK THE LISTS
@@ -85,7 +92,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 		}
 		$this->t['subscribersjs'] = $js;
 		 
-		
+	
 		
 		$this->t['editor'] 	= JFactory::getEditor();
 			
@@ -95,20 +102,20 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 	
 	//protected function addToolbar() {
 	function addToolbar() {
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailsendnewsletter.php';
+		require_once JPATH_COMPONENT.'/helpers/phocaemailsendnewsletter.php';
 
 		$state	= $this->get('State');
 		$canDo	= PhocaEmailSendNewsletterHelper::getActions();
-		JToolBarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil' );
+		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil' );
 		
 		if ($canDo->get('core.admin')) {
-			//JToolBarHelper::preferences('com_phocaemail');
-			JToolBarHelper::custom( 'phocaemailsendnewsletter.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
-			JToolBarHelper::cancel( 'phocaemailsendnewsletter.cancel', 'COM_PHOCAEMAIL_CANCEL' );
-			JToolBarHelper::divider();
+			//JToolbarHelper::preferences('com_phocaemail');
+			JToolbarHelper::custom( 'phocaemailsendnewsletter.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
+			JToolbarHelper::cancel( 'phocaemailsendnewsletter.cancel', 'COM_PHOCAEMAIL_CANCEL' );
+			JToolbarHelper::divider();
 		}
 		
-		JToolBarHelper::help( 'screen.phocaemail', true );
+		JToolbarHelper::help( 'screen.phocaemail', true );
 	}
 }
 ?>

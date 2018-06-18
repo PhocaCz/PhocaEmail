@@ -13,8 +13,8 @@ class PhocaEmailHelper
 {	
 	public static function getPath() {
 		$path = array();
-		$path['path_abs']		= JPATH_ROOT . DS . 'phocaemail'. DS ;
-		$path['path_abs_nods']	= JPATH_ROOT . DS . 'phocaemail' ;
+		$path['path_abs']		= JPATH_ROOT . '/phocaemail/' ;
+		$path['path_abs_nods']	= JPATH_ROOT . '/phocaemail' ;
 		$path['path_rel']		= 'phocaemail/';
 		$path['path_rel_full']	= JURI::base(true) . '/' . $path['path_rel'];
 		
@@ -24,11 +24,11 @@ class PhocaEmailHelper
 
 	public static function getPhocaVersion()
 	{
-		$folder = JPATH_ADMINISTRATOR .DS. 'components'.DS.'com_phocaemail';
+		$folder = JPATH_ADMINISTRATOR . '/components/com_phocaemail';
 		if (JFolder::exists($folder)) {
 			$xmlFilesInDir = JFolder::files($folder, '.xml$');
 		} else {
-			$folder = JPATH_SITE .DS. 'components'.DS.'com_phocaemail';
+			$folder = JPATH_SITE .'/components/com_phocaemail';
 			if (JFolder::exists($folder)) {
 				$xmlFilesInDir = JFolder::files($folder, '.xml$');
 			} else {
@@ -36,12 +36,12 @@ class PhocaEmailHelper
 			}
 		}
 
-		$xml_items = '';
+		$xml_items = array();
 		if (count($xmlFilesInDir))
 		{
 			foreach ($xmlFilesInDir as $xmlfile)
 			{
-				if ($data = JApplicationHelper::parseXMLInstallFile($folder.DS.$xmlfile)) {
+				if ($data = \JInstaller::parseXMLInstallFile($folder.'/'.$xmlfile)) {
 					foreach($data as $key => $value) {
 						$xml_items[$key] = $value;
 					}
@@ -130,7 +130,9 @@ class PhocaEmailHelper
 						$newsletters[$k]->slist = null;
 					}
 				} else {
+					// !!!!!!!!!!!!
 					// In this newsletter no list is selected, means, it should be sent to all
+					
 					$query = 'SELECT a.id'
 					. ' FROM #__phocaemail_subscribers AS a'
 					. ' WHERE a.published = 1 AND a.active = 1';
@@ -166,7 +168,8 @@ class PhocaEmailHelper
 
 		// Check for a database error.
 		if ($db->getErrorNum()) {
-			JError::raiseNotice(500, $db->getErrorMsg());
+			
+			throw new Exception($db->getErrorMsg(), 500);
 			return null;
 		}
 
@@ -190,23 +193,29 @@ class PhocaEmailHelper
 	public static function getToken($type = 'token') {
 		
 		$app		= JFactory::getApplication();
-		$secret		= $app->getCfg('secret');
+		$secret		= $app->get('secret');
 		$secretPartA= substr($secret, mt_rand(5,15), mt_rand(2,10));
 		$secretPartB= substr($secret, mt_rand(5,15), mt_rand(2,10));
 
-		$saltArray	= array('a', '0', 'c', '1', 'e', '2', 'g', '3', 'i', '4', 'k', '5', 'm', '6', 'o', '7', 'q', '8', 's', '0', 'u', '1', 'w', '2', 'y');
+		$saltArray	= array('a', '0', 'c', '1', 'e', '2', 'h', '3', 'i', '4', 'k', '5', 'm', '6', 'o', '7', 'q', '8', 'r', '0', 'u', '1', 'w', '2', 'y');
 		$randA		= mt_rand(0,8000);
 		$randB		= mt_rand(0, $randA);
 		$randC		= mt_rand(0, $randB);
 		$randD		= mt_rand(0,24);
+		$randD2		= mt_rand(0,24);
 		
 		
-		$salt 		= md5('string '. $secretPartA . date('s'). $randA . str_replace($randC, $randD, date('r')). $secretPartB . 'end string');
-		$salt 		= str_replace($saltArray[$randD], $saltArray[$randD], $salt);
+		$salt0 		= md5('string '. $secretPartA . date('s'). $randA . str_replace($randC, $randD, date('r')). $secretPartB . 'end string');
+		$salt 		= str_replace($saltArray[$randD], $saltArray[$randD2], $salt0);
 		if ($type > 100) {
 			$salt 	=  md5($salt);
 		}
-		$salt		= crypt($salt);
+		
+		if ($salt == '') {
+			$salt = $salt0;
+		}
+		
+		$salt		= crypt($salt, $salt);
 		$rT			= $randC + $randA;
 		if ($rT < 1) {$rT = 1;}
 		$time		= (int)time() * $randB / $rT;

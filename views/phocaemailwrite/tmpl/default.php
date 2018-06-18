@@ -19,14 +19,32 @@ echo ''
 .'	} else if (form.fromname.value == ""){'. "\n"
 .'	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_FROMNAME').'" );'. "\n"
 .'	} ' . "\n";
-if ($this->p['display_users_list'] == 0) {
-	echo '      else if (form.to.value == ""){'. "\n"
-.'	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO').'" );'. "\n"
-.'	}' . "\n";
+
+if ($this->p['display_users_list'] == 0 && $this->p['display_groups_list'] == 0) {
+	
+	echo '      else if (form.to.value == ""){'. "\n";
+	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO').'" );'. "\n";
+	echo '	}' . "\n";
+	
+} else if ($this->p['display_users_list'] == 1 && $this->p['display_groups_list'] == 0) {
+	
+	echo '      else if (form.tousers.value == "" && form.to.value == "") { ' . "\n";
+	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_EMPTY').'" );'. "\n";
+	echo '  }' . "\n";
+	
+} else if ($this->p['display_users_list'] == 0 && $this->p['display_groups_list'] == 1) {
+	
+	echo '      else if (form.togroups.value == "" && form.to.value == "") { ' . "\n";
+	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_GROUPS_EMPTY').'" );'. "\n";
+	echo '  }' . "\n";
+	
 } else {
-	echo '      else if (form.tousers.value == "" && form.to.value == "") { ' . "\n"
-.'	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_EMPTY').'" );'. "\n"
-.'  }' . "\n";
+	
+	// all displayed to, to users, to groups
+	echo '      else if (form.tousers.value == "" && form.togroups.value == "" && form.to.value == "") { ' . "\n";
+	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_GROUPS_EMPTY').'" );'. "\n";
+	echo '  }' . "\n";
+	
 }
 echo ' else if (form.subject.value == ""){'. "\n"
 .'   alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_SUBJECT').'" );'. "\n"
@@ -44,125 +62,137 @@ echo ' else if (form.subject.value == ""){'. "\n"
 </script>
 
 <form action="index.php?option=com_phocaemail&view=phocaemailwrite" method="post" name="adminForm" id="adminForm">
-<table border="0">
+<table class="ph-table-form">
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROMNAME'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="fromname" id="fromname" style="width:300px" maxlength="100" value="<?php echo $this->r['fromname']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROMNAME'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="fromname" id="fromname" style="width:300px" maxlength="100" value="<?php echo $this->r['fromname']; ?>" /></td>
 </tr>
 	
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROM'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="from" id="from" style="width:300px" maxlength="100" value="<?php echo $this->r['from']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROM'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="from" id="from" style="width:300px" maxlength="100" value="<?php echo $this->r['from']; ?>" /></td>
 </tr>
 	
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="to" id="to" style="width:300px" maxlength="250" value="<?php echo $this->r['to']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="to" id="to" style="width:300px" maxlength="250" value="<?php echo $this->r['to']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list'] == 1) { ?>
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO_USERS'); ?>:</label></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO_USERS'); ?>:</label></td>
 	<td><?php echo $this->t['userlist']; ?></td>
 </tr>
 <?php } ?>
 
 <?php if ($this->p['display_groups_list'] == 1) { ?>
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO_GROUPS'); ?>:</label></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO_GROUPS'); ?>:</label></td>
 	<td><?php echo $this->t['grouplist']; ?></td>
 </tr>
 <?php } ?>
 
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="cc" id="cc" style="width:300px" maxlength="250" value="<?php echo $this->r['cc']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="cc" id="cc" style="width:300px" maxlength="250" value="<?php echo $this->r['cc']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list_cc'] == 1) { ?>
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC_USERS'); ?>:</label></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC_USERS'); ?>:</label></td>
 	<td><?php echo $this->t['ccuserlist']; ?></td>
 </tr>
 <?php } ?>
 
+<?php if ($this->p['display_groups_list_cc'] == 1) { ?>
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="bcc" id="bcc" style="width:300px" maxlength="250" value="<?php echo $this->r['bcc']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC_GROUPS'); ?>:</label></td>
+	<td><?php echo $this->t['ccgrouplist']; ?></td>
+</tr>
+<?php } ?>
+
+<tr>	
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="bcc" id="bcc" style="width:300px" maxlength="250" value="<?php echo $this->r['bcc']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list_bcc'] == 1) { ?>
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC_USERS'); ?>:</label></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC_USERS'); ?>:</label></td>
 	<td><?php echo $this->t['bccuserlist']; ?></td>
+</tr>
+<?php } ?>
+
+<?php if ($this->p['display_groups_list_bcc'] == 1) { ?>
+<tr>	
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC_GROUPS'); ?>:</label></td>
+	<td><?php echo $this->t['bccgrouplist']; ?></td>
 </tr>
 <?php } ?>
 	
 <tr>	
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_SUBJECT'); ?>:</label></td>
-	<td><input class="inputbox" type="text" name="subject" id="subject" style="width:634px" maxlength="250" value="<?php echo $this->r['subject']; ?>" /></td>
+	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_SUBJECT'); ?>:</label></td>
+	<td class="ph-inputbox"><input class="inputbox" type="text" name="subject" id="subject" style="width:634px" maxlength="250" value="<?php echo $this->r['subject']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_select_article'] == 1) { 
 
-/*?>
-<tr>
-	<td align="right"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_ARTICLE_ID'); ?>:</label></td>
-	<td>
-	<div style="float: left;"><input style="background: none repeat scroll 0% 0% rgb(255, 255, 255);" id="article_name" value="<?php echo $this->r['article_name']; ?>" disabled="disabled" type="text" size="40" /></div> */ ?>
+	JHtml::_('behavior.modal', 'a.modal_jform_request_id');
 	
-	<?php
-	// Build the script.
-	$script = array();
-	$script[] = '	function jSelectArticle_jform_request_id(id, title, catid, object) {';
-	$script[] = '		document.id("article_id").value = id;';
-	$script[] = '		document.id("article_name").value = title;';
-	$script[] = '		SqueezeBox.close();';
-	$script[] = '	}';
+	$idA 	= 'phSelectArticle';
+	$id		= 'jform_request_id';
+	$link 	= 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_'.$id.'&amp;'.JSession::getFormToken().'=1';
+	
+	$s 		= array();
+	$s[] 	= '	function jSelectArticle_'.$id.'(id, title, catid, object) {';
+	$s[] 	= '		document.id("article_id").value = id;';
+	$s[] 	= '		document.id("article_name").value = title;';
+	$s[] 	= '   		jQuery(\'.modal\').modal(\'hide\');';
+	$s[] 	= '	}';
+	JFactory::getDocument()->addScriptDeclaration(implode("\n", $s));
+	
+	$html 	= array(); 
+	$html[] = '<div class="input-append">';
+	$html[] = '<span class="input-append"><input type="text" id="article_name" name="article_name"'
+			. ' value="' .  $this->r['article_name'] . '" class="input-medium"  />';
+	$html[] = '<a href="#'.$idA.'" role="button" class="btn " data-toggle="modal" title="' . JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE') . '">'
+			. '<span class="icon-list icon-white"></span> '
+			. JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE') . '</a></span>';
+	$html[] = '</div>'. "\n";
+	$html[] = '<input required="required" aria-required="true" type="hidden" id="article_id" name="article_id" value="'.$this->r['article_id'].'" />';
+	
+	$html[] = JHtml::_(
+		'bootstrap.renderModal',
+		$idA,
+		array(
+			'url'    => $link,
+			'title'  => JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),
+			'width'  => '780px',
+			'height' => '580px',
+			'modalWidth' => '50',
+			'bodyHeight' => '70',
+			'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
+				. JText::_('COM_PHOCAEMAIL_CLOSE') . '</button>'
+		)
+	);
 
-	// Add the script to the document head.
-	JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
-
-	$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_jform_request_id&amp;'.JSession::getFormToken().'=1';
-	
-	/* ?>
-	
-	<div class="button2-left" style="margin-left: 10px;"><div class="blank"><a class="modal-button" title="<?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>" href="<?php echo $link; ?>" rel="{handler: 'iframe', size: {x: 650, y: 375}}"><?php echo JText::_('COM_PHOCAEMAIL_SELECT'); ?></a></div></div>
-	
-	<input type="hidden" id="article_id" name="article_id" value="<?php echo $this->r['article_id']; ?>" />
-	<?php /*<input type="hidden" id="article_name" name="article_name" value="<?php echo $this->r['article_name']; ?>" />
+?><tr>
+	<td class="ph-label"><label data-original-title="<?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>" id="jform_request_id-lbl" for="jform_request_id" class="hasTooltip required" title=""><?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>:</label>
 	</td>
-</tr> */ ?>
-
-<tr>
-	<td align="right"><label data-original-title="<?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>" id="jform_request_id-lbl" for="jform_request_id" class="hasTooltip required" title=""><?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>:</label>
-	</td>
-	<td>
-		<span class="input-append">
-			<input class="input-medium" id="article_name" value="<?php echo $this->r['article_name']; ?>" disabled="disabled" size="35" type="text">
-			<a data-original-title="<?php echo JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'); ?>" class="modal btn hasTooltip" title="" href="<?php echo $link ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}"><i class="icon-file"></i> <?php echo JText::_('COM_PHOCAEMAIL_SELECT'); ?></a>
-			
-
-		</span>
-		
-		<input required="required" aria-required="true" type="hidden" id="article_id" name="article_id" value="<?php echo $this->r['article_id']; ?>" />
-	</td>
-	
-
-	</td>
+	<td class="ph-inputbox"><?php echo implode("\n", $html); ?></td>
 </tr>
 <?php } ?>
 	
 	
 <tr>	
-	<td align="right" valign="top"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_MESSAGE');  ?>:</label></td><td>
+	<td class="ph-label" valign="top"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_MESSAGE');  ?>:</label></td><td>
 	<?php // parameters : areaname, content, width, height, cols, rows, show xtd buttons
 	echo $this->t['editor']->display( 'message',  $this->r['message'], '648', '250', '80', '30', array('pagebreak', 'readmore', 'article') ) ;
 	?></td>
 </tr>
 
 <tr>	
-	<td align="right" valign="top"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_ATTACHMENT');  ?>:</label></td>
+	<td class="ph-label" valign="top"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_ATTACHMENT');  ?>:</label></td>
 	<?php
 	if (!empty($this->t['attachment'])) {
 		echo '<td>';
@@ -193,7 +223,7 @@ echo ' else if (form.subject.value == ""){'. "\n"
 	</tr> */ ?>
 	
 <tr>
-	<td align="right" valign="top" colspan="2">
+	<td class="ph-label" valign="top" colspan="2">
 		<div class="btn-wrapper" >
 			<button onclick="Joomla.submitbutton('phocaemailwrite.send');return false;" class="btn btn-success">
 			<span class="icon-envelope"></span> <?php echo JText::_('COM_PHOCAEMAIL_SEND')  ?></button>

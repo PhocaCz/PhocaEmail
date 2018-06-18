@@ -9,19 +9,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR); 
+
 // Require the base controller and helpers
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailutils.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailrenderadmin.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'renderadminview.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'renderadminviews.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemail.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailcp.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailsend.php' );
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'phocaemailsendnewsletteremail.php' );
+require_once( JPATH_COMPONENT.'/controller.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemailutils.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemailrenderadmin.php' );
+require_once( JPATH_COMPONENT.'/helpers/renderadminview.php' );
+require_once( JPATH_COMPONENT.'/helpers/renderadminviews.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemail.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemailcp.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemailsend.php' );
+require_once( JPATH_COMPONENT.'/helpers/phocaemailsendnewsletteremail.php' );
 
 
 jimport('joomla.application.component.controller');

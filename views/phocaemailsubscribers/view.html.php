@@ -25,7 +25,7 @@ class PhocaEmailCpViewPhocaEmailSubscribers extends JViewLegacy
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 		
@@ -48,27 +48,27 @@ class PhocaEmailCpViewPhocaEmailSubscribers extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.subscriber_id'));
 
-		JToolBarHelper::title( JText::_( $this->t['l'].'_SUBSCRIBERS' ), 'user' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_SUBSCRIBERS' ), 'user' );
 	
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew($this->t['task'].'.add','JTOOLBAR_NEW');
+			JToolbarHelper::addNew($this->t['task'].'.add','JTOOLBAR_NEW');
 		}
 	
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
+			JToolbarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.edit.state')) {
 
-			JToolBarHelper::divider();
-			JToolBarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 		}
 	
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList( $this->t['l'].'_WARNING_DELETE_ITEMS', 'phocaemailsubscribers.delete', $this->t['l'].'_DELETE');
+			JToolbarHelper::deleteList( $this->t['l'].'_WARNING_DELETE_ITEMS', 'phocaemailsubscribers.delete', $this->t['l'].'_DELETE');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 	
 	protected function getSortFields() {
@@ -76,10 +76,13 @@ class PhocaEmailCpViewPhocaEmailSubscribers extends JViewLegacy
 			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
 			'a.name' 		=> JText::_($this->t['l'] . '_NAME'),
 			'a.email' 		=> JText::_($this->t['l'] . '_EMAIL'),
-			'a.date' 		=> JText::_($this->t['l'] . '_SIGN_UP_DATE'),
-			'a.date_unsubscribe' 		=> JText::_($this->t['l'] . '_UNSUBSCRIBE_DATE'),
+			'a.date_register' 		=> JText::_($this->t['l'] . '_SIGN_UP_DATE'),
+			'a.date_active' 		=> JText::_($this->t['l'] . '_ACTIVATION_DATE'),
+			'a.date_unsubscribe' 		=> JText::_($this->t['l'] . '_UNSUBSCRIPTION_DATE'),
 			'a.active' 		=> JText::_($this->t['l'] . '_ACTIVE_USER'),
 			'a.hits' 		=> JText::_($this->t['l'] . '_ATTEMPTS'),
+			'ml.title' 			=> JText::_($this->t['l'] . '_MAILING_LIST'),
+			'a.privacy' 			=> JText::_($this->t['l'] . '_PRIVACY_CONFIRMATION'),
 			'a.id' 			=> JText::_('JGRID_HEADING_ID')
 		);
 	}

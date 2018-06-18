@@ -13,16 +13,18 @@ jimport('joomla.application.component.model');
 class PhocaEmailModelNewsletter extends JModelLegacy
 {
 
-	public function storeSubscriber( $name, $email, $mailinglist = array()) {
-		JRequest::checkToken( 'request' ) or jexit(JText::_('JINVALID_TOKEN'));
+	public function storeSubscriber( $name, $email, $privacy, $mailinglist = array()) {
+		JSession::checkToken( 'request' ) or jexit(JText::_('JINVALID_TOKEN'));
 		
 		$params 	= JComponentHelper::getParams('com_phocaemail') ;
 		$app		= JFactory::getApplication();
 		$message	= '';
 		
-		$data['name'] 		= $name;
-		$data['email']		= $email;
-		$data['date'] 		= gmdate('Y-m-d H:i:s');
+		$data['name'] 			= $name;
+		$data['email']			= $email;
+		$data['privacy']		= $privacy;
+		$data['date'] 			= gmdate('Y-m-d H:i:s');
+		$data['date_register'] 	= gmdate('Y-m-d H:i:s');
 		$data['token'] 		= PhocaEmailHelper::getToken();
 		$data['active'] 	= 0;
 		$data['published'] 	= 1;

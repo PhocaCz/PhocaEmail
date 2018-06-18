@@ -26,17 +26,17 @@ class PhocaEmailCpViewPhocaEmailInfo extends JViewLegacy
 		$class	= $this->t['n'] . 'CpHelper';
 		$canDo	= $class::getActions($this->t['c']);
 
-		JToolBarHelper::title( JText::_($this->t['l'].'_PE_INFO' ), 'info' );
+		JToolbarHelper::title( JText::_($this->t['l'].'_PE_INFO' ), 'info' );
 		if ($canDo->get('core.admin')) {
 			JToolbarHelper::preferences('com_'.$this->t['c']);
 		}
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolBar::getInstance( 'toolbar' );
+		$bar = JToolbar::getInstance( 'toolbar' );
 		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 		
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

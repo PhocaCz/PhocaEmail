@@ -26,40 +26,43 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 	
 	function send () {
 	
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$app						= JFactory::getApplication();
 
 		$redirect			= 'index.php?option=com_phocaemail&view=phocaemailwrite';
-		$post				= JRequest::get('post');
-		$post['from']		= JRequest::getVar( 'from', '', 'post', 'string', JREQUEST_NOTRIM );
-		$post['fromname']	= JRequest::getVar( 'fromname', '', 'post', 'string', JREQUEST_NOTRIM  );
-		$post['to']			= JRequest::getVar( 'to', '', 'post', 'string', JREQUEST_ALLOWRAW );
-		$post['cc']			= JRequest::getVar( 'cc', '', 'post', 'string', JREQUEST_ALLOWRAW );
-		$post['bcc']		= JRequest::getVar( 'bcc', '', 'post', 'string', JREQUEST_ALLOWRAW);
-		$post['subject']	= JRequest::getVar( 'subject', '', 'post', 'string', JREQUEST_NOTRIM );
-		$post['message']	= JRequest::getVar( 'message', '', 'post', 'string', JREQUEST_ALLOWHTML);
-		$post['attachment']	= JRequest::getVar( 'attachment', array(), 'post', 'array' );
+		$post				= array();//JFactory::getApplication()->input->get('post');
+		$post['from']		= $app->input->get( 'from', '',  'string');
+		$post['fromname']	= $app->input->get( 'fromname', '', 'string' );
+		$post['to']			= $app->input->get( 'to', '',  'string' );
+		$post['cc']			= $app->input->get( 'cc', '',  'string' );
+		$post['bcc']		= $app->input->get( 'bcc', '',  'string');
+		$post['subject']	= $app->input->get( 'subject', '', 'string');
+		$post['message']	= $app->input->get( 'message', '', 'raw');
+		
+		$post['attachment']	= $app->input->get( 'attachment', array(),  'array' );
 		
 		// Option - can be disabled
-		$post['article_name']= JRequest::getVar( 'article_name', JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'), 'post', 'string', JREQUEST_ALLOWRAW );
-		$post['togroups']	= JRequest::getVar( 'togroups', array(), 'post', 'array' );
-		$post['tousers']	= JRequest::getVar( 'tousers', array(), 'post', 'array' );
-		$post['ccusers']	= JRequest::getVar( 'ccusers', array(), 'post', 'array' );
-		$post['bccusers']	= JRequest::getVar( 'bccusers', array(), 'post', 'array' );
-		$post['article_id']	= JRequest::getVar( 'article_id', '', 'post', 'int' );
+		$post['article_name']= $app->input->get( 'article_name', JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),  'string' );
+		$post['togroups']	= $app->input->get( 'togroups', array(), 'array' );
+		$post['ccgroups']	= $app->input->get( 'ccgroups', array(),  'array' );
+		$post['bccgroups']	= $app->input->get( 'bccgroups', array(),  'array' );
+		$post['tousers']	= $app->input->get( 'tousers', array(),  'array' );
+		$post['ccusers']	= $app->input->get( 'ccusers', array(),  'array' );
+		$post['bccusers']	= $app->input->get( 'bccusers', array(),  'array' );
+		$post['article_id']	= $app->input->get( 'article_id', '',  'int' );
 		
 		// Different Extensions
-		$post['type']		= JRequest::getVar( 'type', '', 'post', 'string' );
-		$post['ext']		= JRequest::getVar( 'ext', 'phocaemail', 'post', 'string' );
+		$post['type']		= $app->input->get( 'type', '',  'string' );
+		$post['ext']		= $app->input->get( 'ext', 'phocaemail',  'string' );
 		
 		
 		//Add to state (if we are returning back)
 		if ($post['ext'] == 'virtuemart') {
-			$post['order_id']		= JRequest::getVar( 'order_id', 0, 'post', 'int' );
-			$post['delivery_id']	= JRequest::getVar( 'delivery_id', 0, 'post', 'int' );
-			$post['ainvoice']		= JRequest::getVar( 'ainvoice', 0, 'post', 'int' );
-			$post['adelnote']		= JRequest::getVar( 'adelnote', 0, 'post', 'int' );
-			$post['areceipt']		= JRequest::getVar( 'areceipt', 0, 'post', 'int' );
+			$post['order_id']		= $app->input->get( 'order_id', 0,  'int' );
+			$post['delivery_id']	= $app->input->get( 'delivery_id', 0,  'int' );
+			$post['ainvoice']		= $app->input->get( 'ainvoice', 0,  'int' );
+			$post['adelnote']		= $app->input->get( 'adelnote', 0,  'int' );
+			$post['areceipt']		= $app->input->get( 'areceipt', 0,  'int' );
 			
 			
 			$context 	= 'com_phocaemail.vm.write.';
@@ -74,7 +77,12 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 			// Option can be disabled - only for common form
 			//$app->getUserStateFromRequest( $context.'article_id', 'article_id', $post['article_id'], 'int' );
 			//$app->getUserStateFromRequest( $context.'article_name', 'article_name', $post['article_name'], 'string' );
+			
+			
+			
 			$app->getUserStateFromRequest( $context.'togroups', 'togroups', $post['togroups'], 'array' );
+			$app->getUserStateFromRequest( $context.'ccgroups', 'ccgroups', $post['ccgroups'], 'array' );
+			$app->getUserStateFromRequest( $context.'bccgroups', 'bccgroups', $post['bccgroups'], 'array' );
 			$app->getUserStateFromRequest( $context.'tousers', 'tousers', $post['tousers'], 'array' );
 			$app->getUserStateFromRequest( $context.'ccusers', 'ccusers', $post['ccusers'], 'array' );
 			$app->getUserStateFromRequest( $context.'bccusers', 'bccusers', $post['bccusers'], 'array' );
@@ -86,13 +94,29 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 			$app->getUserStateFromRequest( $context.'bcc', 'bcc', $post['bcc'], 'string' );
 			$app->getUserStateFromRequest( $context.'subject', 'subject', $post['subject'], 'string' );
 			
+			$app->setUserState( $context.'togroups', $post['togroups']);
+			$app->setUserState( $context.'ccgroups',  $post['ccgroups']);
+			$app->setUserState( $context.'bccgroups', $post['bccgroups']);
+			$app->setUserState( $context.'tousers',  $post['tousers']);
+			$app->setUserState( $context.'ccusers',  $post['ccusers'] );
+			$app->setUserState( $context.'bccusers',  $post['bccusers']);
+			
+			$app->setUserState( $context.'from', $post['from'] );
+			$app->setUserState( $context.'fromname', $post['fromname']);
+			$app->setUserState( $context.'to', $post['to']);
+			$app->setUserState( $context.'cc', $post['cc']);
+			$app->setUserState( $context.'bcc', $post['bcc']);
+			$app->setUserState( $context.'subject', $post['subject']);
+			
+		
+			
 			// ==========================================================================================
 			// Remember the HTML -  GUIDE to edit core file
 			// Comment the following line
 			$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'html' );
 			
 			// Uncomment the following line
-			//$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'string', JREQUEST_ALLOWRAW );
+			//$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'string' );
 			
 			// EDIT 
 			// file: libraries/joomla/application/application.php
@@ -104,9 +128,9 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 			//
 			// line: cca 518
 			// FROM:
-			// $new_state = JRequest::getVar($request, null, 'default', $type);
+			// $new_state = $app->input->get($request, null, 'default', $type);
 			// TO:
-			// $new_state = JRequest::getVar($request, null, 'default', $type, $mask);
+			// $new_state = $app->input->get($request, null, 'default', $type, $mask);
 			
 			// ==========================================================================================
 			
@@ -125,7 +149,7 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 		
 		if (!$send) {
 			// Error will be returned
-			$msg = implode('<br />', $warning) . implode('<br />', $error);
+			$msg = implode('<br />', $warning)  .  implode('<br />', $error);
 			$app->enqueueMessage($msg, 'error');
 			$app->redirect($redirect);
 		} else {

@@ -15,9 +15,9 @@
 <field name="ordering" type="PhocaEmailOrdering" table="newsletter" class="inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
 
 	
-<field name="message" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_LABEL" filter="safehtml" description="COM_PHOCAEMAIL_FIELD_MESSAGE_DESC" />
+<field name="message" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_DESC" />
 
-<field name="message_html" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_LABEL" filter="safehtml" description="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_DESC" />
+<field name="message_html" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_DESC" />
 
 
 

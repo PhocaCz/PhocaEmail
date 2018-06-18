@@ -234,4 +234,27 @@ span.icon-32-email {
 	font-style:italic
 }
 
+.ph-btn-toolbar-2 {
+	/*clear: right;
+	padding-top: 10px;*/
+}
+.ph-select-status {
+	padding-left: 5px;
+}
 
+/* Table form */
+table.ph-table-form {
+	vertical-align: middle;
+}
+
+table.ph-table-form tr td.ph-label {
+	text-align: right;
+	min-width: 7em;
+	padding: 0.5em;
+	vertical-align: middle;
+}
+
+table.ph-table-form tr td.ph-inputbox {
+	vertical-align: middle;
+	padding: 1em 0 0em 0;
+}

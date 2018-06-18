@@ -19,7 +19,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletterA extends JViewLegacy
 	
 		$style = 'style="border-radius: 0;margin: 0;"';
 	
-		if (!JRequest::checkToken('request')) {
+		if (!JSession::checkToken('request')) {
 			$response = array(
 				'status' => '0',
 				'error' => '<div class="alert alert-danger" '.$style.'>' . JText::_('JINVALID_TOKEN') . '</div>');
@@ -116,7 +116,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletterA extends JViewLegacy
 		
 		jimport('joomla.mail.helper');
 		
-		if (!empty($subscriber) && isset($subscriber['id']) && $subscriber['id'] > 0 && isset($subscriber['name']) && isset($subscriber['email']) && $subscriber['name'] != '') {
+		if (!empty($subscriber) && isset($subscriber['id']) && $subscriber['id'] > 0 && isset($subscriber['name']) && isset($subscriber['email']) /*&& $subscriber['name'] != '' // name can be empty */) {
 		
 			if (!JMailHelper::isEmailAddress($subscriber['email'])) {
 				$response = array(
@@ -143,14 +143,14 @@ class PhocaEmailCpViewPhocaEmailSendNewsletterA extends JViewLegacy
 			}
 			if (isset($newsletter['token']) && $newsletter['token'] != '' ) {
 				$replace['readonlinelink']	= PhocaEmailHelperRoute::getNewsletterRoute(0, 'readonline', $subscriber['token'], $newsletter['token']);
-				$replace['readonlinelink'] 	= PhocaEmailSendNewsletterEmail::getRightPathLink($replace['readonlinelink']);
+				$replace['readonlinelink'] 	= PhocaEmailUtils::getRightPathLink($replace['readonlinelink']);
 			}
 			
 			if (isset($subscriber['token']) && $subscriber['token'] != '' ) {
 				$replace['unsubscribelink']	= PhocaEmailHelperRoute::getNewsletterRoute(0, 'unsubscribe', $subscriber['token']);
-				$replace['unsubscribelink'] = PhocaEmailSendNewsletterEmail::getRightPathLink($replace['unsubscribelink']);
+				$replace['unsubscribelink'] = PhocaEmailUtils::getRightPathLink($replace['unsubscribelink']);
 				$replace['activationlink']	= PhocaEmailHelperRoute::getNewsletterRoute(0, 'activate', $subscriber['token']);
-				$replace['activationlink'] 	= PhocaEmailSendNewsletterEmail::getRightPathLink($replace['activationlink']);
+				$replace['activationlink'] 	= PhocaEmailUtils::getRightPathLink($replace['activationlink']);
 			}
 			//$replace['unsubscribelink'] = PhocaEmailSendNewsletterEmail::getEmailLink($subscriber['email'], 'unsubscribe');				
 			
@@ -158,6 +158,9 @@ class PhocaEmailCpViewPhocaEmailSendNewsletterA extends JViewLegacy
 			$subject = PhocaEmailSendNewsletterEmail::completeMail($subject, $replace);
 		
 		
+			$body = PhocaEmailUtils::fixImagesPath($body);
+			$body = PhocaEmailUtils::fixLinksPath($body);
+			
 			$html = '<!DOCTYPE html><html><head>
 			<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 			<title>'.$subject.'</title></head><body style="padding:0;margin:0;">';
@@ -168,18 +171,36 @@ class PhocaEmailCpViewPhocaEmailSendNewsletterA extends JViewLegacy
 			//$send = $mail->sendMail($from, $fromName, $recipient, $subject, $body, $mode = false, $cc = null, $bcc = null, $attachment = null, $replyTo = null, $replyToName = null);	
 			$send = $mail->sendMail($from, $fromName, $recipient, $subject, $html, true, null, null, null, null, null);	
 			
+			
+			$msgE 	= $app->getMessageQueue();
+			$msgEA 	= array();
+			$msgET	= '';
+			if (!empty($msgE)) {
+				foreach($msgE as $k => $v) {
+					if (isset($v['message'])) {
+						$type = isset($v['type']) ? htmlspecialchars($v['type']) : 'message';
+						$msgEA[] = '<div class="alert alert-'.$type.'" '.$style.'>'. $v['message'].'</div>';
+						
+					}
+				}
+			}
+			if (!empty($msgEA)) {
+				$msgET = implode('', $msgEA);
+			}
+			
+			
 			if ($send) {
 				
 				$response = array(
 				'status' => '1',
-				'message' => '<div class="alert alert-success"  '.$style.'>' . JText::_('COM_PHOCAEMAIL_EMAIL_SENT') . ' (' . $subscriber['name'].' - '.$subscriber['email'] . ')</div>');
+				'message' => $msgET . '<div class="alert alert-success" '.$style.'>'  . JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT') . ' (' . $subscriber['name'].' - '.$subscriber['email'] . ')</div>');
 				echo json_encode($response);
 				return;
 			
 			} else {
 				$response = array(
 				'status' => '0',
-				'error' => '<div class="alert alert-danger" '.$style.'>' . JText::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_CHECK_EMAIL_SETTINGS') . ': '.$$subscriber['email'].'</div>');
+				'error' => $msgET . '<div class="alert alert-danger" '.$style.'>' . JText::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_CHECK_EMAIL_SETTINGS') . ': '.$subscriber['email'].'</div>');
 				echo json_encode($response);
 				return;
 			}

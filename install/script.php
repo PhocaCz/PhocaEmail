@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 jimport( 'joomla.filesystem.folder' );
 
 class com_phocaemailInstallerScript
@@ -15,10 +15,10 @@ class com_phocaemailInstallerScript
 	function install($parent) {
 		
 		
-		$folder[0][0]	=	'phocaemail' . DS ;
-		$folder[0][1]	= 	JPATH_ROOT . DS .  $folder[0][0];
-		$folder[1][0]	=	'phocaemail' . DS . 'vm' . DS;
-		$folder[1][1]	= 	JPATH_ROOT . DS .  $folder[1][0];
+		$folder[0][0]	=	'phocaemail/' ;
+		$folder[0][1]	= 	JPATH_ROOT . '/'.  $folder[0][0];
+		$folder[1][0]	=	'phocaemail' . '/vm/';
+		$folder[1][1]	= 	JPATH_ROOT . '/' .  $folder[1][0];
 		
 		$message = '';
 		$error	 = array();
@@ -30,7 +30,7 @@ class com_phocaemailInstallerScript
 				{
 					
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					JFile::write($value[1].DS."index.html", $data);
+					JFile::write($value[1]."/index.html", $data);
 					$message .= '<div><b><span style="color:#009933">Folder</span> ' . $value[0] 
 							   .' <span style="color:#009933">created!</span></b></div>';
 					$error[] = 0;
@@ -61,10 +61,10 @@ class com_phocaemailInstallerScript
 	function update($parent) {
 		//echo '<p>' . JText::sprintf('COM_PHOCAEMAIL_UPDATE_TEXT', $parent->get('manifest')->version) . '</p>';
 		
-		$folder[0][0]	=	'phocaemail' . DS ;
-		$folder[0][1]	= 	JPATH_ROOT . DS .  $folder[0][0];
-		$folder[1][0]	=	'phocaemail' . DS . 'vm' . DS;
-		$folder[1][1]	= 	JPATH_ROOT . DS .  $folder[1][0];
+		$folder[0][0]	=	'phocaemail/' ;
+		$folder[0][1]	= 	JPATH_ROOT . '/'.  $folder[0][0];
+		$folder[1][0]	=	'phocaemail' . '/vm/';
+		$folder[1][1]	= 	JPATH_ROOT . '/'. $folder[1][0];
 		
 		$message = '';
 		$error	 = array();
@@ -76,7 +76,7 @@ class com_phocaemailInstallerScript
 				{
 					
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					JFile::write($value[1].DS."index.html", $data);
+					JFile::write($value[1]."/index.html", $data);
 					$message .= '<div><b><span style="color:#009933">Folder</span> ' . $value[0] 
 							   .' <span style="color:#009933">created!</span></b></div>';
 					$error[] = 0;

@@ -27,12 +27,16 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 				'registered', 'a.registered',
 				'active', 'a.active',
 				'date', 'a.date',
+				'date_register', 'a.date_register',
+				'date_active', 'a.date_active',
 				'date_unsubscribe', 'a.date_unsubscribe',
 				'access', 'a.access', 'access_level',
 				'ordering', 'a.ordering',
 				'language', 'a.language',
 				'published','a.published',
-				'hits', 'a.hits'
+				'mailing_list_title','ml.title',
+				'hits', 'a.hits',
+				'privacy','a.privacy'
 				
 			);
 		}
@@ -53,6 +57,12 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 
 		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $state);
+		
+		$active = $app->getUserStateFromRequest($this->context.'.filter.active', 'filter_actived', '', 'string');
+		$this->setState('filter.active', $active);
+		
+		$ml = $app->getUserStateFromRequest($this->context.'.filter.mailing_list', 'filter_mailing_list', '', 'string');
+		$this->setState('filter.mailing_list', $ml);
 
 
 		$language = $app->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
@@ -63,7 +73,7 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState('a.date_register', 'desc');
 	}
 	
 	protected function getStoreId($id = '')
@@ -73,13 +83,15 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		$id	.= ':'.$this->getState('filter.access');
 		$id	.= ':'.$this->getState('filter.state');
 		$id	.= ':'.$this->getState('filter.subscriber_id');
+		$id	.= ':'.$this->getState('filter.active');
+		$id	.= ':'.$this->getState('filter.mailing_list');
 
 		return parent::getStoreId($id);
 	}
 	
 
 		
-	public function getItems()
+/*	public function getItems()
 	{
 		// Get a storage key.
 		$store = $this->getStoreId();
@@ -105,7 +117,7 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		$this->cache[$store] = $items;
 
 		return $this->cache[$store];
-	}
+	}*/
 	
 	protected function getListQuery()
 	{
@@ -145,7 +157,10 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.userid');
 		
 		
-	
+		// Join mail list
+		$query->select('ml.title AS mailing_list_title, ml.id AS mailing_list_id');
+		$query->join('LEFT', '`#__phocaemail_subscriber_lists` AS sl ON sl.id_subscriber = a.id');
+		$query->join('LEFT', '`#__phocaemail_lists` AS ml ON ml.id = sl.id_list');
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access')) {
@@ -153,6 +168,17 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		}
 
 		// Filter by published state.
+		$actived = $this->getState('filter.active');
+		if (is_numeric($actived)) {
+			$query->where('a.active = '.(int) $actived);
+		}
+		
+		// Filter by published state.
+		$ml = $this->getState('filter.mailing_list');
+		if (is_numeric($ml)) {
+			$query->where('ml.id = '.(int) $ml);
+		}
+		
 		$published = $this->getState('filter.state');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
@@ -185,14 +211,17 @@ class PhocaEmailCpModelPhocaEmailSubscribers extends JModelList
 		$query->group('a.id');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'title');
-		$orderDirn	= $this->state->get('list.direction', 'asc');
+		$orderCol	= $this->state->get('list.ordering', 'a.date_register');
+		$orderDirn	= $this->state->get('list.direction', 'desc');
+		
+		
 		/*if ($orderCol == 'a.ordering' || $orderCol == 'parentcat_title') {
 			$orderCol = 'parentcat_title '.$orderDirn.', a.ordering';
 		}*/
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
+		
 		
 		
 		return $query;

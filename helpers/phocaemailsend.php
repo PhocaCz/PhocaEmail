@@ -10,23 +10,27 @@
  */
 
  defined('_JEXEC') or die('Restricted access');
+
 class PhocaEmailSend
 {
 	public static function send ($data, &$warning, &$error, &$redirect, $static = 0) {
 	
+	
 		if ($static == 0) {
-			JRequest::checkToken() or jexit( 'Invalid Token' );
+			JSession::checkToken() or jexit( 'Invalid Token' );
 		} else {
-			require_once( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocaemail'.DS.'helpers'.DS.'phocaemail.php' );
+			require_once( JPATH_ADMINISTRATOR.'/components/com_phocaemail/helpers/phocaemail.php' );
 		}
-		$app						= JFactory::getApplication();
-		$db							= JFactory::getDBO();
-		$params 					= JComponentHelper::getParams('com_phocaemail') ;
-		$param['html_message']		= $params->get('html_message', 1);
-		$param['display_users_list']	= $params->get('display_users_list', 0);
-		$param['display_groups_list']	= $params->get('display_groups_list', 0);
-		$param['display_users_list_cc']	= $params->get('display_users_list_cc', 0);
-		$param['display_users_list_bcc']= $params->get('display_users_list_bcc', 0);
+		$app								= JFactory::getApplication();
+		$db									= JFactory::getDBO();
+		$params 							= JComponentHelper::getParams('com_phocaemail') ;
+		$param['html_message']				= $params->get('html_message', 1);
+		$param['display_users_list']		= $params->get('display_users_list', 0);
+		$param['display_groups_list']		= $params->get('display_groups_list', 0);
+		$param['display_users_list_cc']		= $params->get('display_users_list_cc', 0);
+		$param['display_users_list_bcc']	= $params->get('display_users_list_bcc', 0);
+		$param['display_groups_list_cc']	= $params->get('display_groups_list_cc', 0);
+		$param['display_groups_list_bcc']	= $params->get('display_groups_list_bcc', 0);
 		
 
 
@@ -53,10 +57,12 @@ class PhocaEmailSend
 			}
 		} else if ($data['ext']	== 'virtuemart') {
 		
-			if (JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'helpers'.DS.'phocapdfrender.php')) {
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'helpers'.DS.'phocapdfrender.php');
+			if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php')) {
+				require_once(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php');
 			} else {
-				return JError::raiseError('Error', 'Phoca PDF Helper - Render PDF file could not be found in system');
+				
+				throw new Exception('Error - Phoca PDF Helper - Render PDF file could not be found in system', 500);
+				return false;
 			}
 			
 	
@@ -70,7 +76,7 @@ class PhocaEmailSend
 				foreach ($data['attachmentfile'] as $key => $value) {
 					if(isset($data['attachment'][$i]) && $data['attachment'][$i]) {
 						
-						$pdfFile = $tmpl['path']['path_abs'].'vm'.DS . $data['attachmentfile'][$key];
+						$pdfFile = $tmpl['path']['path_abs'].'vm/'. $data['attachmentfile'][$key];
 
 						$staticData					= array();
 						$staticData['option']		= 'com_virtuemart';
@@ -131,7 +137,9 @@ class PhocaEmailSend
 		}
 		
 		
+		// ----------
 		// TO USERS
+		// ----------
 		if ($data['ext']	== 'phocaemail') {
 			$toEmpty1 =	$toEmpty2 = $toEmpty3 =  0;
 			
@@ -146,6 +154,7 @@ class PhocaEmailSend
 				. ' FROM #__users as a'
 				. ' LEFT JOIN #__user_usergroup_map AS b ON a.id = b.user_id'
 				. ' WHERE b.group_id IN ('.$groups.')'
+				. ' AND a.block = 0'
 				. ' GROUP BY a.id';
 				
 		
@@ -223,10 +232,229 @@ class PhocaEmailSend
 			}
 		
 		}
-		if (is_array($to)) {
+		if (!empty($to) && is_array($to)) {
 			$to = array_unique($to);
 		}
 		
+		
+		
+		// ---------
+		// CC USERS
+		// ---------
+		$cc = array();
+		if ($data['ext']	== 'phocaemail') {
+			$ccEmpty1 =	$ccEmpty2 = $ccEmpty3 =  0;
+			
+			// CC (GROUPS)
+			if (isset($data['ccgroups']) && is_array($data['ccgroups']) && !empty($data['ccgroups']) && $param['display_groups_list_cc'] == 1 ) {
+				
+				
+				$groups	= implode(',', $data['ccgroups']);
+				
+				
+				$query = 'SELECT a.id, a.email'
+				. ' FROM #__users as a'
+				. ' LEFT JOIN #__user_usergroup_map AS b ON a.id = b.user_id'
+				. ' WHERE b.group_id IN ('.$groups.')'
+				. ' AND a.block = 0'
+				. ' GROUP BY a.id';
+				
+		
+				$db->setQuery( (string)$query );
+
+				$groupsDB = $db->loadObjectList();
+				
+				
+				$cc3 = array();
+				foreach($groupsDB as $key => $value) {
+					$cc3[]	=	$value->email;
+				}
+			} else {
+				$cc3		= '';
+				$ccEmpty3 	= 1;
+			}
+			
+			// CC (USERS)
+			if (isset($data['ccusers']) && is_array($data['ccusers']) && !empty($data['ccusers']) && $param['display_users_list_cc'] == 1 ) {
+				
+				$users	= implode(',', $data['ccusers']);
+				$query = 'SELECT id, email'
+				. ' FROM #__users'
+				. ' WHERE id IN ('.$users.')';
+		
+				$db->setQuery( (string)$query );
+				
+
+				$usersDB = $db->loadObjectList();
+				
+				$cc1 = array();
+				foreach($usersDB as $key => $value) {
+					$cc1[]	=	$value->email;
+				}
+			} else {
+				$cc1		= '';
+				$ccEmpty1 	= 1;
+			}
+			
+			// cc
+			if (isset($data['cc']) && $data['cc'] != '') {
+				$cc2	= trim( $data['cc'] );
+				$cc2 	= explode( ',', $cc2);
+			} else {
+				$cc2	= '';
+				$ccEmpty2 = 1;
+			}
+			
+			if ($ccEmpty1 == 1 && $ccEmpty2 == 1 && $ccEmpty3 == 1) {
+				//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_OR_CC_GROUPS_EMPTY');
+			} else {
+				if (empty($cc1)) {
+					$cc1 = array();
+				}
+				if (empty($cc2)) {
+					$cc2 = array();
+				}
+				if (empty($cc3)) {
+					$cc3 = array();
+				}
+				$cc = array_merge($cc1, $cc2, $cc3);
+				if (empty($cc)) {
+					//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_OR_CC_GROUPS_EMPTY');
+				}
+			}
+			
+		} else {
+			// cc
+			if (isset($data['cc']) && $data['cc'] != '') {
+				$cc			= trim( $data['cc'] );
+				$cc		 	= explode( ',', $cc);
+			} else {
+				$cc			= array();
+				//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_EMPTY');
+			}
+		
+		}
+		
+		if (!empty($cc) && is_array($cc)) {
+			$cc = array_unique($cc);
+		}
+		
+		
+		
+		// -----------
+		// BCC USERS
+		// -----------
+		$bcc = array();
+		if ($data['ext']	== 'phocaemail') {
+			$bccEmpty1 =	$bccEmpty2 = $bccEmpty3 =  0;
+			
+			// TO (GROUPS)
+			if (isset($data['bccgroups']) && is_array($data['bccgroups']) && !empty($data['bccgroups']) && $param['display_groups_list_bcc'] == 1 ) {
+				
+				
+				$groups	= implode(',', $data['bccgroups']);
+				
+				
+				$query = 'SELECT a.id, a.email'
+				. ' FROM #__users as a'
+				. ' LEFT JOIN #__user_usergroup_map AS b ON a.id = b.user_id'
+				. ' WHERE b.group_id IN ('.$groups.')'
+				. ' AND a.block = 0'
+				. ' GROUP BY a.id';
+				
+		
+				$db->setQuery( (string)$query );
+
+				$groupsDB = $db->loadObjectList();
+				
+				
+				$bcc3 = array();
+				foreach($groupsDB as $key => $value) {
+					$bcc3[]	=	$value->email;
+				}
+				
+			} else {
+				$bcc3		= '';
+				$bccEmpty3 	= 1;
+			}
+			
+			// BCC (USERS)
+			if (isset($data['bccusers']) && is_array($data['bccusers']) && !empty($data['bccusers']) && $param['display_users_list_bcc'] == 1 ) {
+				
+				$users	= implode(',', $data['bccusers']);
+				$query = 'SELECT id, email'
+				. ' FROM #__users'
+				. ' WHERE id IN ('.$users.')';
+		
+				$db->setQuery( (string)$query );
+				
+
+				$usersDB = $db->loadObjectList();
+				
+				$bcc1 = array();
+				foreach($usersDB as $key => $value) {
+					$bcc1[]	=	$value->email;
+				}
+			} else {
+				$bcc1		= '';
+				$bccEmpty1 	= 1;
+			}
+			
+			// bcc
+			if (isset($data['bcc']) && $data['bcc'] != '') {
+				$bcc2	= trim( $data['bcc'] );
+				$bcc2 	= explode( ',', $bcc2);
+			} else {
+				$bcc2	= '';
+				$bccEmpty2 = 1;
+			}
+			
+			if ($bccEmpty1 == 1 && $bccEmpty2 == 1 && $bccEmpty3 == 1) {
+				//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_OR_CC_GROUPS_EMPTY');
+			} else {
+				if (empty($bcc1)) {
+					$bcc1 = array();
+				}
+				if (empty($bcc2)) {
+					$bcc2 = array();
+				}
+				if (empty($bcc3)) {
+					$bcc3 = array();
+				}
+				
+				$bcc = array_merge($bcc1, $bcc2, $bcc3);
+				if (empty($bcc)) {
+					//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_OR_CC_GROUPS_EMPTY');
+				}
+			}
+			
+			
+			
+		} else {
+			// bcc
+			if (isset($data['bcc']) && $data['bcc'] != '') {
+				$bcc			= trim( $data['bcc'] );
+				$bcc		 	= explode( ',', $bcc);
+			} else {
+				$bcc			= array();
+				//$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_EMPTY');
+			}
+		
+		}
+		
+		if (!empty($bcc) && is_array($bcc)) {
+			$bcc = array_unique($bcc);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
 		
 		// CC USERS
 		$cc = array();
@@ -272,7 +500,7 @@ class PhocaEmailSend
 				$cc = array_merge($cc1, $cc2);
 				/*if (empty($cc)) {
 					$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_EMPTY');
-				}*/
+				}*//*
 			}
 			
 		} else {
@@ -331,7 +559,7 @@ class PhocaEmailSend
 				$bcc = array_merge($bcc1, $bcc2);
 				/*if (empty($bcc)) {
 					$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_BCC_OR_BCC_USERS_EMPTY');
-				}*/
+				}*//*
 			}
 			
 		} else {
@@ -344,6 +572,11 @@ class PhocaEmailSend
 			}
 		
 		}
+		*/
+		
+		
+		
+		
 		
 		if (isset($data['subject']) && $data['subject'] != '') {
 			$subject	= $data['subject'];
@@ -365,7 +598,9 @@ class PhocaEmailSend
 		
 		
 		$mainMessage 	= $articleText . $message;
-		$mainMessage	= str_replace('<img src="', '<img src="'. JURI::root(), $mainMessage);
+		$mainMessage	= PhocaEmailUtils::fixImagesPath($mainMessage);
+		$mainMessage	= PhocaEmailUtils::fixLinksPath($mainMessage);
+		
 		
 		$htmlMessage 	 = '<html><head><title>'.$subject.'</title></head><body>';
 		$htmlMessage 	.= $mainMessage ;
@@ -412,12 +647,20 @@ class PhocaEmailSend
 		// - - - - - - - - - - 
 
 		
+
+	
 		if ($param['html_message'] == 0) {
 			$rawMessage		=	strip_tags($htmlMessage);
 			$sendMail  		= JFactory::getMailer()->sendMail($from, $fromname, $to, $subject, $rawMessage, false, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
+		//	$sendMail  		= PhocaemailEmail::sendEmail($from, $fromname, $to, $subject, $rawMessage, true, $cc, $bcc, $attachmentArray, '', $replyto, $replytoname);
 		} else {
 			$sendMail  		= JFactory::getMailer()->sendMail($from, $fromname, $to, $subject, $htmlMessage, true, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
+		//	$sendMail  		= PhocaemailEmail::sendEmail($from, $fromname, $to, $subject, $htmlMessage, true, $cc, $bcc, $attachmentArray, '', $replyto, $replytoname);
 		}
+		
+
+				
+				
 		// Remove attachments
 		if ($data['ext']	== 'virtuemart') {
 			foreach ($attachmentArray as $key => $value) {
@@ -426,6 +669,11 @@ class PhocaEmailSend
 				}
 			}
 		}
+		
+		//$document  = JFactory::getDocument();
+		//$renderer  = $document->loadRenderer('message');
+		//print_r($renderer->render('message'));
+		
 		// - - - - - - - - - - 
 		// Set back the time
 		if ($changedMaxExecTime == 1) {
@@ -433,15 +681,27 @@ class PhocaEmailSend
 		}
 		// - - - - - - - - - - 
 		
+	/*	if (!$sendMail) {
+			
+			// message rendered by email function
+			return false;
+		} else {
+			
+			$warning[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
+			return true;
+		}*/
+	
+	
 		
 		if (isset($sendMail->message)) {
 			$error[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SENT') . ': '  . $sendMail->message;
 			return false;
-		} else if ($sendMail == 1) {
+		} else if ($sendMail) {
 			$warning[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
 			return true;
 		} else {
-			$error[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SENT');
+			$error[] = JText::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_SERVER_SENT_NO_ERROR_MESSAGE') . '. '. JText::_('COM_PHOCAEMAIL_EMAIL_FROM') . ': '.$from . ', ' . JText::_('COM_PHOCAEMAIL_EMAIL_TO'). ': ' .implode(',', $to);
+			$error[] = JText::_('COM_PHOCAEMAIL_EMAIL_NOT_SENT');
 			return false;
 		}
 	}

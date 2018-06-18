@@ -1,0 +1,21 @@
+<updates>
+	<update>
+		<name>Phoca Email</name>
+		<description>Phoca Email is Joomla! CMS component. There are different functions of this component: Phoca Email is a newsletter component - newsletters can be sent to subscribers. Phoca Email is used for sending emails from Joomla! components like e.g. sending Invoice, Delivery Note or Receipt from e-commerce components. Phoca Email can be used for sending emails from Joomla! administration site.</description>
+		<element>com_phocaemail</element>
+		<type>component</type>
+		<version>3.0.7</version>
+		<infourl title="Phoca Email 3.0.7">http://www.phoca.cz/version/index.php?phocaemail=3.0.7</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/3.0.7/com_phocaemail_3.0.7.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Phoca.cz</maintainer>
+		<maintainerurl>http://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="3.8"/>
+		<client>1</client>
+	</update>
+</updates>
