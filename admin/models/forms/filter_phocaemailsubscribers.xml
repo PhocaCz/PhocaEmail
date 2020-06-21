@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+<fieldset addfieldpath="/administrator/components/com_phocaemail/models/fields">
+	<fields name="filter">
+		
+		
+	<field name="search" type="text" inputmode="search" label="COM_PHOCAEMAIL_SEARCH" description="COM_PHOCAEMAIL_SEARCH" hint="JSEARCH_FILTER" />
+
+		<field name="published" type="list" label="JOPTION_FILTER_PUBLISHED" description="JOPTION_FILTER_PUBLISHED_DESC" onchange="this.form.submit();" >
+		
+		<option value="">JOPTION_SELECT_PUBLISHED</option>
+		<option value="1">COM_PHOCAEMAIL_PUBLISHED</option>
+		<option value="0">COM_PHOCAEMAIL_UNPUBLISHED</option>
+		</field>
+		
+		<field name="mailing_list_id" type="PhocaEmailMailingList" manager="filter" label="COM_PHOCAEMAIL_MAILING_LIST_LABEL" description="COM_PHOCAEMAIL_MAILING_LIST_DESC" class="input" default="" onchange="this.form.submit();" />
+
+		<field name="active" type="list" label="COM_PHOCAEMAIL_ACTIVE_STATUS_LABEL" description="COM_PHOCAEMAIL_ACTIVE_STATUS_DESC" onchange="this.form.submit();" >
+		
+		<option value="">COM_PHOCAEMAIL_SELECT_ACTIVE_STATUS_OPTION_HEADER</option>
+		<option value="1">COM_PHOCAEMAIL_ACTIVE</option>
+		<option	value="0">COM_PHOCAEMAIL_NOT_ACTIVE</option>
+		<option	value="2">COM_PHOCAEMAIL_UNSUBSCRIBED</option>
+		</field>
+		
+		<!--<field name="language" type="contentlanguage" label="JOPTION_FILTER_LANGUAGE" description="JOPTION_FILTER_LANGUAGE_DESC" onchange="this.form.submit();"> <option value="">JOPTION_SELECT_LANGUAGE</option> <option value="*">JALL</option>
+		</field>-->
+		
+		<input type="hidden" name="form_submited" value="1"/>
+	</fields>
+
+	<fields name="list">
+		<field name="fullordering" type="list" label="COM_PHOCAEMAIL_LIST_FULL_ORDERING" description="COM_PHOCAEMAIL_LIST_FULL_ORDERING_DESC" onchange="this.form.submit();" default="a.date_register DESC" validate="options" >
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+			<option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+			<option value="a.name ASC">COM_PHOCAEMAIL_NAME_ASC</option>
+			<option value="a.name DESC">COM_PHOCAEMAIL_NAME_DESC</option>
+			<option value="a.email ASC">COM_PHOCAEMAIL_EMAIL_ASC</option>
+			<option value="a.email DESC">COM_PHOCAEMAIL_EMAIL_DESC</option>
+			<option value="a.date_register ASC">COM_PHOCAEMAIL_SIGN_UP_DATE_ASC</option>
+			<option value="a.date_register DESC">COM_PHOCAEMAIL_SIGN_UP_DATE_DESC</option>
+			<option value="a.date_active ASC">COM_PHOCAEMAIL_ACTIVATION_DATE_ASC</option>
+			<option value="a.date_active DESC">COM_PHOCAEMAIL_ACTIVATION_DATE_DESC</option>
+			<option value="a.date_unsubscribe ASC">COM_PHOCAEMAIL_UNSUBSCRIPTION_DATE_ASC</option>
+			<option value="a.date_unsubscribe DESC">COM_PHOCAEMAIL_UNSUBSCRIPTION_DATE_DESC</option>
+			<option value="a.type ASC">COM_PHOCAEMAIL_SIGN_UP_TYPE_ASC</option>
+			<option value="a.type DESC">COM_PHOCAEMAIL_SIGN_UP_TYPE_DESC</option>
+			<option value="a.active ASC">COM_PHOCAEMAIL_ACTIVE_USER_ASC</option>
+			<option value="a.active DESC">COM_PHOCAEMAIL_ACTIVE_USER_DESC</option>
+			<option value="a.hits ASC">COM_PHOCAEMAIL_ATTEMPTS_ASC</option>
+			<option value="a.hits DESC">COM_PHOCAEMAIL_ATTEMPTS_DESC</option>
+			<!--<option value="ml.title ASC">COM_PHOCAEMAIL_MAILING_LIST_ASC</option>
+			<option value="ml.title DESC">COM_PHOCAEMAIL_MAILING_LIST_DESC</option>-->
+			<option value="a.privacy ASC">COM_PHOCAEMAIL_PRIVACY_CONFIRMATION_ASC</option>
+			<option value="a.privacy DESC">COM_PHOCAEMAIL_PRIVACY_CONFIRMATION_DESC</option>
+			<option value="a.published ASC" >COM_PHOCAEMAIL_PUBLISHED_ASC</option>
+			<option value="a.published DESC" >COM_PHOCAEMAIL_PUBLISHED_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+
+		<field name="limit" type="limitbox" label="COM_PHOCAEMAIL_LIST_LIMIT" description="COM_PHOCAEMAIL_LIST_LIMIT_DESC" class="input-mini" default="25" onchange="this.form.submit();" />
+	</fields>
+	</fieldset>
+</form>

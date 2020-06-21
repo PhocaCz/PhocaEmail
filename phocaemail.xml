@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension method="upgrade" type="component" version="3">
+<extension type="component" method="upgrade" version="3.9">
 	<name>com_phocaemail</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>18/06/2018</creationDate>
+	<creationDate>21/06/2020</creationDate>
 	<authorEmail></authorEmail>
-	<authorUrl>www.phoca.cz</authorUrl>
+	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.7</version>
-	<description>Phoca Email</description>
-	<scriptfile>install/script.php</scriptfile>
+	<version>3.1.0</version>
+	<description>COM_PHOCAEMAIL_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<projectName>PhocaEmail</projectName>
 
 	<install>
 		<sql>
@@ -30,46 +31,43 @@
 	</update>
 
 	<files folder="site">
-		<filename>controller.php</filename>
-		<filename>index.html</filename>
-		<filename>phocaemail.php</filename>
-		<filename>router.php</filename>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>layouts</folder>
 		<folder>models</folder>
 		<folder>views</folder>
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>phocaemail.php</filename>
+		<filename>router.php</filename>
 	</files>
 
 	<media destination="com_phocaemail" folder="media">
-		<filename>index.html</filename>
 		<folder>css</folder>
+		<folder>duoton</folder>
 		<folder>images</folder>
+		<filename>index.html</filename>
 	</media>
 
-	<languages>
-		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaemail.ini</language>
-		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
+	<languages folder="admin/language">
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaemail.ini</language>
+		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaemail.sys.ini</language>
 	</languages>
 
 	<administration>
-		<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu.png" link="option=com_phocaemail">COM_PHOCAEMAIL</menu>
-		<submenu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-cp.png" alt="COM_PHOCAEMAIL_CONTROL_PANEL" view="phocaemailcp" link="option=com_phocaemail">COM_PHOCAEMAIL_CONTROL_PANEL</menu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_WRITE" view="phocaemailwrite" link="option=com_phocaemail&amp;view=phocaemailwrite">COM_PHOCAEMAIL_WRITE</menu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="phocaemailnewsletters" link="option=com_phocaemail&amp;view=phocaemailnewsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="phocaemailsubscribers" link="option=com_phocaemail&amp;view=phocaemailsubscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-lists.png" alt="COM_PHOCAEMAIL_MAILING_LISTS" view="phocaemaillists" link="option=com_phocaemail&amp;view=phocaemaillists">COM_PHOCAEMAIL_MAILING_LISTS</menu>
-			<menu img="components/com_phocaemail/assets/images/icon-16-pe-menu-info.png" alt="COM_PHOCAEMAIL_INFO" view="phocaemailinfo" link="option=com_phocaemail&amp;view=phocaemailinfo">COM_PHOCAEMAIL_INFO</menu>
-		</submenu>
+
+		<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu.png" alt="COM_PHOCAEMAIL" link="option=com_phocaemail">COM_PHOCAEMAIL</menu>
+
+			<submenu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-cp.png" alt="COM_PHOCAEMAIL_CONTROL_PANEL" view="phocaemailcp" link="option=com_phocaemail">COM_PHOCAEMAIL_CONTROL_PANEL</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_WRITE" view="phocaemailwrite" link="option=com_phocaemail&amp;view=phocaemailwrite">COM_PHOCAEMAIL_WRITE</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="phocaemailnewsletters" link="option=com_phocaemail&amp;view=phocaemailnewsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="phocaemailsubscribers" link="option=com_phocaemail&amp;view=phocaemailsubscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-lists.png" alt="COM_PHOCAEMAIL_MAILING_LISTS" view="phocaemaillists" link="option=com_phocaemail&amp;view=phocaemaillists">COM_PHOCAEMAIL_MAILING_LISTS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-info.png" alt="COM_PHOCAEMAIL_INFO" view="phocaemailinfo" link="option=com_phocaemail&amp;view=phocaemailinfo">COM_PHOCAEMAIL_INFO</menu>
+			</submenu>
 
 		<files folder="admin">
-			<filename>access.xml</filename>
-			<filename>config.xml</filename>
-			<filename>controller.php</filename>
-			<filename>index.html</filename>
-			<filename>phocaemail.php</filename>
-			<filename>phocaemail.xml</filename>
 			<folder>controllers</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
@@ -78,16 +76,22 @@
 			<folder>tables</folder>
 			<folder>update</folder>
 			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>phocaemail.php</filename>
 		</files>
 
-		<languages>
-			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_phocaemail.sys.ini</language>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_phocaemail.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_phocaemail.sys.ini</language>
 		</languages>
-
 	</administration>
-	<updateservers>
-		<server type="extension" name="com_phocaemail">https://raw.githubusercontent.com/PhocaCz/PhocaEmail/master/manifest.xml</server>
-	</updateservers>
+	
+	
 
+	<updateservers>
+		<server type="extension" name="COM_PHOCAEMAIL" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaEmail/master/manifest.xml]]></server>
+	</updateservers>
 </extension>

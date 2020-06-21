@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+
+	<fieldset addfieldpath="/administrator/components/com_phocaemail/models/fields">
+
+<field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" required="true" readonly="true" class="readonly" />
+
+<field name="title" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_TITLE_LABEL" description="COM_PHOCAEMAIL_FIELD_TITLE_DESC" required="true" />
+
+<field name="alias" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_ALIAS_LABEL" description="COM_PHOCAEMAIL_FIELD_ALIAS_DESC" />
+
+<field name="subject" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_SUBJECT_LABEL" description="COM_PHOCAEMAIL_FIELD_SUBJECT_DESC" required="true" />
+
+<field name="url" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_ARTICLE_LINK_LABEL" description="COM_PHOCAEMAIL_ARTICLE_LINK_DESC" />
+
+
+<field name="ordering" type="PhocaEmailOrdering" table="newsletter" class="inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
+
+	
+<field name="message" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_DESC" />
+
+<field name="message_html" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_DESC" />
+
+<field name="mailinglist" type="phocaemailmailinglist" multiple="true" manager="newsletter" default="" label="COM_PHOCAEMAIL_REGISTERED_MAILING_LIST_LABEL" description="COM_PHOCAEMAIL_REGISTERED_MAILING_LIST_DESC"/>
+
+<field name="token" type="phocaemailtoken" manager="token" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_TOKEN_LABEL" description="COM_PHOCAEMAIL_FIELD_TOKEN_DESC" />
+
+	</fieldset>
+	
+	<fieldset name="publish" label="COM_PHOCAEMAIL_GROUP_LABEL_PUBLISHING_DETAILS" >
+
+<field name="published" type="list" label="COM_PHOCAEMAIL_FIELD_PUBLISHED_LABEL" description="COM_PHOCAEMAIL_FIELD_PUBLISHED_DESC" class="inputbox" size="1" default="1">
+	<option value="1">JPUBLISHED</option>
+	<option	value="0">JUNPUBLISHED</option>
+</field>
+
+<!--
+<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCAEMAIL_FIELD_LANGUAGE_FILE_DESC" class="inputbox">
+	<option value="*">JALL</option>
+</field>-->
+
+	</fieldset>
+	
+
+	
+</form>

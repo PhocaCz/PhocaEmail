@@ -1,0 +1,73 @@
+{
+	"author": "Jan Pavelka (www.phoca.cz)",
+	"authorUrl": "https://www.phoca.cz",
+	"copyright": "Jan Pavelka",
+	"license": "GNU/GPL",
+	"projectName": "PhocaEmail",
+	"extensionName": "Phoca Email",
+	"projectInitials" : "PE",
+	"description": "Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components.",
+	"projectUrl": "https://www.phoca.cz/phocaemail",
+	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/60-phoca-email-component",
+	"projectMainComponent": "Phoca Email",
+	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocaemail-joomla-email",
+	"projectDemo" : {
+		"Joomla! 3 Demo": "https://www.phoca.cz"
+	},
+	"projectColor": "#3366CC",
+	"menu": {
+		"main":{
+			"0" : {
+				"image": "icon-16-pe-menu.png",
+				"view": "",
+				"link": "option=com_phocaemail",
+				"title": "COM_PHOCAEMAIL"
+			}
+		},
+		"submenu": {
+			"0" : {
+				"image": "icon-16-pe-menu-cp.png",
+				"view": "phocaemailcp",
+				"link": "option=com_phocaemail",
+				"title": "COM_PHOCAEMAIL_CONTROL_PANEL"
+			},
+			"1" : {
+				"image": "icon-16-pe-menu-write.png",
+				"view": "phocaemailwrite",
+				"link": "option=com_phocaemail&amp;view=phocaemailwrite",
+				"title": "COM_PHOCAEMAIL_WRITE"
+			},
+			"2" : {
+				"image": "icon-16-pe-menu-newsletter.png",
+				"view": "phocaemailnewsletters",
+				"link": "option=com_phocaemail&amp;view=phocaemailnewsletters",
+				"title": "COM_PHOCAEMAIL_NEWSLETTERS"
+			},
+			"3" : {
+				"image": "icon-16-pe-menu-subscriber.png",
+				"view": "phocaemailsubscribers",
+				"link": "option=com_phocaemail&amp;view=phocaemailsubscribers",
+				"title": "COM_PHOCAEMAIL_SUBSCRIBERS"
+			},
+			"4" : {
+				"image": "icon-16-pe-menu-lists.png",
+				"view": "phocaemaillists",
+				"link": "option=com_phocaemail&amp;view=phocaemaillists",
+				"title": "COM_PHOCAEMAIL_MAILING_LISTS"
+			},
+			"5": {
+				"image": "icon-16-pe-menu-info.png",
+				"view": "phocaemailinfo",
+				"link": "option=com_phocaemail&amp;view=phocaemailinfo",
+				"title": "COM_PHOCAEMAIL_INFO"
+			}
+		}
+	},
+	"projectDocumentationLinks": {
+		"Features": "https://www.phoca.cz/documents/60-phoca-email-component/401-features",
+		"Installation": "https://www.phoca.cz/documents/60-phoca-email-component/402-installation",
+		"Setup Newsletter in Phoca Email": "https://www.phoca.cz/documents/60-phoca-email-component/817-setup-newsletter-in-phoca-email",
+		"Working with Phoca Email": "https://www.phoca.cz/documents/60-phoca-email-component/404-working-with-phoca-email",
+		"Phoca Email Options": "https://www.phoca.cz/documents/60-phoca-email-component/819-phoca-email-options"
+	}
+}
