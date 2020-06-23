@@ -479,7 +479,7 @@ class PhocaEmailRenderAdminViews
 
 	public function firstColumnHeader($listDirn, $listOrder) {
 		if ($this->compatible) {
-			return '<th class="w-1 text-center">'. HTMLHelper::_('grid.checkall').'</td>';
+			return '<th class="w-1 text-center ph-check">'. HTMLHelper::_('grid.checkall').'</td>';
 		} else {
 			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 		}
