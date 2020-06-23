@@ -38,24 +38,30 @@
 				"title": "COM_PHOCAEMAIL_WRITE"
 			},
 			"2" : {
+				"image": "icon-16-pe-menu-sendnewsletter.png",
+				"view": "phocaemailsendnewsletter",
+				"link": "option=com_phocaemail&amp;view=phocaemailsendnewsletter",
+				"title": "COM_PHOCAEMAIL_SEND_NEWSLETTER"
+			},
+			"3" : {
 				"image": "icon-16-pe-menu-newsletter.png",
 				"view": "phocaemailnewsletters",
 				"link": "option=com_phocaemail&amp;view=phocaemailnewsletters",
 				"title": "COM_PHOCAEMAIL_NEWSLETTERS"
 			},
-			"3" : {
+			"4" : {
 				"image": "icon-16-pe-menu-subscriber.png",
 				"view": "phocaemailsubscribers",
 				"link": "option=com_phocaemail&amp;view=phocaemailsubscribers",
 				"title": "COM_PHOCAEMAIL_SUBSCRIBERS"
 			},
-			"4" : {
+			"5" : {
 				"image": "icon-16-pe-menu-lists.png",
 				"view": "phocaemaillists",
 				"link": "option=com_phocaemail&amp;view=phocaemaillists",
 				"title": "COM_PHOCAEMAIL_MAILING_LISTS"
 			},
-			"5": {
+			"6": {
 				"image": "icon-16-pe-menu-info.png",
 				"view": "phocaemailinfo",
 				"link": "option=com_phocaemail&amp;view=phocaemailinfo",

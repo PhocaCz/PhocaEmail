@@ -40,7 +40,7 @@ class PhocaEmailCpViewPhocaEmailNewsletters extends JViewLegacy
 			$this->ordering[0][] = $item->id;
 		}
 
-		JHTML::stylesheet( $this->t['s'] );
+
 		$this->r = new PhocaEmailRenderAdminViews();
 
 		$this->addToolbar();

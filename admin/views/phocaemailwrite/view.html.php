@@ -24,7 +24,9 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 		$this->r	= new PhocaEmailRenderAdminView();
 
 
-		JHTML::stylesheet( $this->t['s'] );
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+
+
 		$app				= JFactory::getApplication();
 		$doc 				= JFactory::getDocument();
 		$user				= JFactory::getUser();

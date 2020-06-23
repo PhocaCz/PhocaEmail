@@ -25,7 +25,7 @@ class PhocaEmailCpViewPhocaEmailNewsletter extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 
-		JHTML::stylesheet( $this->t['s'] );
+
 
 		$this->addToolbar();
 		parent::display($tpl);

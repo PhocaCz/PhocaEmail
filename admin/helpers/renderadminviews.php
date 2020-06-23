@@ -8,18 +8,25 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 class PhocaEmailRenderAdminViews
 {
 
-	public $view 	= '';
-	public $vC		= false;
+	public $view 			= '';
+	public $option			= '';
+	public $compatible		= false;
+	public $sidebar 		= true;
+
 	public function __construct(){
 
-		$app		= JFactory::getApplication();
-		$version 	= new \Joomla\CMS\Version();
-		$this->vC 	= $version->isCompatible('4.0.0-alpha');
-		$this->view	= $app->input->get('view');
-		//$layout		= $app->input->get('layout');
+		$app				= JFactory::getApplication();
+		$version 			= new \Joomla\CMS\Version();
+		$this->compatible 	= $version->isCompatible('4.0.0-alpha');
+		$this->view			= $app->input->get('view');
+		$this->option		= $app->input->get('option');
+		$this->sidebar 		= Factory::getApplication()->getTemplate(true)->params->get('menu', 1) ? true : false;
 
 		switch($this->view) {
 
@@ -29,7 +36,7 @@ class PhocaEmailRenderAdminViews
 			case 'phocaemailnewstetter':
 
 				JHtml::_('behavior.keepalive');
-				if (!$this->vC) {
+				if (!$this->compatible) {
 					JHtml::_('formbehavior.chosen', 'select');
 				}
 
@@ -43,62 +50,70 @@ class PhocaEmailRenderAdminViews
 				JHtml::_('bootstrap.tooltip');
 				JHtml::_('behavior.multiselect');
 				JHtml::_('dropdown.init');
-				if (!$this->vC) {
+				if (!$this->compatible) {
 					JHtml::_('formbehavior.chosen', 'select');
 				}
 
 			break;
 		}
-	}
 
-	public function startFilter($txtFilter = ''){
-
-		if ($this->vC) {
-			return '';
+		// CP View
+		if ($this->view ==  null) {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duoton/joomla-fonts.css', array('version' => 'auto'));
 		}
 
+		HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
 
-		$o = '<div id="j-sidebar-container" class="span2 col-md-2">'."\n". JHtmlSidebar::render()."\n";
-
-
-		if ($txtFilter != '') {
-			$o .= '<hr />'."\n" . '<div class="filter-select ">'."\n"
-
-			. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+		if ($this->compatible) {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/4.css', array('version' => 'auto'));
 		} else {
-			$o .= '<div>';
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/3.css', array('version' => 'auto'));
 		}
-
-		return $o;
-	}
-
-	public function endFilter() {
-
-		if ($this->vC) {
-			return '';
-		}
-
-		return '</div>' . "\n" . '</div>' . "\n";
 	}
 
 	public function startMainContainer() {
 
-		if ($this->vC) {
-			return '<div id="j-main-container" class="span12 col-md-12">'. "\n";
+		$o = array();
+
+		if ($this->compatible) {
+
+			// Joomla! 4
+
+			$o[] = '<div class="row">';
+			if ($this->sidebar) {
+
+				$o[] = '<div id="j-main-container" class="col-md-12">';
+			} else {
+
+				$o[] = '<div id="j-sidebar-container" class="col-md-2">'.JHtmlSidebar::render().'</div>';
+				$o[] = '<div id="j-main-container" class="col-md-10">';
+			}
+
+
+		} else {
+			$o[] = '<div id="j-sidebar-container" class="span2">'.JHtmlSidebar::render().'</div>';
+			$o[] = '<div id="j-main-container" class="span10">';
 		}
-		return '<div id="j-main-container" class="span10 col-md-10">'. "\n";
+
+		return implode("\n", $o);
 	}
 
 	public function endMainContainer() {
-		return '</div>'. "\n";
+		$o = array();
+
+		$o[] = '</div>';
+		if ($this->compatible) {
+			$o[] = '</div>';
+		}
+		return implode("\n", $o);
 	}
 
 
 
 
 	public function jsJorderTable($listOrder) {
-		return '<script type="text/javascript">' . "\n"
-		.'Joomla.orderTable = function() {' . "\n"
+
+		$js = 'Joomla.orderTable = function() {' . "\n"
 		.'  table = document.getElementById("sortTable");' . "\n"
 		.'  direction = document.getElementById("directionTable");' . "\n"
 		.'  order = table.options[table.selectedIndex].value;' . "\n"
@@ -108,8 +123,8 @@ class PhocaEmailRenderAdminViews
 		.'    dirn = direction.options[direction.selectedIndex].value;' . "\n"
 		.'  }' . "\n"
 		.'  Joomla.tableOrdering(order, dirn, \'\');' . "\n"
-		.'}' . "\n"
-		.'</script>' . "\n";
+		.'}' . "\n";
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
@@ -291,10 +306,10 @@ class PhocaEmailRenderAdminViews
 	public function thOrderingXML($txtHo, $listDirn, $listOrder, $prefix = 'a', $empty = false ) {
 
 		if ($empty) {
-			return '<th class="nowrap center ph-ordering"></th>'. "\n";
+			return '<th class="nowrap center text-center ph-ordering"></th>'. "\n";
 		}
 
-		return '<th class="nowrap center ph-ordering">'. "\n"
+		return '<th class="nowrap center text-center ph-ordering">'. "\n"
 		. JHtml::_('searchtools.sort', '', strip_tags($prefix).'.ordering', $listDirn, $listOrder, null, 'asc', $txtHo, 'icon-menu-2'). "\n"
 		. '</th>';
 		//JHtml::_('searchtools.sort', $this->t['l'].'_IN_STOCK', 'a.stock', $listDirn, $listOrder ).'</th>'."\n";
@@ -448,6 +463,107 @@ class PhocaEmailRenderAdminViews
 			$o .= '<td></td>'. "\n";
 		}
 		return $o;
+	}
+
+	public function saveOrder($t, $listDirn) {
+
+		$saveOrderingUrl = 'index.php?option=' . $t['o'] . '&task=' . $t['tasks'] . '.saveOrderAjax&tmpl=component&' . JSession::getFormToken() . '=1';
+		if ($this->compatible) {
+			HTMLHelper::_('draggablelist.draggable');
+		} else {
+			JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+		}
+
+		return $saveOrderingUrl;
+	}
+
+	public function firstColumnHeader($listDirn, $listOrder) {
+		if ($this->compatible) {
+			return '<th class="w-1 text-center">'. HTMLHelper::_('grid.checkall').'</td>';
+		} else {
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+		}
+	}
+
+	public function secondColumnHeader($listDirn, $listOrder) {
+		if ($this->compatible) {
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+		} else {
+			return $this->thCheck('JGLOBAL_CHECK_ALL');
+		}
+	}
+
+	public function startTblBody($saveOrder, $saveOrderingUrl, $listDirn) {
+
+		$o = array();
+
+		if ($this->compatible) {
+			$o[] = '<tbody';
+			if ($saveOrder){
+				$o[] = ' class="js-draggable" data-url="'. $saveOrderingUrl.'" data-direction="'. strtolower($listDirn).'" data-nested="true"';
+			}
+			$o[] = '>';
+
+		} else {
+			$o[] = '<tbody>'. "\n";
+		}
+
+		return implode("", $o);
+	}
+
+	public function endTblBody() {
+		return '</tbody>'. "\n";
+	}
+
+	public function startTr($i, $catid = 0){
+		$iD = $i % 2;
+		if ($this->compatible) {
+			return '<tr class="row'.$iD.'" data-dragable-group="'. $catid.'">'. "\n";
+		} else {
+
+			return '<tr class="row'.$iD.'" sortable-group-id="'.$catid.'" >'. "\n";
+		}
+	}
+
+	public function endTr() {
+		return '</tr>'."\n";
+	}
+
+	public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering) {
+		if ($this->compatible) {
+			return $this->td( HTMLHelper::_('grid.id', $i, $itemId), 'text-center');
+		} else {
+			return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering);
+		}
+	}
+
+	public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering) {
+
+		if ($this->compatible) {
+
+			$o = array();
+			$o[] = '<td class="text-center d-none d-md-table-cell">';
+
+			$iconClass = '';
+			if (!$canChange) {
+				$iconClass = ' inactive';
+			} else if (!$saveOrder) {
+				$iconClass = ' inactive" title="' . JText::_('JORDERINGDISABLED');
+			}
+
+			$o[] = '<span class="sortable-handler'. $iconClass.'"><span class="fas fa-ellipsis-v" aria-hidden="true"></span></span>';
+
+			if ($canChange && $saveOrder) {
+				$o[] = '<input type="text" name="order[]" size="5" value="' . $ordering . '" class="width-20 text-area-order hidden">';
+			}
+
+			$o[] = '</td>';
+
+			return implode("", $o);
+
+		} else {
+			return $this->td(JHtml::_('grid.id', $i, $itemId), "small ");
+		}
 	}
 }
 ?>

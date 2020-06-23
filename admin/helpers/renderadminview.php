@@ -8,22 +8,25 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaEmailRenderAdminView
 {
 
-	public $view 	= '';
-	public $option	= '';
-	public $vC		= false;
+	public $view 			= '';
+	public $option			= '';
+	public $compatible		= false;
+	public $sidebar 		= true;
 
 	public function __construct(){
 
-		$app			= JFactory::getApplication();
-		$version 		= new \Joomla\CMS\Version();
-		$this->vC 		= $version->isCompatible('4.0.0-alpha');
-		$this->view		= $app->input->get('view');
-		$this->option	= $app->input->get('option');
+		$app				= JFactory::getApplication();
+		$version 			= new \Joomla\CMS\Version();
+		$this->compatible 	= $version->isCompatible('4.0.0-alpha');
+		$this->view			= $app->input->get('view');
+		$this->option		= $app->input->get('option');
+		$this->sidebar 		= Factory::getApplication()->getTemplate(true)->params->get('menu', 1) ? true : false;
 
 		switch($this->view) {
 
@@ -36,7 +39,7 @@ class PhocaEmailRenderAdminView
 				JHtml::_('behavior.formvalidator');
 				JHtml::_('behavior.keepalive');
 
-				if (!$this->vC) {
+				if (!$this->compatible) {
 					JHtml::_('behavior.tooltip');
 					JHtml::_('formbehavior.chosen', 'select');
 
@@ -45,35 +48,58 @@ class PhocaEmailRenderAdminView
 			break;
 		}
 
+
 		// CP View
 		if ($this->view ==  null) {
-			JHtml::stylesheet( 'media/'.$this->option.'/duoton/joomla-fonts.css' );
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duoton/joomla-fonts.css', array('version' => 'auto'));
 		}
+
+		HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
+
+		if ($this->compatible) {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/4.css', array('version' => 'auto'));
+		} else {
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/3.css', array('version' => 'auto'));
+		}
+
 	}
 
 	public function startCp() {
 
-		$o = '';
-		if ($this->vC) {
+		$o = array();
+		if ($this->compatible) {
+
+			if ($this->sidebar) {
+
+			} else {
+				$o[] = '<div class="row">';
+				$o[] = '<div id="j-main-container" class="col-md-2">'.JHtmlSidebar::render().'</div>';
+				$o[] = '<div id="j-main-container" class="col-md-10">';
+			}
 
 		} else {
-			$o .= '<div id="j-sidebar-container" class="span2 col-md-2">' . JHtmlSidebar::render() . '</div>'."\n";
-			$o .= '<div id="j-main-container" class="span10 col-md-10">'."\n";
+			$o[] = '<div id="j-sidebar-container" class="span2">' . JHtmlSidebar::render() . '</div>'."\n";
+			$o[] = '<div id="j-main-container" class="span10">'."\n";
 		}
 
-		return $o;
+		return implode("\n", $o);
 	}
 
 	public function endCp() {
 
-		$o = '';
-		if ($this->vC) {
+		$o = array();
+		if ($this->compatible) {
+			if ($this->sidebar) {
 
+			} else {
+
+				$o[] = '</div></div>';
+			}
 		} else {
-			$o .= '</div></div>';
+			$o[] = '</div>';
 		}
 
-		return $o;
+		return implode("\n", $o);
 	}
 
 	public function startForm($option, $view, $itemId, $id = 'adminForm', $name = 'adminForm') {
@@ -245,7 +271,7 @@ class PhocaEmailRenderAdminView
 
 	public function navigation($tabs) {
 
-		if ($this->vC) {
+		if ($this->compatible) {
 			return '';
 		}
 
@@ -265,7 +291,7 @@ class PhocaEmailRenderAdminView
 
 
 	public function startTabs($active = 'general') {
-		if ($this->vC) {
+		if ($this->compatible) {
 			return HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => $active));
 		} else {
 			return '<div class="tab-content">'. "\n";
@@ -273,7 +299,7 @@ class PhocaEmailRenderAdminView
 	}
 
 	public function endTabs() {
-		if ($this->vC) {
+		if ($this->compatible) {
 			return HTMLHelper::_('uitab.endTabSet');
 		} else {
 			return '</div>';
@@ -281,7 +307,7 @@ class PhocaEmailRenderAdminView
 	}
 
 	public function startTab($id, $name, $active = '') {
-		if ($this->vC) {
+		if ($this->compatible) {
 			return HTMLHelper::_('uitab.addTab', 'myTab', $id, $name);
 		} else {
 			return '<div class="tab-pane '.$active.'" id="'.$id.'">'."\n";
@@ -289,7 +315,7 @@ class PhocaEmailRenderAdminView
 	}
 
 	public function endTab() {
-		if ($this->vC) {
+		if ($this->compatible) {
 			return HTMLHelper::_('uitab.endTab');
 		} else {
 			return '</div>';

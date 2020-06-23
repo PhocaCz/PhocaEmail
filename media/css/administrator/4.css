@@ -1,0 +1,18 @@
+.com_phocaemail a[target=_blank]:before {
+	content: "" !important;
+}
+
+#toolbar a.btn.btn-small i {
+	margin-inline-end: .5rem;
+}
+
+.ph-extension-info-box {
+	background: #fff;
+	padding: 1em;
+} 
+
+.ph-extension-links-box {
+	margin-top: 1em;
+	padding: 1em;
+	background: #fff;
+}

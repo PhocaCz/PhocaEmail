@@ -7,18 +7,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 $r 			=  $this->r;
-?>
-<script type="text/javascript">
-Joomla.submitbutton = function(task) {
-	if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		<?php //echo $this->form->getField('message_html')->save(); ?>
-		Joomla.submitform(task, document.getElementById('adminForm'));
+
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) {
+	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+		return false;
 	}
-	else {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-	}
-}
-</script><?php
+}'
+
+);
+
 echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm', 'adminForm');
 // First Column
 echo '<div class="span10 form-horizontal">';

@@ -31,7 +31,7 @@ class PhocaEmailCpViewPhocaEmailCp extends JViewLegacy
 		);
 
 
-		JHTML::stylesheet( $this->t['s'] );
+
 		//JHTML::_('behavior.tooltip');
 		$this->t['version'] = PhocaEmailHelper::getPhocaVersion('com_phocaemail');
 

@@ -16,9 +16,9 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $this->t['o']);
 $saveOrder	= $listOrder == 'a.ordering';
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option='.$this->t['o'].'&task='.$this->t['tasks'].'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
@@ -27,8 +27,7 @@ echo $r->jsJorderTable($listOrder);
 
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
-echo $r->startFilter();
-echo $r->endFilter();
+
 
 echo $r->startMainContainer();
 
@@ -41,8 +40,8 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo $r->firstColumnHeader($listDirn, $listOrder);
+echo $r->secondColumnHeader($listDirn, $listOrder);
 echo '<th class="ph-title">'.JHTML::_('searchtools.sort',  	$this->t['l'].'_NAME', 'a.name', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-title">'.JHTML::_('searchtools.sort',  	$this->t['l'].'_EMAIL', 'a.email', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-date">'.JHTML::_('searchtools.sort',  	$this->t['l'].'_SIGN_UP_DATE', 'a.date_register', $listDirn, $listOrder ).'</th>'."\n";
@@ -59,7 +58,7 @@ echo '<th class="ph-id">'.JHTML::_('searchtools.sort',  		$this->t['l'].'_ID', '
 
 echo $r->endTblHeader();
 
-echo '<tbody>'. "\n";
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
 
 $originalOrders = array();
 $parentsStr 	= "";
@@ -68,108 +67,107 @@ $j 				= 0;
 if (is_array($this->items)) {
 	foreach ($this->items as $i => $item) {
 		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
-			$j++;
+		$j++;
 
-$urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
-$urlTask		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'];
-$orderkey   	= array_search($item->id, $this->ordering[0]);
-$ordering		= ($listOrder == 'a.ordering');
-$canCreate		= $user->authorise('core.create', $this->t['o']);
-$canEdit		= $user->authorise('core.edit', $this->t['o']);
-$canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-$canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit. $item->id );
-
-
-$iD = $i % 2;
-echo "\n\n";
-//echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="'.$item->id.'" parents="0" level="0">'. "\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="0" >'. "\n";
-echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small ");
-
-$checkO = '';
-if ($item->checked_out) {
-	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
-}
-
-// No name
-if ($item->name == '') {
-	$item->name = JText::_('COM_PHOCAEMAIL_NAME_NOT_SET');
-}
-
-if ($canCreate || $canEdit) {
-	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->name).'</a>';
-} else {
-	$checkO .= $this->escape($item->name);
-}
-//$checkO .= ' <span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small ");
-
-echo $r->td( $this->escape($item->email), "small ");
-
-echo $r->td( $this->escape($item->date_register), "small ");
-echo $r->td( $this->escape($item->date_active), "small ");
-
-echo $r->td( $this->escape($item->date_unsubscribe), "small ");
+		$urlEdit = 'index.php?option=' . $this->t['o'] . '&task=' . $this->t['task'] . '.edit&id=';
+		$urlTask = 'index.php?option=' . $this->t['o'] . '&task=' . $this->t['task'];
+		$orderkey = array_search($item->id, $this->ordering[0]);
+		$ordering = ($listOrder == 'a.ordering');
+		$canCreate = $user->authorise('core.create', $this->t['o']);
+		$canEdit = $user->authorise('core.edit', $this->t['o']);
+		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+		$canChange = $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
+		$linkEdit = JRoute::_($urlEdit . $item->id);
 
 
-$type = '<span class="label label-success" style="background-color: #3366CC">PhocaEmail</span>';
-if ($item->type == 2) {
-    $type = '<span class="label label-success" style="background-color: #129ED9">PhocaCart</span>';
-}
-echo $r->td($type, "small ");
+		echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+
+		echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+		echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 
 
-if ($item->active == 1) {
-	echo $r->td( '<span class="label label-success">'.JText::_('COM_PHOCAEMAIL_ACTIVE').'</span>', "small ");
-} else if ($item->active == 2) {
-	echo $r->td( '<span class="label label-warning">'.JText::_('COM_PHOCAEMAIL_UNSUBSCRIBED').'</span>', "small ");
-} else {
-	echo $r->td( '<span class="label label-important label-danger">'.JText::_('COM_PHOCAEMAIL_NOT_ACTIVED').'</span>', "small ");
-}
-
-$userO = '';
-if (isset($item->userid) && $item->userid > 0) {
-	if (isset($item->usernameno)) {
-		$userO .= ' <span>'.$item->usernameno.'</span>';
-	}
-
-	if (isset($item->username)) {
-		$userO .= ' <small>('.$item->username.')</small>';
-	}
-}
-echo $r->td($userO, "small ");
-
-
-$mailingListTitle = '';
-if (isset($item->mailing_list_title)) {
-	$mailingListTitleA = explode(',', $item->mailing_list_title);
-	if (!empty($mailingListTitleA)) {
-		foreach ($mailingListTitleA as $k => $v) {
-			$mailingListTitle .= '<span class="label label-info">'.$this->escape($v).'</span> ';
+		$checkO = '';
+		if ($item->checked_out) {
+			$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'] . '.', $canCheckin);
 		}
-	}
-}
 
-echo $r->td( $mailingListTitle, "small ");
+		// No name
+		if ($item->name == '') {
+			$item->name = JText::_('COM_PHOCAEMAIL_NAME_NOT_SET');
+		}
 
-echo $r->td( $this->escape($item->hits), "small ");
+		if ($canCreate || $canEdit) {
+			$checkO .= '<a href="' . JRoute::_($linkEdit) . '">' . $this->escape($item->name) . '</a>';
+		} else {
+			$checkO .= $this->escape($item->name);
+		}
+		//$checkO .= ' <span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
+		echo $r->td($checkO, "small ");
+
+		echo $r->td($this->escape($item->email), "small ");
+
+		echo $r->td($this->escape($item->date_register), "small ");
+		echo $r->td($this->escape($item->date_active), "small ");
+
+		echo $r->td($this->escape($item->date_unsubscribe), "small ");
 
 
-$privacy = $item->privacy == 1 ? JText::_('COM_PHOCAEMAIL_YES') : JText::_('COM_PHOCAEMAIL_NO');
-echo $r->td( $this->escape($privacy), "small ");
+		$type = '<span class="label label-success badge badge-success badge badge-success" style="background-color: #3366CC">PhocaEmail</span>';
+		if ($item->type == 2) {
+			$type = '<span class="label label-success badge badge-success" style="background-color: #129ED9">PhocaCart</span>';
+		}
+		echo $r->td($type, "small ");
 
-echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'].'.', $canChange), "small ");
 
-echo $r->td($item->id, "small ");
+		if ($item->active == 1) {
+			echo $r->td('<span class="label label-success badge badge-success">' . JText::_('COM_PHOCAEMAIL_ACTIVE') . '</span>', "small ");
+		} else if ($item->active == 2) {
+			echo $r->td('<span class="label label-warning badge badge-warning">' . JText::_('COM_PHOCAEMAIL_UNSUBSCRIBED') . '</span>', "small ");
+		} else {
+			echo $r->td('<span class="label label-important label-danger badge badge-danger">' . JText::_('COM_PHOCAEMAIL_NOT_ACTIVED') . '</span>', "small ");
+		}
 
-echo '</tr>'. "\n";
+		$userO = '';
+		if (isset($item->userid) && $item->userid > 0) {
+			if (isset($item->usernameno)) {
+				$userO .= ' <span>' . $item->usernameno . '</span>';
+			}
+
+			if (isset($item->username)) {
+				$userO .= ' <small>(' . $item->username . ')</small>';
+			}
+		}
+		echo $r->td($userO, "small ");
+
+
+		$mailingListTitle = '';
+		if (isset($item->mailing_list_title)) {
+			$mailingListTitleA = explode(',', $item->mailing_list_title);
+			if (!empty($mailingListTitleA)) {
+				foreach ($mailingListTitleA as $k => $v) {
+					$mailingListTitle .= '<span class="label label-info badge badge-info">' . $this->escape($v) . '</span> ';
+				}
+			}
+		}
+
+		echo $r->td($mailingListTitle, "small ");
+
+		echo $r->td($this->escape($item->hits), "small ");
+
+
+		$privacy = $item->privacy == 1 ? JText::_('COM_PHOCAEMAIL_YES') : JText::_('COM_PHOCAEMAIL_NO');
+		echo $r->td($this->escape($privacy), "small ");
+
+		echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'] . '.', $canChange), "small ");
+
+		echo $r->td($item->id, "small ");
+
+		echo $r->endTr();
 
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();

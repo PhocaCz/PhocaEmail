@@ -260,57 +260,17 @@ table.ph-table-form tr td.ph-inputbox {
 
 
 
-/* Theme */
-.com_phocaemail {
-	background: #f9f9f9;
-}
-.com_phocaemail table {
-	background: #fff;
-	border-radius: 3px
-}
-.com_phocaemail a[target=_blank]:before {
-	content: "" !important;
-}
-
-#toolbar a.btn.btn-small i {
-	margin-inline-end: .5rem;
-}
-
 /* CP Info */
 .ph-box-cp {
 	display: flex;
 }
 
 .ph-left-cp {
-
 	flex-basis: 50%;
 }
 
 .ph-right-cp {
 	flex-basis: 50%;
-}
-
-/* J3 */
-.span12 .ph-extension-info-box {
-	background: #f0f0f0;
-	padding: 1em;
-}
-.span12 .ph-extension-links-box {
-	margin-top: 1em;
-	padding: 1em;
-	background: #f0f0f0;
-}
-
-/* J4 */
-.col-md-12 .ph-extension-info-box {
-	background: #fff;
-	padding: 1em;
-} 
-
-.col-md-12 .ph-extension-links-box {
-	margin-top: 1em;
-	padding: 1em;
-	background: #fff;
 }
 
 
@@ -347,9 +307,6 @@ table.ph-table-form tr td.ph-inputbox {
 	height:7rem;
 	display: flex;
 }
-
-
-
 
 .ph-cp-item-icon-link,
 .ph-cp-item-icon-link:hover,

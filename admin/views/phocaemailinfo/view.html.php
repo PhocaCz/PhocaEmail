@@ -21,7 +21,7 @@ class PhocaEmailCpViewPhocaEmailInfo extends JViewLegacy
 		$this->t['component_head'] 	= $this->t['l'].'_PHOCA_EMAIL';
 		$this->t['component_links']	= $this->r->getLinks(1);
 
-		JHTML::stylesheet( $this->t['s'] );
+
 		$this->t['version'] = PhocaEmailHelper::getPhocaVersion('com_phocaemail');
 		$this->addToolbar();
 		parent::display($tpl);

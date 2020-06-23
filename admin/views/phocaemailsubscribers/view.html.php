@@ -41,7 +41,7 @@ class PhocaEmailCpViewPhocaEmailSubscribers extends JViewLegacy
 
 		$this->r = new PhocaEmailRenderAdminViews();
 
-		JHTML::stylesheet( $this->t['s'] );
+
 
 		$this->addToolbar();
 		parent::display($tpl);

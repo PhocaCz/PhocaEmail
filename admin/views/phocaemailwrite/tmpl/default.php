@@ -7,9 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */ ?>
 
-<script language="javascript" type="text/javascript">
+
 <?php
-echo ''
+$js = array();
+$js[] =  ''
 .'Joomla.submitbutton = function(task) {'. "\n"
 .' var form = document.adminForm;'. "\n"
 .' if (task == \'phocaemailwrite.send\') {'. "\n"
@@ -21,31 +22,31 @@ echo ''
 
 if ($this->p['display_users_list'] == 0 && $this->p['display_groups_list'] == 0) {
 
-	echo '      else if (form.to.value == ""){'. "\n";
-	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO').'" );'. "\n";
-	echo '	}' . "\n";
+	$js[] =  '      else if (form.to.value == ""){'. "\n";
+	$js[] =  '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO').'" );'. "\n";
+	$js[] =  '	}' . "\n";
 
 } else if ($this->p['display_users_list'] == 1 && $this->p['display_groups_list'] == 0) {
 
-	echo '      else if (form.tousers.value == "" && form.to.value == "") { ' . "\n";
-	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_EMPTY').'" );'. "\n";
-	echo '  }' . "\n";
+	$js[] =  '      else if (form.tousers.value == "" && form.to.value == "") { ' . "\n";
+	$js[] =  '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_EMPTY').'" );'. "\n";
+	$js[] =  '  }' . "\n";
 
 } else if ($this->p['display_users_list'] == 0 && $this->p['display_groups_list'] == 1) {
 
-	echo '      else if (form.togroups.value == "" && form.to.value == "") { ' . "\n";
-	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_GROUPS_EMPTY').'" );'. "\n";
-	echo '  }' . "\n";
+	$js[] =  '      else if (form.togroups.value == "" && form.to.value == "") { ' . "\n";
+	$js[] =  '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_GROUPS_EMPTY').'" );'. "\n";
+	$js[] =  '  }' . "\n";
 
 } else {
 
 	// all displayed to, to users, to groups
-	echo '      else if (form.tousers.value == "" && form.togroups.value == "" && form.to.value == "") { ' . "\n";
-	echo '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_GROUPS_EMPTY').'" );'. "\n";
-	echo '  }' . "\n";
+	$js[] =  '      else if (form.tousers.value == "" && form.togroups.value == "" && form.to.value == "") { ' . "\n";
+	$js[] =  '	 alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_USERS_GROUPS_EMPTY').'" );'. "\n";
+	$js[] =  '  }' . "\n";
 
 }
-echo ' else if (form.subject.value == ""){'. "\n"
+$js[] =  ' else if (form.subject.value == ""){'. "\n"
 .'   alert( "'. JText::_('COM_PHOCAEMAIL_ERROR_FIELD_SUBJECT').'" );'. "\n"
 .'	} else {'. "\n"
 .'	 Joomla.submitform(task);'. "\n"
@@ -56,9 +57,12 @@ echo ' else if (form.subject.value == ""){'. "\n"
 .'   Joomla.submitform(task);'. "\n"
 //.'      document.getElementById(\'sending-email\').style.display=\'block\';'. "\n"
 .' }'. "\n"
-.'}'. "\n"
+.'}'. "\n";
+
+
+JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 ?>
-</script>
+
 
 <form action="index.php?option=com_phocaemail&view=phocaemailwrite" method="post" name="adminForm" id="adminForm">
 <table class="ph-table-form">

@@ -16,17 +16,15 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $this->t['o']);
 $saveOrder	= $listOrder == 'a.ordering';
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option='.$this->t['o'].'&task='.$this->t['tasks'].'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
 echo $r->jsJorderTable($listOrder);
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
-echo $r->startFilter();
-echo $r->endFilter();
 
 echo $r->startMainContainer();
 
@@ -38,8 +36,8 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo $r->firstColumnHeader($listDirn, $listOrder);
+echo $r->secondColumnHeader($listDirn, $listOrder);
 
 echo '<th class="ph-title">'.JHTML::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-title">'.JHTML::_('searchtools.sort',  	$this->t['l'].'_SUBJECT', 'a.subject', $listDirn, $listOrder ).'</th>'."\n";
@@ -48,7 +46,7 @@ echo '<th class="ph-id">'.JHTML::_('searchtools.sort',  		$this->t['l'].'_ID', '
 
 echo $r->endTblHeader();
 
-echo '<tbody>'. "\n";
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
 
 $originalOrders = array();
 $parentsStr 	= "";
@@ -59,50 +57,46 @@ if (is_array($this->items)) {
 		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			$j++;
 
-$urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
-$urlTask		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'];
-$orderkey   	= array_search($item->id, $this->ordering[0]);
-$ordering		= ($listOrder == 'a.ordering');
-$canCreate		= $user->authorise('core.create', $this->t['o']);
-$canEdit		= $user->authorise('core.edit', $this->t['o']);
-$canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-$canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit. $item->id );
+		$urlEdit = 'index.php?option=' . $this->t['o'] . '&task=' . $this->t['task'] . '.edit&id=';
+		$urlTask = 'index.php?option=' . $this->t['o'] . '&task=' . $this->t['task'];
+		$orderkey = array_search($item->id, $this->ordering[0]);
+		$ordering = ($listOrder == 'a.ordering');
+		$canCreate = $user->authorise('core.create', $this->t['o']);
+		$canEdit = $user->authorise('core.edit', $this->t['o']);
+		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+		$canChange = $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
+		$linkEdit = JRoute::_($urlEdit . $item->id);
 
 
+		echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 
-$iD = $i % 2;
-echo "\n\n";
-//echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="'.$item->id.'" parents="0" level="0">'. "\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="0" >'. "\n";
+		echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+		echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 
-echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small ");
+		$checkO = '';
+		if ($item->checked_out) {
+			$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'] . '.', $canCheckin);
+		}
+		if ($canCreate || $canEdit) {
+			$checkO .= '<a href="' . JRoute::_($linkEdit) . '">' . $this->escape($item->title) . '</a>';
+		} else {
+			$checkO .= $this->escape($item->title);
+		}
+		$checkO .= ' <span class="smallsub">';//(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
+		echo $r->td($checkO, "small ");
 
-$checkO = '';
-if ($item->checked_out) {
-	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
-}
-if ($canCreate || $canEdit) {
-	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
-} else {
-	$checkO .= $this->escape($item->title);
-}
-$checkO .= ' <span class="smallsub">';//(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small ");
+		echo $r->td($this->escape($item->subject), "small ");
 
-echo $r->td( $this->escape($item->subject), "small ");
+		echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'] . '.', $canChange), "small ");
 
-echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'].'.', $canChange), "small ");
+		echo $r->td($item->id, "small ");
 
-echo $r->td($item->id, "small ");
-
-echo '</tr>'. "\n";
+		echo $r->endTr();
 
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 6);
 echo $r->endTable();

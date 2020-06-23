@@ -107,6 +107,10 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 				$isNew = false;
 			}
 
+			if ($data['date_register'] == '') { $data['date_register'] = '0000-00-00 00:00:00';}
+			if ($data['date_active'] == '') { $data['date_active'] = '0000-00-00 00:00:00';}
+			if ($data['date_unsubscribe'] == '') { $data['date_unsubscribe'] = '0000-00-00 00:00:00';}
+
 			// User is active but we didn't set the activation date yet
 			if ($data['active'] == 1 && ($data['date_active'] == '' || $data['date_active'] == '0000-00-00 00:00:00')) {
 				$data['date_active'] = gmdate('Y-m-d H:i:s');
@@ -136,7 +140,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$result = \JFactory::getApplication()->triggerEvent($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
+			$result = \JFactory::getApplication()->triggerEvent($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
 
 			if (in_array(false, $result, true))
 			{
@@ -166,7 +170,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 			$this->cleanCache();
 
 			// Trigger the onContentAfterSave event.
-			\JFactory::getApplication()->triggerEvent($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew));
+			\JFactory::getApplication()->triggerEvent($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
 		}
 		catch (Exception $e)
 		{
