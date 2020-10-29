@@ -35,7 +35,7 @@
 				"image": "icon-16-pe-menu-write.png",
 				"view": "phocaemailwrite",
 				"link": "option=com_phocaemail&amp;view=phocaemailwrite",
-				"title": "COM_PHOCAEMAIL_WRITE"
+				"title": "COM_PHOCAEMAIL_SEND_EMAIL"
 			},
 			"2" : {
 				"image": "icon-16-pe-menu-sendnewsletter.png",

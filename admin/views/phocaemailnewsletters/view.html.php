@@ -55,7 +55,7 @@ class PhocaEmailCpViewPhocaEmailNewsletters extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.newsletter_id'));
 
-		JToolbarHelper::title( JText::_( $this->t['l'].'_NEWSLETTERS' ), 'mail' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_NEWSLETTERS' ), 'mail fa-paper-plane' );
 
 		if ($canDo->get('core.create')) {
 			JToolbarHelper::addNew($this->t['task'].'.add','JTOOLBAR_NEW');

@@ -12,9 +12,9 @@
 <field name="subject" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_SUBJECT_LABEL" description="COM_PHOCAEMAIL_FIELD_SUBJECT_DESC" />
 
 
-<field name="ordering" type="PhocaEmailOrdering" table="newsletter" class="inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
+<field name="ordering" type="PhocaEmailOrdering" table="newsletter" class="form-control inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
 
-	
+
 <field name="message" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_DESC" />
 
 <field name="message_html" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_HTML_DESC" />
@@ -22,7 +22,7 @@
 
 
 	</fieldset>
-	
+
 	<fieldset name="publish" label="COM_PHOCAEMAIL_GROUP_LABEL_PUBLISHING_DETAILS" >
 
 <field name="published" type="list" label="COM_PHOCAEMAIL_FIELD_PUBLISHED_LABEL" description="COM_PHOCAEMAIL_FIELD_PUBLISHED_DESC" class="inputbox" size="1" default="1">
@@ -36,7 +36,7 @@
 </field>-->
 
 	</fieldset>
-	
 
-	
+
+
 </form>

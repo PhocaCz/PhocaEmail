@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3.9">
 	<name>com_phocaemail</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>23/06/2020</creationDate>
+	<creationDate>28/10/2020</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.1.1</version>
+	<version>3.1.2</version>
 	<description>COM_PHOCAEMAIL_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaEmail</projectName>
@@ -44,7 +44,7 @@
 
 	<media destination="com_phocaemail" folder="media">
 		<folder>css</folder>
-		<folder>duoton</folder>
+		<folder>duotone</folder>
 		<folder>images</folder>
 		<filename>index.html</filename>
 	</media>
@@ -60,7 +60,7 @@
 
 			<submenu>
 				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-cp.png" alt="COM_PHOCAEMAIL_CONTROL_PANEL" view="phocaemailcp" link="option=com_phocaemail">COM_PHOCAEMAIL_CONTROL_PANEL</menu>
-				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_WRITE" view="phocaemailwrite" link="option=com_phocaemail&amp;view=phocaemailwrite">COM_PHOCAEMAIL_WRITE</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_SEND_EMAIL" view="phocaemailwrite" link="option=com_phocaemail&amp;view=phocaemailwrite">COM_PHOCAEMAIL_SEND_EMAIL</menu>
 				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-sendnewsletter.png" alt="COM_PHOCAEMAIL_SEND_NEWSLETTER" view="phocaemailsendnewsletter" link="option=com_phocaemail&amp;view=phocaemailsendnewsletter">COM_PHOCAEMAIL_SEND_NEWSLETTER</menu>
 				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="phocaemailnewsletters" link="option=com_phocaemail&amp;view=phocaemailnewsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
 				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="phocaemailsubscribers" link="option=com_phocaemail&amp;view=phocaemailsubscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>

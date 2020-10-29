@@ -43,7 +43,7 @@ class PhocaEmailCpViewPhocaEmailNewsletter extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $this->state->get('filter.newsletter_id'));
 
 		$text = $isNew ? JText::_( $this->t['l'] . '_NEW' ) : JText::_($this->t['l'] . '_EDIT');
-		JToolbarHelper::title(   JText::_( $this->t['l'] . '_NEWSLETTER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'mail');
+		JToolbarHelper::title(   JText::_( $this->t['l'] . '_NEWSLETTER' ).': <small><small>[ ' . $text.' ]</small></small>' , 'mail fa-paper-plane');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){

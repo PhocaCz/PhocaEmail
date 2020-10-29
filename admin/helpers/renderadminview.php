@@ -36,12 +36,12 @@ class PhocaEmailRenderAdminView
             case 'phocaemailsubscriber':
             case 'phocaemaillist':
             default:
-				JHtml::_('behavior.formvalidator');
-				JHtml::_('behavior.keepalive');
+				HTMLHelper::_('behavior.formvalidator');
+				HTMLHelper::_('behavior.keepalive');
 
 				if (!$this->compatible) {
-					JHtml::_('behavior.tooltip');
-					JHtml::_('formbehavior.chosen', 'select');
+					HTMLHelper::_('behavior.tooltip');
+					HTMLHelper::_('formbehavior.chosen', 'select');
 
 				}
 
@@ -51,7 +51,7 @@ class PhocaEmailRenderAdminView
 
 		// CP View
 		if ($this->view ==  null) {
-			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duoton/joomla-fonts.css', array('version' => 'auto'));
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duotone/joomla-fonts.css', array('version' => 'auto'));
 		}
 
 		HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
@@ -102,12 +102,21 @@ class PhocaEmailRenderAdminView
 		return implode("\n", $o);
 	}
 
-	public function startForm($option, $view, $itemId, $id = 'adminForm', $name = 'adminForm') {
-		$o = '<div id="'.$view.'">'."\n";
-		$o .= '<form action="'.JRoute::_('index.php?option='.$option . '&layout=edit&id='.(int) $itemId).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate">'."\n";
-		$o .= '<div class="row-fluid">'."\n";
+	public function startForm($option, $view, $itemId, $id = 'adminForm', $name = 'adminForm', $class = '', $layout = 'edit',  $tmpl = '') {
 
-		return $o;
+		if ($layout != '') {
+			$layout = '&layout='.$layout;
+		}
+		$viewP = '';
+		if ($view != '') {
+			$viewP = '&view='.$view;
+		}
+		if ($tmpl != '') {
+			$tmpl = '&tmpl='.$tmpl;
+		}
+
+		return '<div id="'.$view.'"><form action="'.JRoute::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
+		.'<div id="phAdminEdit" class="row-fluid">'."\n";
 	}
 
 	public function endForm() {
@@ -121,7 +130,7 @@ class PhocaEmailRenderAdminView
 	public function formInputs() {
 
 		$o = '<input type="hidden" name="task" value="" />'. "\n";
-		$o .= JHtml::_('form.token'). "\n";
+		$o .= HTMLHelper::_('form.token'). "\n";
 
 		return $o;
 	}
@@ -223,6 +232,7 @@ class PhocaEmailRenderAdminView
 
 		$banners	= array();
 		$banners[]	= array('Phoca Restaurant Menu','phocamenu', 'prm');
+		$banners[]	= array('Phoca Cart','phocacart', 'pc');
 
 		$o = '';
 		$o .= '<p>&nbsp;</p>';
@@ -245,7 +255,7 @@ class PhocaEmailRenderAdminView
 			for ($i = 0; $i<3; $i++) {
 				$numO = $num[$i];
 				$o .= '<div style="float:left;width:33%;margin:0 auto;">';
-				$o .= '<div><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.JHTML::_('image',  'media/'.$option.'/images/administrator/icon-box-'.$components[$numO][2].'.png', ''). '</a></div>';
+				$o .= '<div><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.HTMLHelper::_('image',  'media/'.$option.'/images/administrator/icon-box-'.$components[$numO][2].'.png', ''). '</a></div>';
 				$o .= '<div style="margin-top:-10px;"><small><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.$components[$numO][0].'</a></small></div>';
 				$o .= '</div>';
 			}
@@ -255,7 +265,7 @@ class PhocaEmailRenderAdminView
 			$num = range(0,(count($banners) - 1 ));
 			shuffle($num);
 			$numO = $num[0];
-			$o .= '<div><a href="https://www.phoca.cz/'.$banners[$numO][1].'" target="_blank">'.JHTML::_('image',  'media/'.$option.'/images/administrator/b-'.$banners[$numO][2].'.png', ''). '</a></div>';
+			$o .= '<div><a href="https://www.phoca.cz/'.$banners[$numO][1].'" target="_blank">'.HTMLHelper::_('image',  'media/'.$option.'/images/administrator/b-'.$banners[$numO][2].'.png', ''). '</a></div>';
 
 		}
 
@@ -269,7 +279,7 @@ class PhocaEmailRenderAdminView
 
 	// TABS
 
-	public function navigation($tabs) {
+	public function navigation($tabs, $activeTab = '') {
 
 		if ($this->compatible) {
 			return '';
@@ -279,8 +289,14 @@ class PhocaEmailRenderAdminView
 		$i = 0;
 		foreach($tabs as $k => $v) {
 			$cA = 0;
-			if ($i == 0) {
-				$cA = 'class="active"';
+			if ($activeTab != '') {
+				if ($activeTab == $k) {
+					$cA = 'class="active"';
+				}
+			} else {
+				if ($i == 0) {
+					$cA = 'class="active"';
+				}
 			}
 			$o .= '<li '.$cA.'><a href="#'.$k.'" data-toggle="tab">'. $v.'</a></li>'."\n";
 			$i++;
@@ -321,7 +337,5 @@ class PhocaEmailRenderAdminView
 			return '</div>';
 		}
 	}
-
-
 }
 ?>

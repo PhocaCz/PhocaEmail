@@ -68,17 +68,17 @@ JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 <table class="ph-table-form">
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROMNAME'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="fromname" id="fromname" style="width:300px" maxlength="100" value="<?php echo $this->re['fromname']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="fromname" id="fromname" style="width:300px" maxlength="100" value="<?php echo $this->re['fromname']; ?>" /></td>
 </tr>
 
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_FROM'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="from" id="from" style="width:300px" maxlength="100" value="<?php echo $this->re['from']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="from" id="from" style="width:300px" maxlength="100" value="<?php echo $this->re['from']; ?>" /></td>
 </tr>
 
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_TO'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="to" id="to" style="width:300px" maxlength="250" value="<?php echo $this->re['to']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="to" id="to" style="width:300px" maxlength="250" value="<?php echo $this->re['to']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list'] == 1) { ?>
@@ -97,7 +97,7 @@ JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_CC'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="cc" id="cc" style="width:300px" maxlength="250" value="<?php echo $this->re['cc']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="cc" id="cc" style="width:300px" maxlength="250" value="<?php echo $this->re['cc']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list_cc'] == 1) { ?>
@@ -116,7 +116,7 @@ JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_BCC'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="bcc" id="bcc" style="width:300px" maxlength="250" value="<?php echo $this->re['bcc']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="bcc" id="bcc" style="width:300px" maxlength="250" value="<?php echo $this->re['bcc']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_users_list_bcc'] == 1) { ?>
@@ -135,10 +135,19 @@ JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 
 <tr>
 	<td class="ph-label"><label for="title"><?php echo JText::_('COM_PHOCAEMAIL_FIELD_SUBJECT'); ?>:</label></td>
-	<td class="ph-inputbox"><input class="inputbox" type="text" name="subject" id="subject" style="width:634px" maxlength="250" value="<?php echo $this->re['subject']; ?>" /></td>
+	<td class="ph-inputbox"><input class="form-control inputbox" type="text" name="subject" id="subject" style="width:634px" maxlength="250" value="<?php echo $this->re['subject']; ?>" /></td>
 </tr>
 
 <?php if ($this->p['display_select_article'] == 1) {
+
+?><tr>
+	<td class="ph-label"><?php echo $this->form->getLabel('article_id') ?></td>
+	<td class="ph-inputbox"><?php echo $this->form->getInput('article_id') ?></td>
+</tr>
+
+<?php
+/*
+
 
 	JHtml::_('behavior.modal', 'a.modal_jform_request_id');
 
@@ -184,7 +193,10 @@ JFactory::getDocument()->addScriptDeclaration(implode('', $js));
 	</td>
 	<td class="ph-inputbox"><?php echo implode("\n", $html); ?></td>
 </tr>
-<?php } ?>
+<?php
+ */
+
+} ?>
 
 
 <tr>

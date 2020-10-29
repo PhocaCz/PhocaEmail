@@ -2,30 +2,30 @@
 <form>
 <fieldset addfieldpath="/administrator/components/com_phocaemail/models/fields">
 	<fields name="filter">
-		
-		
+
+
 	<field name="search" type="text" inputmode="search" label="COM_PHOCAEMAIL_SEARCH" description="COM_PHOCAEMAIL_SEARCH" hint="JSEARCH_FILTER" />
 
 		<field name="published" type="list" label="JOPTION_FILTER_PUBLISHED" description="JOPTION_FILTER_PUBLISHED_DESC" onchange="this.form.submit();" >
-		
+
 		<option value="">JOPTION_SELECT_PUBLISHED</option>
 		<option value="1">COM_PHOCAEMAIL_PUBLISHED</option>
 		<option value="0">COM_PHOCAEMAIL_UNPUBLISHED</option>
 		</field>
-		
-		<field name="mailing_list_id" type="PhocaEmailMailingList" manager="filter" label="COM_PHOCAEMAIL_MAILING_LIST_LABEL" description="COM_PHOCAEMAIL_MAILING_LIST_DESC" class="input" default="" onchange="this.form.submit();" />
+
+		<field name="mailing_list_id" type="PhocaEmailMailingList" manager="filter" label="COM_PHOCAEMAIL_MAILING_LIST_LABEL" description="COM_PHOCAEMAIL_MAILING_LIST_DESC" class="custom-select" default="" onchange="this.form.submit();" />
 
 		<field name="active" type="list" label="COM_PHOCAEMAIL_ACTIVE_STATUS_LABEL" description="COM_PHOCAEMAIL_ACTIVE_STATUS_DESC" onchange="this.form.submit();" >
-		
+
 		<option value="">COM_PHOCAEMAIL_SELECT_ACTIVE_STATUS_OPTION_HEADER</option>
 		<option value="1">COM_PHOCAEMAIL_ACTIVE</option>
 		<option	value="0">COM_PHOCAEMAIL_NOT_ACTIVE</option>
 		<option	value="2">COM_PHOCAEMAIL_UNSUBSCRIBED</option>
 		</field>
-		
+
 		<!--<field name="language" type="contentlanguage" label="JOPTION_FILTER_LANGUAGE" description="JOPTION_FILTER_LANGUAGE_DESC" onchange="this.form.submit();"> <option value="">JOPTION_SELECT_LANGUAGE</option> <option value="*">JALL</option>
 		</field>-->
-		
+
 		<input type="hidden" name="form_submited" value="1"/>
 	</fields>
 

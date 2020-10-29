@@ -89,7 +89,7 @@ class PhocaEmailHelper
 		$users = $db->loadObjectList();
 
 
-		$users = JHTML::_('select.genericlist',   $users, $name, 'class="inputbox" size="4" multiple="multiple" style="width:314px;"'. $javascript, 'value', 'text', $activeArray );
+		$users = JHTML::_('select.genericlist',   $users, $name, 'class="form-control inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray );
 
 		return $users;
 	}
@@ -149,7 +149,7 @@ class PhocaEmailHelper
 		}
 
 		$newsletterList['list']			= $newsletters;
-		$newsletterList['genericlist'] 	= JHTML::_('select.genericlist',   $newsletters, 'newsletter', 'class="inputbox" size="4"'. '', 'value', 'text', '' );
+		$newsletterList['genericlist'] 	= JHTML::_('select.genericlist',   $newsletters, 'newsletter', 'class="form-control inputbox"'. '', 'value', 'text', '' );
 
 		return $newsletterList;
 	}
@@ -182,7 +182,7 @@ class PhocaEmailHelper
 
 		return JHtml::_('select.genericlist', $options, $name,
 			array(
-				'list.attr' => 'class="inputbox" size="4" multiple="multiple" style="width:314px;"',
+				'list.attr' => 'class="form-control inputbox" size="4" multiple="multiple"',
 				'list.select' => $selected
 			)
 		);

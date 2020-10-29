@@ -101,7 +101,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaEmailSendNewsletterHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil' );
+		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil fa-pencil-alt' );
 
 		if ($canDo->get('core.admin')) {
 			//JToolbarHelper::preferences('com_phocaemail');

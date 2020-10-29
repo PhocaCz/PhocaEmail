@@ -38,7 +38,7 @@ class PhocaEmailCpViewPhocaEmailInfo extends JViewLegacy
 		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
-		JToolbarHelper::title( JText::_($this->t['l'].'_PE_INFO' ), 'info' );
+		JToolbarHelper::title( JText::_($this->t['l'].'_PE_INFO' ), 'info fa-info-circle' );
 		if ($canDo->get('core.admin')) {
 			JToolbarHelper::preferences('com_'.$this->t['c']);
 		}

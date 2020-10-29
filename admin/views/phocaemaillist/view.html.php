@@ -43,7 +43,7 @@ class PhocaEmailCpViewPhocaEmailList extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $this->state->get('filter.list_id'));
 
 		$text = $isNew ? JText::_( $this->t['l'] . '_NEW' ) : JText::_($this->t['l'] . '_EDIT');
-		JToolbarHelper::title(   JText::_( $this->t['l'] . '_MAILING_LIST' ).': <small><small>[ ' . $text.' ]</small></small>' , 'list');
+		JToolbarHelper::title(   JText::_( $this->t['l'] . '_MAILING_LIST' ).': <small><small>[ ' . $text.' ]</small></small>' , 'list fa-list');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){

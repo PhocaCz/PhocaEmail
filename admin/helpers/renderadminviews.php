@@ -35,9 +35,9 @@ class PhocaEmailRenderAdminViews
 			case 'phocaemailsendnewsletter':
 			case 'phocaemailnewstetter':
 
-				JHtml::_('behavior.keepalive');
+				HTMLHelper::_('behavior.keepalive');
 				if (!$this->compatible) {
-					JHtml::_('formbehavior.chosen', 'select');
+					HTMLHelper::_('formbehavior.chosen', 'select');
 				}
 
 			break;
@@ -47,11 +47,11 @@ class PhocaEmailRenderAdminViews
 			case 'phocaemaillists':
 			default:
 
-				JHtml::_('bootstrap.tooltip');
-				JHtml::_('behavior.multiselect');
-				JHtml::_('dropdown.init');
+				HTMLHelper::_('bootstrap.tooltip');
+				HTMLHelper::_('behavior.multiselect');
+				HTMLHelper::_('dropdown.init');
 				if (!$this->compatible) {
-					JHtml::_('formbehavior.chosen', 'select');
+					HTMLHelper::_('formbehavior.chosen', 'select');
 				}
 
 			break;
@@ -59,7 +59,7 @@ class PhocaEmailRenderAdminViews
 
 		// CP View
 		if ($this->view ==  null) {
-			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duoton/joomla-fonts.css', array('version' => 'auto'));
+			HTMLHelper::_('stylesheet', 'media/'.$this->option.'/duotone/joomla-fonts.css', array('version' => 'auto'));
 		}
 
 		HTMLHelper::_('stylesheet', 'media/'.$this->option.'/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
@@ -141,7 +141,7 @@ class PhocaEmailRenderAdminViews
 		return '<div class="btn-group pull-right ph-select-status">'. "\n"
 		.'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
-		. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
+		. HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
 		.'</select></div>'. "\n";
 	}
 
@@ -172,7 +172,7 @@ class PhocaEmailRenderAdminViews
 		. '<option value="" '.$n.'>- '.JText::_($txtSp).' -</option>'
 		. '<option value="0" '.$nS.'>'.JText::_('COM_PHOCAEMAIL_NOT_ACTIVE').'</option>'
 		. '<option value="1" '.$aS.'>'.JText::_('COM_PHOCAEMAIL_ACTIVE').'</option>'
-		//. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array()), 'value', 'text', $state, true)
+		//. HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions', array()), 'value', 'text', $state, true)
 		.'</select></div>'. "\n";
 	}
 
@@ -180,7 +180,7 @@ class PhocaEmailRenderAdminViews
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
-		. JHtml::_('select.options', $typeList, 'value', 'text', $type, true)
+		. HTMLHelper::_('select.options', $typeList, 'value', 'text', $type, true)
 		.'</select></div>'. "\n";
 	}
 
@@ -188,7 +188,7 @@ class PhocaEmailRenderAdminViews
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $state)
+		. HTMLHelper::_('select.options', HTMLHelper::_('contentlanguage.existing', true, true), 'value', 'text', $state)
 		.'</select></div>'. "\n";
 	}
 
@@ -196,7 +196,7 @@ class PhocaEmailRenderAdminViews
 		return '<div class="btn-group pull-right ">'. "\n"
 		.'<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', $categoryList, 'value', 'text', $state)
+		. HTMLHelper::_('select.options', $categoryList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
 	}
 
@@ -206,7 +206,7 @@ class PhocaEmailRenderAdminViews
 		return '<div class="btn-group pull-right ">'. "\n"
 		.'<select name="filter_mailing_list" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">- '.JText::_($txtLng).' -</option>'
-		. JHtml::_('select.options', $mailingList, 'value', 'text', $state)
+		. HTMLHelper::_('select.options', $mailingList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
 	}
 
@@ -216,7 +216,7 @@ class PhocaEmailRenderAdminViews
 		'<div class="btn-group pull-right">'. "\n"
 		.'<select name="filter_level" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
-		. JHtml::_('select.options', $levelList, 'value', 'text', $state)
+		. HTMLHelper::_('select.options', $levelList, 'value', 'text', $state)
 		. '</select></div>'. "\n";
 	}
 
@@ -273,7 +273,7 @@ class PhocaEmailRenderAdminViews
 		.'<label for="sortTable" class="element-invisible">'.JText::_($txtSb).'</label>'. "\n"
 		.'<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">'. "\n"
 		.'<option value="">'.JText::_($txtSb).'</option>'. "\n"
-		. JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder). "\n"
+		. HTMLHelper::_('select.options', $sortFields, 'value', 'text', $listOrder). "\n"
 		.'</select>'. "\n"
 		.'</div>'. "\n";
 	}
@@ -299,7 +299,7 @@ class PhocaEmailRenderAdminViews
 
 	public function thOrdering($txtHo, $listDirn, $listOrder ) {
 		return '<th class="nowrap center hidden-phone ph-ordering">'. "\n"
-		. JHtml::_('searchtools.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', $txtHo). "\n"
+		. HTMLHelper::_('searchtools.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', $txtHo). "\n"
 		. '</th>';
 	}
 
@@ -310,9 +310,9 @@ class PhocaEmailRenderAdminViews
 		}
 
 		return '<th class="nowrap center text-center ph-ordering">'. "\n"
-		. JHtml::_('searchtools.sort', '', strip_tags($prefix).'.ordering', $listDirn, $listOrder, null, 'asc', $txtHo, 'icon-menu-2'). "\n"
+		. HTMLHelper::_('searchtools.sort', '', strip_tags($prefix).'.ordering', $listDirn, $listOrder, null, 'asc', $txtHo, 'icon-menu-2'). "\n"
 		. '</th>';
-		//JHtml::_('searchtools.sort', $this->t['l'].'_IN_STOCK', 'a.stock', $listDirn, $listOrder ).'</th>'."\n";
+		//HTMLHelper::_('searchtools.sort', $this->t['l'].'_IN_STOCK', 'a.stock', $listDirn, $listOrder ).'</th>'."\n";
 
 	}
 
@@ -380,7 +380,7 @@ class PhocaEmailRenderAdminViews
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="" />'. "\n"
-		. JHtml::_('form.token'). "\n"
+		. HTMLHelper::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
 	}*/
 
@@ -390,7 +390,7 @@ class PhocaEmailRenderAdminViews
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
-		. JHtml::_('form.token'). "\n"
+		. HTMLHelper::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
 	}
 
@@ -400,7 +400,7 @@ class PhocaEmailRenderAdminViews
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		//.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		//.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
-		. JHtml::_('form.token'). "\n"
+		. HTMLHelper::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
 	}
 
@@ -441,22 +441,22 @@ class PhocaEmailRenderAdminViews
 		$times = '';
 		if (isset($publishUp)) {
 			if ($publishUp == $nullDate) {
-				$times .= JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
+				$times .= "\n".JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
 			} else {
-				$times .= JText::_( $langPref . '_START') .": ". $publish_up->format("D, d M Y H:i:s");
+				$times .= "\n".JText::_( $langPref . '_START') .": ". $publish_up->format("D, d M Y H:i:s");
 			}
 		}
 		if (isset($publishDown)) {
 			if ($publishDown == $nullDate) {
-				$times .= "<br />". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
+				$times .= "\n". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
 			} else {
-				$times .= "<br />". JText::_( $langPref . '_FINISH') .": ". $publish_down->format("D, d M Y H:i:s");
+				$times .= "\n". JText::_( $langPref . '_FINISH') .": ". $publish_down->format("D, d M Y H:i:s");
 			}
 		}
 
 		if ( $times ) {
 			$o .= '<td align="center">'
-				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).'::'. $times.'">'
+				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).': '. $times.'">'
 				.'<a href="javascript:void(0);" >'. $text.'</a></span>'
 				.'</td>'. "\n";
 		} else {
@@ -471,24 +471,26 @@ class PhocaEmailRenderAdminViews
 		if ($this->compatible) {
 			HTMLHelper::_('draggablelist.draggable');
 		} else {
-			JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+			HTMLHelper::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
 		}
 
 		return $saveOrderingUrl;
 	}
 
-	public function firstColumnHeader($listDirn, $listOrder) {
+	public function firstColumnHeader($listDirn, $listOrder, $prefix = 'a', $empty = false) {
 		if ($this->compatible) {
+			// todo empty
 			return '<th class="w-1 text-center ph-check">'. HTMLHelper::_('grid.checkall').'</td>';
 		} else {
-			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder, $prefix, $empty);
 		}
 	}
 
-	public function secondColumnHeader($listDirn, $listOrder) {
+	public function secondColumnHeader($listDirn, $listOrder, $prefix = 'a', $empty = false) {
 		if ($this->compatible) {
-			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder, $prefix, $empty);
 		} else {
+			// todo empty
 			return $this->thCheck('JGLOBAL_CHECK_ALL');
 		}
 	}
@@ -562,7 +564,7 @@ class PhocaEmailRenderAdminViews
 			return implode("", $o);
 
 		} else {
-			return $this->td(JHtml::_('grid.id', $i, $itemId), "small ");
+			return $this->td(HTMLHelper::_('grid.id', $i, $itemId), "small ");
 		}
 	}
 }

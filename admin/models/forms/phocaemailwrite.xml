@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset addfieldpath="/administrator/components/com_phocaemail/models/fields">
+        <field name="article_id" type="modal_article" select="true" new="true" edit="true" clear="true" class="inputbox" label="COM_PHOCAEMAIL_SELECT_ARTICLE"
+               description="COM_PHOCAEMAIL_SELECT_ARTICLE" addfieldpath="/administrator/components/com_content/models/fields" addfieldprefix="Joomla\Component\Content\Administrator\Field"/>
+    </fieldset>
+</form>

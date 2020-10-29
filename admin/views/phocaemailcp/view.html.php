@@ -46,7 +46,7 @@ class PhocaEmailCpViewPhocaEmailCp extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaEmailCpHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_PE_CONTROL_PANEL' ), 'home-2 cpanel' );
+		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_PE_CONTROL_PANEL' ), 'home-2 cpanel fa-home' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		$bar = JToolbar::getInstance( 'toolbar' );

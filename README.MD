@@ -64,7 +64,7 @@ Phoca Email is a newsletter component and it can be even used for sending emails
 
 ## Version
 
-3.1.1
+3.1.2
 
 
 

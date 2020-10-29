@@ -17,11 +17,15 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 	protected $p;
 	protected $r;
 	protected $re;
+	protected $form;
 
 	function display($tpl = null) {
 
 		$this->t	= PhocaEmailUtils::setVars();
 		$this->r	= new PhocaEmailRenderAdminView();
+
+
+		$this->form		= $this->get('Form');
 
 
 		JFactory::getApplication()->input->set('hidemainmenu', true);
@@ -165,9 +169,9 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 	function addToolbar() {
 		require_once JPATH_COMPONENT.'/helpers/phocaemailwrite.php';
 
-		$state	= $this->get('State');
+		//$state	= $this->get('State');
 		$canDo	= PhocaEmailWriteHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_WRITE' ), 'pencil' );
+		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_EMAIL' ), 'pencil fa-pencil-alt');
 
 		if ($canDo->get('core.admin')) {
 			//JToolbarHelper::preferences('com_phocaemail');
