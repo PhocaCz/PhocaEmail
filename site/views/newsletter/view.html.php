@@ -7,27 +7,34 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailHelper;
 jimport( 'joomla.application.component.view');
 require_once( JPATH_ADMINISTRATOR.'/components/com_phocaemail/helpers/phocaemailutils.php');
 
-class PhocaEmailViewNewsletter extends JViewLegacy
+class PhocaEmailViewNewsletter extends HtmlView
 {
 	protected $t;
 	protected $p;
 
 	function display($tpl = null){
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
-		JHtml::stylesheet('media/com_phocaemail/css/main.css' );
+		HTMLHelper::stylesheet('media/com_phocaemail/css/main.css' );
 
 
-		$app					= JFactory::getApplication();
+		$app					= Factory::getApplication();
 		$this->p 				= $app->getParams();
-		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
-		$document				= JFactory::getDocument();
+		$uri 					= Uri::getInstance();
+		$document				= Factory::getDocument();
 		$model					= $this->getModel();
-		$session 	= JFactory::getSession();
+		$session 	= Factory::getSession();
 		$task					= $app->input->get('task', '', 'string');
 		// SUBSCRIBE - controller
 	/*	$email					= $app->input->get('email', '', 'string');
@@ -53,6 +60,20 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 		$this->t['session_suffix'] 					= $this->p->get( 'session_suffix', '' );
 		$this->t['display_privacy_checkbox_form']	= $this->p->get( 'display_privacy_checkbox_form', 0 );
 
+		// We got the email from module
+		// In module we want to display only email field and subscribe button but we want to redirect this
+		// to newsletter where we want to get more info like Name, or we want to use recaptcha
+		// This is still no storing email, only displaying it in newsletter form view
+		$this->t['email_value'] = '';
+		if (Session::checkToken('request')) {
+
+			$email					= $app->input->get('email', '', 'string');
+			if ($email != '' && MailHelper::isEmailAddress($email)) {
+				$this->t['email_value'] = $email;
+			}
+		}
+
+
 
 		$error = 0;
 		$this->t['text'] = '';
@@ -64,14 +85,14 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 
 			// SET IN CONTROLLER
 		/*	// SESSION
-			if (!JSession::checkToken( 'request' )) {
-				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_WRONG_FORM_DATA').'</div>';
+			if (!Session::checkToken( 'request' )) {
+				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_WRONG_FORM_DATA').'</div>';
 				$error = 1;
 			}
 
 			// ENABLED SUBSCRIPTION
 			if ($this->t['enable_subscription'] == 0 && $error == 0) {
-				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
+				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
 				$error = 1;
 			}
 
@@ -79,7 +100,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 			if ( $this->t['enable_captcha'] != 0 && $error == 0) {
 				$validC  				= PhocaEmailUtils::isReCaptchaValid();
 				if (!$validC) {
-					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_WRONG_CAPTCHA_ADDED').'</div>';
+					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_WRONG_CAPTCHA_ADDED').'</div>';
 					$error = 1;
 				}
 			}
@@ -89,24 +110,24 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 
 				$this->t['text'] = '';
 				if ( $name == '' && (int)$this->t['display_name_form'] == 2) {
-					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_NAME_NOT_SET').'</div>';
+					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_NAME_NOT_SET').'</div>';
 					$error = 1;
 				}
 
 				if ($email == '') {
-					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SET').'</div>';
+					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SET').'</div>';
 					$error = 1;
 				} else {
 
 					jimport('joomla.mail.helper');
-					if ($email && $email != '' && !JMailHelper::isEmailAddress($email)) {
-						$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_ADDRESS_NOT_VALID').'</div>';
+					if ($email && $email != '' && !MailHelper::isEmailAddress($email)) {
+						$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_ADDRESS_NOT_VALID').'</div>';
 						$error = 1;
 					}
 				}
 
 				if ($privacy == 0 && (int)$this->t['display_privacy_checkbox_form'] == 2) {
-					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_YOU_NEED_TO_AGREE_TO_PRIVACY_TERMS_AND_CONDITIONS').'</div>';
+					$this->t['text'] .= '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_YOU_NEED_TO_AGREE_TO_PRIVACY_TERMS_AND_CONDITIONS').'</div>';
 					$error = 1;
 
 				}
@@ -120,9 +141,9 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 					// Send activation email
 					$send = PhocaEmailSendNewsletterEmail::sendNewsLetterEmail($name, $email, 'activate');
 					if ($send) {
-						$this->t['text'] =  '<div class="alert alert-success" role="alert">'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CREATED_ACTIVATION_LINK_SENT').'</div>';
+						$this->t['text'] =  '<div class="alert alert-success" role="alert">'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CREATED_ACTIVATION_LINK_SENT').'</div>';
 					} else {
-						$this->t['text'] =  '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
+						$this->t['text'] =  '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
 					}
 				} else {
 					// Error set in model
@@ -172,7 +193,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 		else if ($task == 'activate') {
 
 			if ($this->t['enable_subscription'] == 0) {
-				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
+				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
 				$error = 1;
 			} else {
 
@@ -180,16 +201,16 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 					$activate = PhocaEmailSendNewsletterEmail::activateUser($uToken);
 
 					if ($activate == 1) {
-						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED').'</h2><br />'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED_THANK_YOU_FOR_SUBSCRIBING_TO_OUR_NEWSLETTER').'</div>';
+						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED').'</h2><br />'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED_THANK_YOU_FOR_SUBSCRIBING_TO_OUR_NEWSLETTER').'</div>';
 					} else if ($activate == 2) {
-						$this->t['text'] =  '<div class="alert alert-warning" role="alert"><h2>'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED').'</h2><br />'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_ALREADY_CONFIRMED').'</div>';
+						$this->t['text'] =  '<div class="alert alert-warning" role="alert"><h2>'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CONFIRMED').'</h2><br />'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_ALREADY_CONFIRMED').'</div>';
 
 					} else {
-						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_CONFIRMATION_YOUR_SUBSCRIPTION_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
+						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_CONFIRMATION_YOUR_SUBSCRIPTION_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
 
 					}
 				} else {
-					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_CONFIRMATION_YOUR_SUBSCRIPTION_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
+					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_CONFIRMATION_YOUR_SUBSCRIPTION_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
 
 				}
 			}
@@ -201,7 +222,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 		else if ($task == 'unsubscribe') {
 
 			if ($this->t['enable_subscription'] == 0) {
-				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
+				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
 				$error = 1;
 			} else {
 
@@ -209,26 +230,26 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 					$unsubscribe = PhocaEmailSendNewsletterEmail::unsubscribeUser($uToken);
 					if ($unsubscribe == 1) {
 
-						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.JText::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER').'</div>';
+						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.Text::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER').'</div>';
 
 					} else if ($unsubscribe == 2) {
 
-						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.JText::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER_CONFIRMATION_SENT_TO_YOUR_EMAIL').'</div>';
+						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.Text::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER_CONFIRMATION_SENT_TO_YOUR_EMAIL').'</div>';
 
 					} else if ($unsubscribe == 3) {
 
-						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SUBSCRIPTION_NOT_ACTIVE_IN_OUR_NEWSLETTER').'</div>';
+						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_SUBSCRIPTION_NOT_ACTIVE_IN_OUR_NEWSLETTER').'</div>';
 
 					} else if ($unsubscribe == 4) {
 
-						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.JText::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER').'<br />'.JText::_('COM_PHOCAEMAIL_ALL_YOUR_PERSONAL_DATA_HAS_BEEN_DELETED').'</div>';
+						$this->t['text'] =  '<div class="alert alert-success" role="alert"><h2>'.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED').'</h2><br />'.Text::_('COM_PHOCAEMAIL_YOU_HAVE_BEEN_UNSUBSCRIBED_FROM_OUR_NEWSLETTER').'<br />'.Text::_('COM_PHOCAEMAIL_ALL_YOUR_PERSONAL_DATA_HAS_BEEN_DELETED').'</div>';
 
 					} else {
-						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_UNSUBSCRIBING_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
+						$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_UNSUBSCRIBING_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
 
 					}
 				} else {
-					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_UNSUBSCRIBING_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
+					$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_OCCURRED_DURING_UNSUBSCRIBING_PLEASE_CONTACT_ADMINISTRATOR').'</div>';
 
 				}
 			}
@@ -281,7 +302,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 			$tpl = 'form';
 
 			if ($this->t['enable_subscription'] == 0) {
-				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.JText::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
+				$this->t['text'] = '<div class="alert alert-error alert-danger" role="alert">'.Text::_('COM_PHOCAEMAIL_ERROR_SUBSCRIPTION_DISABLED').'</div>';
 				$error = 1;
 			} else {
 
@@ -295,7 +316,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 			// Newsletter FORM is default view
             // ONLY active in form is active - not in tasks like subscribe, unsubscribe, activate, readonline
             if ($this->t['description'] != '') {
-                $this->t['text'] .= '<div class="ph-desc" >'.JHTML::_('content.prepare', $this->t['description']).'</div>';
+                $this->t['text'] .= '<div class="ph-desc" >'.HTMLHelper::_('content.prepare', $this->t['description']).'</div>';
             }
 
 		}
@@ -307,7 +328,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 
 	protected function _prepareDocument() {
 
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$menus			= $app->getMenu();
 		$menu 			= $menus->getActive();
 		$pathway 		= $app->getPathway();
@@ -317,7 +338,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 		if ($menu) {
 			 $this->p->def('page_heading',  $this->p->get('page_title', $menu->title));
 		} else {
-			 $this->p->def('page_heading', JText::_('JGLOBAL_ARTICLES'));
+			 $this->p->def('page_heading', Text::_('JGLOBAL_ARTICLES'));
 		}
 
 
@@ -330,10 +351,10 @@ class PhocaEmailViewNewsletter extends JViewLegacy
           }
           // else add the title before or after the sitename
           elseif ($app->get('sitename_pagetitles', 0) == 1) {
-             $title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+             $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
           }
           elseif ($app->get('sitename_pagetitles', 0) == 2) {
-             $title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+             $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
           }
           $this->document->setTitle($title);
 
@@ -353,7 +374,7 @@ class PhocaEmailViewNewsletter extends JViewLegacy
 
 
 
-		$pathway->addItem(JText::_('COM_PHOCAEMAIL_NEWSLETTER'));
+		$pathway->addItem(Text::_('COM_PHOCAEMAIL_NEWSLETTER'));
 
 	}
 }

@@ -9,10 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
 
 // Require the base controller and helpers
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
+require JPATH_ADMINISTRATOR . '/components/com_phocaemail/libraries/autoloadPhoca.php';
 require_once( JPATH_COMPONENT.'/controller.php' );
 require_once( JPATH_COMPONENT.'/helpers/phocaemailutils.php' );
 require_once( JPATH_COMPONENT.'/helpers/renderadminview.php' );
@@ -24,7 +27,7 @@ require_once( JPATH_COMPONENT.'/helpers/phocaemailsendnewsletteremail.php' );
 
 
 jimport('joomla.application.component.controller');
-$controller	= JControllerLegacy::getInstance('PhocaEmailCp');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller	= BaseController::getInstance('PhocaEmailCp');
+$controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();
 ?>

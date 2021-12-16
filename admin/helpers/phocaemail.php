@@ -9,6 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 class PhocaEmailHelper
 {
 	public static function getPath() {
@@ -16,7 +22,7 @@ class PhocaEmailHelper
 		$path['path_abs']		= JPATH_ROOT . '/phocaemail/' ;
 		$path['path_abs_nods']	= JPATH_ROOT . '/phocaemail' ;
 		$path['path_rel']		= 'phocaemail/';
-		$path['path_rel_full']	= JURI::base(true) . '/' . $path['path_rel'];
+		$path['path_rel_full']	= Uri::base(true) . '/' . $path['path_rel'];
 
 		return $path;
 	}
@@ -25,12 +31,12 @@ class PhocaEmailHelper
 	public static function getPhocaVersion()
 	{
 		$folder = JPATH_ADMINISTRATOR . '/components/com_phocaemail';
-		if (JFolder::exists($folder)) {
-			$xmlFilesInDir = JFolder::files($folder, '.xml$');
+		if (Folder::exists($folder)) {
+			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE .'/components/com_phocaemail';
-			if (JFolder::exists($folder)) {
-				$xmlFilesInDir = JFolder::files($folder, '.xml$');
+			if (Folder::exists($folder)) {
+				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;
 			}
@@ -41,7 +47,7 @@ class PhocaEmailHelper
 		{
 			foreach ($xmlFilesInDir as $xmlfile)
 			{
-				if ($data = \JInstaller::parseXMLInstallFile($folder.'/'.$xmlfile)) {
+				if ($data = Installer::parseXMLInstallFile($folder.'/'.$xmlfile)) {
 					foreach($data as $key => $value) {
 						$xml_items[$key] = $value;
 					}
@@ -70,7 +76,7 @@ class PhocaEmailHelper
 	public static function usersList( $name, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1 ) {
 
 		$activeArray = $active;
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 
 		$and	= '';
 		/*if ( $reg ) {
@@ -89,7 +95,7 @@ class PhocaEmailHelper
 		$users = $db->loadObjectList();
 
 
-		$users = JHTML::_('select.genericlist',   $users, $name, 'class="form-control inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray );
+		$users = HTMLHelper::_('select.genericlist',   $users, $name, 'class="form-control inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray );
 
 		return $users;
 	}
@@ -97,7 +103,7 @@ class PhocaEmailHelper
 	public static function newsletterList( ) {
 
 
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 
 
 		$query = 'SELECT a.id AS value, a.title AS text,'
@@ -149,14 +155,14 @@ class PhocaEmailHelper
 		}
 
 		$newsletterList['list']			= $newsletters;
-		$newsletterList['genericlist'] 	= JHTML::_('select.genericlist',   $newsletters, 'newsletter', 'class="form-control inputbox"'. '', 'value', 'text', '' );
+		$newsletterList['genericlist'] 	= HTMLHelper::_('select.genericlist',   $newsletters, 'newsletter', 'class="form-select inputbox"'. '', 'value', 'text', '' );
 
 		return $newsletterList;
 	}
 
 	public static function groupslist($name, $selected, $attribs = '', $allowAll = true)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = 'SELECT a.id AS value, a.title AS text, COUNT(DISTINCT b.id) AS level' .
 			' FROM #__usergroups AS a' .
 			' LEFT JOIN #__usergroups AS b ON a.lft > b.lft AND a.rgt < b.rgt' .
@@ -177,10 +183,10 @@ class PhocaEmailHelper
 
 		// If all usergroups is allowed, push it into the array.
 		/*if ($allowAll) {
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
 		}*/
 
-		return JHtml::_('select.genericlist', $options, $name,
+		return HTMLHelper::_('select.genericlist', $options, $name,
 			array(
 				'list.attr' => 'class="form-control inputbox" size="4" multiple="multiple"',
 				'list.select' => $selected
@@ -190,7 +196,7 @@ class PhocaEmailHelper
 
 	public static function getToken($type = 'token') {
 
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$secret		= $app->get('secret');
 		$secretPartA= substr($secret, mt_rand(5,15), mt_rand(2,10));
 		$secretPartB= substr($secret, mt_rand(5,15), mt_rand(2,10));

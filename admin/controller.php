@@ -7,6 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
 jimport('joomla.application.component.controller');
 
 
@@ -19,8 +23,8 @@ $l['s']		= array('COM_PHOCAEMAIL_SUBSCRIBERS', 'phocaemailsubscribers');
 $l['l']		= array('COM_PHOCAEMAIL_MAILING_LISTS', 'phocaemaillists');
 $l['in']	= array('COM_PHOCAEMAIL_INFO', 'phocaemailinfo');
 
-$view	= JFactory::getApplication()->input->get('view');
-$layout	= JFactory::getApplication()->input->get('layout');
+$view	= Factory::getApplication()->input->get('view');
+$layout	= Factory::getApplication()->input->get('layout');
 
 
 if ($layout == 'edit') {
@@ -36,15 +40,15 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1], true );
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1], true );
 		} else {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1]);
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1]);
 		}
 
 	}
 }
 
-class PhocaEmailCpController extends JControllerLegacy {
+class PhocaEmailCpController extends BaseController {
 	function display($cachable = false, $urlparams = array()) {
 		parent::display($cachable, $urlparams);
 	}

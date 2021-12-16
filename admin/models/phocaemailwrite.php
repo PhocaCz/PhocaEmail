@@ -9,9 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.modeladmin');
 
-class phocaemailCpModelPhocaemailWrite extends JModelAdmin
+class phocaemailCpModelPhocaemailWrite extends AdminModel
 {
 	protected	$option 		= 'com_phocaemail';
 	protected 	$text_prefix	= 'com_phocaemail';
@@ -21,12 +24,12 @@ class phocaemailCpModelPhocaemailWrite extends JModelAdmin
 
 	public function getTable($type = 'phocaemail', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocaemail.phocaemailwrite', 'phocaemailwrite', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form)) {
@@ -38,7 +41,7 @@ class phocaemailCpModelPhocaemailWrite extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocaemail.edit.phocaemail.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocaemail.edit.phocaemail.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -49,14 +52,13 @@ class phocaemailCpModelPhocaemailWrite extends JModelAdmin
 
 		public function getItem($pk = null) {
 		$item = new stdClass();
-		$app				= JFactory::getApplication();
+		$app				= Factory::getApplication();
 		$context = 'com_phocaemail.write.';
 		$item->article_id	= $app->getUserStateFromRequest( $context.'article_id', 'article_id', '', 'int' );
-		//krumo($item);exit;
 		return $item;
 	}
 
-	
+
 
 }
 ?>

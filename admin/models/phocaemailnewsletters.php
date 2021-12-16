@@ -8,9 +8,12 @@
  */
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.modellist');
 
-class PhocaEmailCpModelPhocaEmailNewsletters extends JModelList
+class PhocaEmailCpModelPhocaEmailNewsletters extends ListModel
 {
 	protected	$option 		= 'com_phocaemail';
 	public function __construct($config = array())
@@ -37,7 +40,7 @@ class PhocaEmailCpModelPhocaEmailNewsletters extends JModelList
 	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -54,7 +57,7 @@ class PhocaEmailCpModelPhocaEmailNewsletters extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocaemail');
+		$params = ComponentHelper::getParams('com_phocaemail');
 		$this->setState('params', $params);
 
 		// List state information.

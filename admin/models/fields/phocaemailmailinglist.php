@@ -7,8 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldPhocaEmailMailingList extends JFormField
+class JFormFieldPhocaEmailMailingList extends FormField
 {
 	protected $type 		= 'PhocaEmailMailingList';
 
@@ -31,7 +35,7 @@ class JFormFieldPhocaEmailMailingList extends JFormField
 
 
 		$order 	= 'ordering ASC';
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query 	= 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocaemail_lists AS a'
 				. ' ORDER BY '. $order;
@@ -44,7 +48,7 @@ class JFormFieldPhocaEmailMailingList extends JFormField
 		    // 1) FILTER FUNCTION - e.g. in subscribers list (on list is filtered)
             $name = $this->name;
             $value= $this->value;
-            array_unshift($lists, JHtml::_('select.option', '', '- ' . JText::_('COM_PHOCAEMAIL_SELECT_MAILING_LIST') . ' -', 'value', 'text'));
+            array_unshift($lists, HTMLHelper::_('select.option', '', '- ' . Text::_('COM_PHOCAEMAIL_SELECT_MAILING_LIST') . ' -', 'value', 'text'));
         } else {
 
             // 2) SELECT FUNCTION - e.g. in subscriber edit (more lists can be selected)
@@ -84,7 +88,19 @@ class JFormFieldPhocaEmailMailingList extends JFormField
 
         }
 
-		$html = JHTML::_('select.genericlist', $lists, $name, $attr, 'value', 'text', $value, 'id');
+
+        if ($multiple) {
+
+            $data            = $this->getLayoutData();
+            $data['options'] = (array)$lists;
+            $data['value']   = $activeArray;
+
+            $html = $this->getRenderer($this->layout)->render($data);
+        } else {
+            $html = HTMLHelper::_('select.genericlist', $lists, $name, $attr, 'value', 'text', $value, 'id');
+        }
+
+
 
 		return $html;
 

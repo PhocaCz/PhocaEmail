@@ -7,15 +7,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
-class PhocaEmailCpViewPhocaEmailInfo extends JViewLegacy
+class PhocaEmailCpViewPhocaEmailInfo extends HtmlView
 {
 	protected $t;
 	protected $r;
 
 	public function display($tpl = null) {
-		$this->t	= PhocaEmailUtils::setVars();
+		$this->t	= PhocaEmailUtils::setVars('phocaemailinfo');
 		$this->r	= new PhocaEmailRenderAdminView();
 
 		$this->t['component_head'] 	= $this->t['l'].'_PHOCA_EMAIL';
@@ -34,17 +39,17 @@ class PhocaEmailCpViewPhocaEmailInfo extends JViewLegacy
 
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
+		$bar = Toolbar::getInstance( 'toolbar' );
+		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.Text::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.Text::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
-		JToolbarHelper::title( JText::_($this->t['l'].'_PE_INFO' ), 'info fa-info-circle' );
+		ToolbarHelper::title( Text::_($this->t['l'].'_PE_INFO' ), 'info fa-info-circle' );
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper::preferences('com_'.$this->t['c']);
+			ToolbarHelper::preferences('com_'.$this->t['c']);
 		}
 
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

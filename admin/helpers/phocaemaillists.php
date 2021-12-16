@@ -7,12 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 class PhocaEmailListsHelper
 {
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user	= Factory::getUser();
+		$result	= new CMSObject;
 
 		$assetName = 'com_phocaemail';
 
@@ -42,7 +44,7 @@ class PhocaEmailListsHelper
 		$javascript	= NULL;*/
 		
 		$order 	= 'ordering ASC';
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query 	= 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocaemail_lists AS a'
 				. ' ORDER BY '. $order;
@@ -75,7 +77,7 @@ class PhocaEmailListsHelper
 		
 	
 		
-		//$html = JHTML::_('select.genericlist', $lists, $this->name.'[]', 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, 'id');
+		//$html = JHtml::_('select.genericlist', $lists, $this->name.'[]', 'class="form-control" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, 'id');
 		
 	//	return $html;
 	}

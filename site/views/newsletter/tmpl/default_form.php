@@ -7,7 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-$layout 	= new JLayoutFile('newsletter_form', null, array('component' => 'com_phocaemail'));
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Language\Text;
+$layout 	= new FileLayout('newsletter_form', null, array('component' => 'com_phocaemail'));
 
 echo '<div id="ph-newsletter-box" class="ph-newsletter-view'.$this->p->get( 'pageclass_sfx' ).'" >';
 
@@ -16,7 +18,7 @@ if ( $this->p->get( 'show_page_heading' ) ) {
     if ($this->p->get('page_heading') != '') {
 	    echo '<h1>'. $this->escape($this->p->get('page_heading')) . '</h1>';
     } else {
-        echo '<h1>' . JText::_('COM_PHOCAEMAIL_NEWSLETTER') . '</h1>';
+        echo '<h1>' . Text::_('COM_PHOCAEMAIL_NEWSLETTER') . '</h1>';
     }
 }
 
@@ -28,6 +30,7 @@ if ($this->t['display_subscription_form'] == 1) {
 	$d['mailing_list']		= $this->t['mailing_list'];
 	$d['link_subscribe']	= PhocaEmailHelperRoute::getNewsletterRoute(0, 'subscribe');
 	$d['extension-type']	= 'com';
+	$d['value_email']       = $this->t['email_value'];// checked in view
 	echo $layout->render($d);
 }
 

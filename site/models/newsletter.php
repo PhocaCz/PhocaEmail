@@ -8,16 +8,21 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 
-class PhocaEmailModelNewsletter extends JModelLegacy
+class PhocaEmailModelNewsletter extends BaseDatabaseModel
 {
 
 	public function storeSubscriber( $name, $email, $privacy, $mailinglist = array()) {
-		JSession::checkToken( 'request' ) or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken( 'request' ) or jexit(Text::_('JINVALID_TOKEN'));
 
-		$params 	= JComponentHelper::getParams('com_phocaemail') ;
-		$app		= JFactory::getApplication();
+		$params 	= ComponentHelper::getParams('com_phocaemail') ;
+		$app		= Factory::getApplication();
 		$message	= '';
 
 		$data['name'] 			= $name;
@@ -41,7 +46,7 @@ class PhocaEmailModelNewsletter extends JModelLegacy
 
 		// X) ACTIVE USER
 		if (isset($user->active) && $user->active == 1) {
-			$message = JText::_('COM_PHOCAEMAIL_YOUR_SUBSCRIPTION_IS_ACTIVE');
+			$message = Text::_('COM_PHOCAEMAIL_YOUR_SUBSCRIPTION_IS_ACTIVE');
 			$app->enqueueMessage($message, 'message');
 			return false;
 		}
@@ -58,7 +63,7 @@ class PhocaEmailModelNewsletter extends JModelLegacy
 		$allowedHits = (int)$params->get('count_subscription', 5);
 
 		if (isset($user->hits) && (int)$user->hits > (int)$allowedHits) {
-			$message = JText::_('COM_PHOCAEMAIL_YOUR_SUBSCRIPTION_IS_BLOCKED_PLEASE_CONTACT_ADMINISTRATOR');
+			$message = Text::_('COM_PHOCAEMAIL_YOUR_SUBSCRIPTION_IS_BLOCKED_PLEASE_CONTACT_ADMINISTRATOR');
 			$app->enqueueMessage($message, 'error');
 			return false;
 		}

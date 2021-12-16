@@ -1,125 +1,49 @@
 <?php
-/* @package Joomla
- * @copyright Copyright (C) Open Source Matters. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @extension Phoca Extension
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+/**
+ * @package     Joomla.Site
+ * @subpackage  com_phocagallery
+ *
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-function PhocaEmailBuildRoute(&$query)
+
+defined('_JEXEC') or die;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Factory;
+require_once( JPATH_SITE.'/components/com_phocaemail/helpers/routerrules.php');
+
+class PhocaemailRouter extends RouterView
 {
-	$segments = array();
+	protected $noIDs = false;
 
-	if(isset($query['view'])) {
-		//$segments[] = $query['view'];
-		unset($query['view']);
-	}
-
-	if(isset($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-
-	if(isset($query['u'])) {
-		$segments[] = $query['u'];
-		unset($query['u']);
-	}
-
-	if(isset($query['n'])) {
-		$segments[] = $query['n'];
-		unset($query['n']);
-	}
-
-	if(isset($query['tmpl'])) {
-		$segments[] = $query['tmpl'];
-		unset($query['tmpl']);
-	}
-
-
-
-
-
-	//unset($query['view']);
-
-	return $segments;
-}
-
-function PhocaEmailParseRoute($segments)
-{
-
-	/*
-	 * Be aware see components/com_phocaemail/phoacaemail.php
-	 * the view "newsletter" is forced in case no view is set
+	/**
+	 * Content Component router constructor
+	 *
+	 * @param   JApplicationCms  $app   The application object
+	 * @param   JMenu            $menu  The menu object to work with
 	 */
+	public function __construct($app = null, $menu = null)
+	{
 
-	$vars = array();
-
-	//Get the active menu item
-
-	$app 	= JFactory::getApplication('site');
-	$menu  = $app->getMenu();
-	$item	= $menu->getActive();
-	// Count route segments
-	$count = count($segments);
+		$newsletter = new RouterViewConfiguration('newsletter');
+        //$newsletter->setKey('id');
+		$this->registerView($newsletter);
 
 
 
-	//Handle View and Identifier
-	if (isset($item->query['view'])) {
-		switch($item->query['view']) {
-			case 'newsletter'   :
-				$vars['view']	= 'newsletter';
-			break;
-		}
-	} else {
-		// For now only one view
-		$vars['view']	= 'newsletter';
+		parent::__construct($app, $menu);
+
+		$this->attachRule(new MenuRules($this));
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
+        $this->attachRule(new PhocaEmailRouterrules($this));
 	}
-
-
-	if ($count == 1) {
-	//	$vars['view']	= $segments[$count-1];
-	}
-
-	if ($count == 1) {
-	//	$vars['view']	= $segments[$count-2];
-		$vars['task']	= $segments[$count-1];
-	}
-
-	if ($count == 2) {
-	//	$vars['view']	= $segments[$count-3];
-		$vars['task']	= $segments[$count-2];
-		$vars['u']		= $segments[$count-1];// user
-
-	}
-
-	if ($count == 3) {
-	//	$vars['view']	= $segments[$count-4];
-		$vars['task']	= $segments[$count-3];
-		$vars['u']		= $segments[$count-2];
-		$vars['n']		= $segments[$count-1];
-	}
-
-	if ($count == 4) {
-	//	$vars['view']	= $segments[$count-5];
-		$vars['task']	= $segments[$count-4];
-		$vars['u']		= $segments[$count-3];
-		$vars['n']		= $segments[$count-2];
-		$vars['tmpl']	= $segments[$count-1];
-	}
-
-	if ($count > 4) {
-	//	$vars['view']	= $segments[0];
-		$vars['task']	= $segments[1];
-		$vars['u']		= $segments[2];
-		$vars['n']		= $segments[3];
-		$vars['tmpl']	= $segments[4];
-	}
-
-
-	unset($segments[0]);
-
-	return $vars;
 }
+
 ?>
+

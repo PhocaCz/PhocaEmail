@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.helper');
 
 class PhocaEmailHelperRoute
@@ -15,7 +16,7 @@ class PhocaEmailHelperRoute
 	
 	public static function getNewsletterRoute($itemid = 0, $task = '', $uToken = '', $nToken = '') {
 	
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		//$params 		= $app->getParams(); not needed, if needed then use:
 		// $params 		= JComponentHelper::getParams('com_phocaemail') ;
 		
@@ -57,7 +58,7 @@ class PhocaEmailHelperRoute
 
 	public static function _findItem($needles, $notCheckId = 0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu('site', array());
 		$items	= $menus->getItems('component', 'com_phocaemail');
 

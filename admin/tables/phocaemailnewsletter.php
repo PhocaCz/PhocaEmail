@@ -7,9 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 jimport('joomla.filter.input');
 
-class TablePhocaEmailNewsletter extends JTable
+class TablePhocaEmailNewsletter extends Table
 {
 	
 	function __construct(& $db) {

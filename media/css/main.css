@@ -20,3 +20,34 @@
 	color: red;
 	display: inline;
 }
+
+
+#ph-form-subscribe-name .input-group-text,
+#ph-form-subscribe-email .input-group-text {
+	min-width: 3em;
+	text-align: center;
+	padding: 0;
+}
+
+#ph-form-subscribe-name .input-group-text .icon-user,
+#ph-form-subscribe-email .input-group-text .icon-mail {
+	margin: 0 auto;
+	padding: 0;
+}
+
+/* Module Class Suffix "round" */
+#ph-subscribe-form-mod.round #ph-mod-email {
+
+	border-top-left-radius: 3em;
+	border-bottom-left-radius: 3em;
+	padding: 1em;
+	padding-left: 2em;
+	z-index: 999;
+	
+}
+#ph-subscribe-form-mod.round #ph-mod-btn {
+	margin-left: -2em;
+	padding: 1em 2em;
+	border-radius: 3em;
+	z-index: 1000;
+}

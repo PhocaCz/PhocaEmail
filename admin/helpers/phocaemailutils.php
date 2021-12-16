@@ -7,12 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
 class PhocaEmailUtils
 {
 	public static function setVars( $task = '') {
 
 		$a			= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));
@@ -42,7 +46,7 @@ class PhocaEmailUtils
 			return $link;
 		}
 
-		$app    		= JApplicationCms::getInstance('site');
+		$app    		= CMSApplication::getInstance('site');
 		$router 		= $app->getRouter();
 		$uri 			= $router->build($link);
 		$uriS			= $uri->toString();
@@ -52,14 +56,14 @@ class PhocaEmailUtils
 
 		if ($pos === false) {
 
-			$uriL = self::ph_str_replace_first(JURI::root(true), '', $uriS);
+			$uriL = self::ph_str_replace_first(Uri::root(true), '', $uriS);
 
 
 			$uriL = ltrim($uriL, '/');
-			$formatLink = JURI::root(false). $uriL;
+			$formatLink = Uri::root(false). $uriL;
 			//$formatLink = $uriS;
 		} else {
-			$formatLink = JURI::root(false). str_replace(JURI::root(true).'/administrator/', '', $uri->toString());
+			$formatLink = Uri::root(false). str_replace(Uri::root(true).'/administrator/', '', $uri->toString());
 		}
 
 		return $formatLink;
@@ -72,7 +76,7 @@ class PhocaEmailUtils
 
 	public static function fixImagesPath($text) {
 
-		return str_replace('src="', 'src="'. JURI::root(), $text);
+		return str_replace('src="', 'src="'. Uri::root(), $text);
 	}
 
 	public static function fixLinksPath($text){
@@ -104,8 +108,8 @@ class PhocaEmailUtils
 
 	public static function renderReCaptcha() {
 
-		$document	= JFactory::getDocument();
-		$paramsC 	= JComponentHelper::getParams('com_phocaemail') ;
+		$document	= Factory::getDocument();
+		$paramsC 	= ComponentHelper::getParams('com_phocaemail') ;
 		$siteKey	= strip_tags(trim($paramsC->get( 'recaptcha_sitekey', 'no-key' )));
 		$size		= (int)$paramsC->get( 'recaptcha_size', 1 );
 		
@@ -120,8 +124,8 @@ class PhocaEmailUtils
 
 	public static function isReCaptchaValid() {
 
-		$app 		= JFactory::getApplication();
-		$paramsC 	= JComponentHelper::getParams('com_phocaemail') ;
+		$app 		= Factory::getApplication();
+		$paramsC 	= ComponentHelper::getParams('com_phocaemail') ;
 		$secretKey	= strip_tags(trim($paramsC->get( 'recaptcha_privatekey', '' )));
 		//$response 	= $app->input->post->get('g-recaptcha-response', '', 'string');
 		//$response	= $ POST['g-recaptcha-response'];

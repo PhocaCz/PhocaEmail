@@ -7,11 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.filesystem.folder');
 jimport( 'joomla.filesystem.file');
 
-class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
+class PhocaEmailCpViewPhocaEmailWrite extends HtmlView
 {
 	protected $t;
 	protected $p;
@@ -28,14 +35,14 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 		$this->form		= $this->get('Form');
 
 
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
 
-		$app				= JFactory::getApplication();
-		$doc 				= JFactory::getDocument();
-		$user				= JFactory::getUser();
+		$app				= Factory::getApplication();
+		$doc 				= Factory::getDocument();
+		$user				= Factory::getUser();
 		$this->t['path']	= PhocaEmailHelper::getPath();
-		$params 			= JComponentHelper::getParams('com_phocaemail') ;
+		$params 			= ComponentHelper::getParams('com_phocaemail') ;
 		$this->p['display_users_list']		= $params->get('display_users_list', 0);
 		$this->p['display_groups_list']		= $params->get('display_groups_list', 0);
 		$this->p['display_users_list_cc']	= $params->get('display_users_list_cc', 0);
@@ -44,7 +51,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 		$this->p['display_groups_list_bcc']	= $params->get('display_groups_list_bcc', 0);
 		$this->p['display_select_article']	= $params->get('display_select_article', 0);
 
-	/*	JHTML::_('behavior.modal', 'a.modal');
+	/*	JHtml::_('behavior.modal', 'a.modal');
 		$js = "
 		function jSelectArticle(id, title, object) {
 			/* If the modal window will be refreshed, the object=article will be lost
@@ -83,7 +90,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 			$context = 'com_phocaemail.vm.write.';
 			$this->re['order_id']		= $app->input->get( 'order_id', '', 'get', 'string' );
 			$this->re['delivery_id']	= $app->input->get( 'delivery_id', '', 'get', 'string');
-			if (JFile::exists(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php')) {
+			if (File::exists(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php')) {
 				require_once(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php');
 			} else {
 
@@ -91,7 +98,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 				return false;
 			}
 
-			$d	= JFactory::getApplication()->input->get('request');
+			$d	= Factory::getApplication()->input->get('request');
 			$r	= PhocaPDFVirtueMartHelper::getDeliveryData($d, $this->re['order_id'], $this->re['delivery_id']);
 
 			if($this->re['type'] == 'invoice') {
@@ -127,7 +134,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 			$this->re['message'] 	= $app->getUserStateFromRequest( $context.'message', 'message', '', 'string' );
 			// Option - can be disabled
 			$this->re['article_id']	= $app->getUserStateFromRequest( $context.'article_id', 'article_id', '', 'int' );
-			$this->re['article_name']= $app->getUserStateFromRequest( $context.'article_name', 'article_name', JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'), 'string' );
+			$this->re['article_name']= $app->getUserStateFromRequest( $context.'article_name', 'article_name', Text::_('COM_PHOCAEMAIL_SELECT_ARTICLE'), 'string' );
 			$this->re['togroups'] 	= $app->getUserStateFromRequest( $context.'togroups', 'togroups', array(), 'array' );
 			$this->re['tousers'] 	= $app->getUserStateFromRequest( $context.'tousers', 'tousers', array(), 'array' );
 
@@ -144,7 +151,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 			$this->t['ccuserlist'] 		= PhocaEmailHelper::usersList('ccusers[]',$this->re['ccusers'],1, NULL,'name',0 );
 			$this->t['bccuserlist'] 	= PhocaEmailHelper::usersList('bccusers[]',$this->re['bccusers'],1, NULL,'name',0 );
 
-			$attachment			= JFolder::files ($this->t['path']['path_abs_nods'], '.', false, false, array('index.html'));
+			$attachment			= Folder::files ($this->t['path']['path_abs_nods'], '.', false, false, array('index.html'));
 			if(!empty($attachment)) {
 				foreach ($attachment as $key => $value){
 					$this->t['attachment'][$key]['file'] 		= $value;
@@ -156,7 +163,7 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 
 		}
 
-		$conf = JFactory::getConfig();
+		$conf = Factory::getConfig();
         $editor = $conf->get('editor');
         $this->t['editor'] = \Joomla\CMS\Editor\Editor::getInstance($editor);
 		//$this->t['editor'] 	= JFactory::getEditor();
@@ -171,17 +178,17 @@ class PhocaEmailCpViewPhocaEmailWrite extends JViewLegacy
 
 		//$state	= $this->get('State');
 		$canDo	= PhocaEmailWriteHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_EMAIL' ), 'pencil fa-pencil-alt');
+		ToolbarHelper::title( Text::_( 'COM_PHOCAEMAIL_SEND_EMAIL' ), 'pencil fa-pencil-alt');
 
 		if ($canDo->get('core.admin')) {
 			//JToolbarHelper::preferences('com_phocaemail');
-			JToolbarHelper::custom( 'phocaemailwrite.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
+			ToolbarHelper::custom( 'phocaemailwrite.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
 
-			JToolbarHelper::cancel( 'phocaemailwrite.cancel', 'COM_PHOCAEMAIL_CANCEL');
-			JToolbarHelper::divider();
+			ToolbarHelper::cancel( 'phocaemailwrite.cancel', 'COM_PHOCAEMAIL_CANCEL');
+			ToolbarHelper::divider();
 		}
 
-		JToolbarHelper::help( 'screen.phocaemail', true );
+		ToolbarHelper::help( 'screen.phocaemail', true );
 	}
 }
 ?>

@@ -7,9 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.controllerform');
 
-class PhocaEmailCpControllerPhocaEmailList extends JControllerForm
+class PhocaEmailCpControllerPhocaEmailList extends FormController
 {
 	protected	$option 		= 'com_phocaemail';
 	
@@ -18,7 +20,7 @@ class PhocaEmailCpControllerPhocaEmailList extends JControllerForm
 	}
 	
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocaemail');
 		if ($allow === null) {
@@ -29,7 +31,7 @@ class PhocaEmailCpControllerPhocaEmailList extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocaemail');
 		if ($allow === null) {

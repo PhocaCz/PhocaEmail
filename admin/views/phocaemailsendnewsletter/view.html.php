@@ -7,11 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.filesystem.folder');
 jimport( 'joomla.filesystem.file');
 
-class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
+class PhocaEmailCpViewPhocaEmailSendNewsletter extends HtmlView
 {
 	protected $t;
 	protected $p;
@@ -22,14 +27,14 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 		$this->t	= PhocaEmailUtils::setVars('sendnewsletter');
 		$this->r	= new PhocaEmailRenderAdminView();
 
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
 
 
-		$app				= JFactory::getApplication();
-		$doc 				= JFactory::getDocument();
-		$user				= JFactory::getUser();
+		$app				= Factory::getApplication();
+		$doc 				= Factory::getDocument();
+		$user				= Factory::getUser();
 		$this->t['path']	= PhocaEmailHelper::getPath();
-		$params 			= JComponentHelper::getParams('com_phocaemail') ;
+		$params 			= ComponentHelper::getParams('com_phocaemail') ;
 
 		// GET IDs of Subscribers
 	/*	$db = JFactory::getDBO();
@@ -86,7 +91,7 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 
 
 
-		$conf = JFactory::getConfig();
+		$conf = Factory::getConfig();
         $editor = $conf->get('editor');
         $this->t['editor'] = \Joomla\CMS\Editor\Editor::getInstance($editor);
 		//$this->t['editor'] 	= JFactory::getEditor();
@@ -101,16 +106,16 @@ class PhocaEmailCpViewPhocaEmailSendNewsletter extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaEmailSendNewsletterHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil fa-pencil-alt' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAEMAIL_SEND_NEWSLETTER' ), 'pencil fa-pencil-alt' );
 
 		if ($canDo->get('core.admin')) {
 			//JToolbarHelper::preferences('com_phocaemail');
-			JToolbarHelper::custom( 'phocaemailsendnewsletter.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
-			JToolbarHelper::cancel( 'phocaemailsendnewsletter.cancel', 'COM_PHOCAEMAIL_CANCEL' );
-			JToolbarHelper::divider();
+			ToolbarHelper::custom( 'phocaemailsendnewsletter.send', 'envelope', '', 'COM_PHOCAEMAIL_SEND', false);
+			ToolbarHelper::cancel( 'phocaemailsendnewsletter.cancel', 'COM_PHOCAEMAIL_CANCEL' );
+			ToolbarHelper::divider();
 		}
 
-		JToolbarHelper::help( 'screen.phocaemail', true );
+		ToolbarHelper::help( 'screen.phocaemail', true );
 	}
 }
 ?>

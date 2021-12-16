@@ -7,9 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.controller');
 
-class PhocaEmailController extends JControllerLegacy
+class PhocaEmailController extends BaseController
 {
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -20,7 +22,7 @@ class PhocaEmailController extends JControllerLegacy
 			$cachable 	= true;
 		}
 		
-		$document 	= JFactory::getDocument();
+		$document 	= Factory::getDocument();
 
 		$safeurlparams = array('catid'=>'INT','id'=>'INT','cid'=>'ARRAY','year'=>'INT','month'=>'INT','limit'=>'INT','limitstart'=>'INT',
 			'showall'=>'INT','return'=>'BASE64','filter'=>'STRING','filter_order'=>'CMD','filter_order_Dir'=>'CMD','filter-search'=>'STRING','print'=>'BOOLEAN','lang'=>'CMD');

@@ -9,6 +9,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.filesystem.file' );
 jimport( 'joomla.filesystem.folder' );
 
@@ -26,8 +29,8 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 
 	function send () {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
-		$app						= JFactory::getApplication();
+		Session::checkToken() or jexit( 'Invalid Token' );
+		$app						= Factory::getApplication();
 
 		$redirect			= 'index.php?option=com_phocaemail&view=phocaemailwrite';
 		$post				= array();//JFactory::getApplication()->input->get('post');
@@ -42,7 +45,7 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 		$post['attachment']	= $app->input->get( 'attachment', array(),  'array' );
 
 		// Option - can be disabled
-		$post['article_name']= $app->input->get( 'article_name', JText::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),  'string' );
+		$post['article_name']= $app->input->get( 'article_name', Text::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),  'string' );
 		$post['togroups']	= $app->input->get( 'togroups', array(), 'array' );
 		$post['ccgroups']	= $app->input->get( 'ccgroups', array(),  'array' );
 		$post['bccgroups']	= $app->input->get( 'bccgroups', array(),  'array' );
@@ -119,7 +122,7 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 			// ==========================================================================================
 			// Remember the HTML -  GUIDE to edit core file
 			// Comment the following line
-			$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'html' );
+			$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'raw' );
 
 			// Uncomment the following line
 			//$app->getUserStateFromRequest( $context.'message', 'message', $post['message'], 'string' );

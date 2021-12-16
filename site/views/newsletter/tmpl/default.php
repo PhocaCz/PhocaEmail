@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 echo '<div id="ph-newsletter-box" class="ph-newsletter-view'.$this->p->get( 'pageclass_sfx' ).'" >';
 
@@ -15,7 +16,7 @@ if ( $this->p->get( 'show_page_heading' ) ) {
     if ($this->p->get('page_heading') != '') {
 	    echo '<h1>'. $this->escape($this->p->get('page_heading')) . '</h1>';
     } else {
-        echo '<h1>' . JText::_('COM_PHOCAEMAIL_NEWSLETTER') . '</h1>';
+        echo '<h1>' . Text::_('COM_PHOCAEMAIL_NEWSLETTER') . '</h1>';
     }
 }
 

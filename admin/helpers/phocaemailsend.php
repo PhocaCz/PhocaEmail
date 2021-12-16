@@ -10,6 +10,12 @@
  */
 
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
 
 class PhocaEmailSend
 {
@@ -17,13 +23,13 @@ class PhocaEmailSend
 
 
 		if ($static == 0) {
-			JSession::checkToken() or jexit( 'Invalid Token' );
+			Session::checkToken() or jexit( 'Invalid Token' );
 		} else {
 			require_once( JPATH_ADMINISTRATOR.'/components/com_phocaemail/helpers/phocaemail.php' );
 		}
-		$app								= JFactory::getApplication();
-		$db									= JFactory::getDBO();
-		$params 							= JComponentHelper::getParams('com_phocaemail') ;
+		$app								= Factory::getApplication();
+		$db									= Factory::getDBO();
+		$params 							= ComponentHelper::getParams('com_phocaemail') ;
 		$param['html_message']				= $params->get('html_message', 1);
 		$param['display_users_list']		= $params->get('display_users_list', 0);
 		$param['display_groups_list']		= $params->get('display_groups_list', 0);
@@ -39,17 +45,17 @@ class PhocaEmailSend
 		$tmpl['path']			= PhocaEmailHelper::getPath();
 		if($data['ext']	== 'phocaemail') {
 
-			$tmpl['attachment']		= JFolder::files ($tmpl['path']['path_abs_nods'], '.', false, false, array('index.html'));
-			$tmpl['attachment_full']= JFolder::files ($tmpl['path']['path_abs_nods'], '.', false, true, array('index.html'));
+			$tmpl['attachment']		= Folder::files ($tmpl['path']['path_abs_nods'], '.', false, false, array('index.html'));
+			$tmpl['attachment_full']= Folder::files ($tmpl['path']['path_abs_nods'], '.', false, true, array('index.html'));
 
 			if (!empty($tmpl['attachment'])) {
 				$i = 0;
 				foreach ($tmpl['attachment'] as $key => $value) {
 					if(isset($data['attachment'][$i]) && $data['attachment'][$i]) {
-						if (JFile::exists($tmpl['attachment_full'][$i])) {
+						if (File::exists($tmpl['attachment_full'][$i])) {
 							$attachmentArray[] = $tmpl['attachment_full'][$i];
 						} else {
-							$warning[]	= JText::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $tmpl['attachment_full'][$i];
+							$warning[]	= Text::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $tmpl['attachment_full'][$i];
 						}
 					}
 					$i++;
@@ -57,7 +63,7 @@ class PhocaEmailSend
 			}
 		} else if ($data['ext']	== 'virtuemart') {
 
-			if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php')) {
+			if (File::exists(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php')) {
 				require_once(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php');
 			} else {
 
@@ -94,10 +100,10 @@ class PhocaEmailSend
 
 						$pdfCreated = PhocaPDFRender::renderPDF('', $staticData);
 
-						if (JFile::exists($staticData['file'])) {
+						if (File::exists($staticData['file'])) {
 							$attachmentArray[] = $staticData['file'];
 						} else {
-							$warning[]	= JText::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $staticData['file'];
+							$warning[]	= Text::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $staticData['file'];
 						}
 					}
 					$i++;
@@ -125,7 +131,7 @@ class PhocaEmailSend
 			$from 		= $data['from'];
 		} else {
 			$from 		= '';
-			$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_FROM_EMPTY');
+			$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_FROM_EMPTY');
 		}
 
 		// FROM NAME
@@ -133,7 +139,7 @@ class PhocaEmailSend
 			$fromname 	= $data['fromname'];
 		} else {
 			$fromname 	= '';
-			$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_FROM_NAME_EMPTY');
+			$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_FROM_NAME_EMPTY');
 		}
 
 
@@ -204,7 +210,7 @@ class PhocaEmailSend
 			}
 
 			if ($toEmpty1 == 1 && $toEmpty2 == 1 && $toEmpty3 == 1) {
-				$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_OR_TO_USERS_EMPTY');
+				$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_OR_TO_USERS_EMPTY');
 			} else {
 				if (empty($to1)) {
 					$to1 = array();
@@ -217,7 +223,7 @@ class PhocaEmailSend
 				}
 				$to = array_merge($to1, $to2, $to3);
 				if (empty($to)) {
-					$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_OR_TO_USERS_EMPTY');
+					$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_OR_TO_USERS_EMPTY');
 				}
 			}
 
@@ -228,7 +234,7 @@ class PhocaEmailSend
 				$to		 	= explode( ',', $to);
 			} else {
 				$to 		= array();
-				$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_EMPTY');
+				$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_TO_EMPTY');
 			}
 
 		}
@@ -499,7 +505,7 @@ class PhocaEmailSend
 				}
 				$cc = array_merge($cc1, $cc2);
 				/*if (empty($cc)) {
-					$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_EMPTY');
+					$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_CC_OR_CC_USERS_EMPTY');
 				}*//*
 			}
 
@@ -558,7 +564,7 @@ class PhocaEmailSend
 				}
 				$bcc = array_merge($bcc1, $bcc2);
 				/*if (empty($bcc)) {
-					$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_BCC_OR_BCC_USERS_EMPTY');
+					$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_BCC_OR_BCC_USERS_EMPTY');
 				}*//*
 			}
 
@@ -582,7 +588,7 @@ class PhocaEmailSend
 			$subject	= $data['subject'];
 		} else {
 			$subject	= '';
-			$error[]	= JText::_('COM_PHOCAEMAIL_ERROR_FIELD_SUBJECT_EMPTY');
+			$error[]	= Text::_('COM_PHOCAEMAIL_ERROR_FIELD_SUBJECT_EMPTY');
 		}
 
 		if (isset($data['message']) && $data['message'] != '') {
@@ -631,8 +637,8 @@ class PhocaEmailSend
 	/*
 		echo	'<html><head><title>'.$subject.'</title></head><body>';
 		echo	'<div style="font-family: sans-serif, Arial;font-size:12px">';
-		echo	'<p>' .JText::_('COM_PHOCAEMAIL_ERROR_POSSIBLE_EMAIL_PROBLEM'). '</p>';
-		echo 	'<a href="index.php?option=com_phocaemail" >'.JText::_('COM_PHOCAEMAIL_BACK_TO_PE_CONTROL_PANEL').'</a>';
+		echo	'<p>' .Text::_('COM_PHOCAEMAIL_ERROR_POSSIBLE_EMAIL_PROBLEM'). '</p>';
+		echo 	'<a href="index.php?option=com_phocaemail" >'.Text::_('COM_PHOCAEMAIL_BACK_TO_PE_CONTROL_PANEL').'</a>';
 		echo	'</div>';
 		echo 	'</body></html>';*/
 
@@ -651,10 +657,10 @@ class PhocaEmailSend
 
 		if ($param['html_message'] == 0) {
 			$rawMessage		=	strip_tags($htmlMessage);
-			$sendMail  		= JFactory::getMailer()->sendMail($from, $fromname, $to, $subject, $rawMessage, false, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
+			$sendMail  		= Factory::getMailer()->sendMail($from, $fromname, $to, $subject, $rawMessage, false, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
 		//	$sendMail  		= PhocaemailEmail::sendEmail($from, $fromname, $to, $subject, $rawMessage, true, $cc, $bcc, $attachmentArray, '', $replyto, $replytoname);
 		} else {
-			$sendMail  		= JFactory::getMailer()->sendMail($from, $fromname, $to, $subject, $htmlMessage, true, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
+			$sendMail  		= Factory::getMailer()->sendMail($from, $fromname, $to, $subject, $htmlMessage, true, $cc, $bcc, $attachmentArray, $replyto, $replytoname);
 		//	$sendMail  		= PhocaemailEmail::sendEmail($from, $fromname, $to, $subject, $htmlMessage, true, $cc, $bcc, $attachmentArray, '', $replyto, $replytoname);
 		}
 
@@ -664,8 +670,8 @@ class PhocaEmailSend
 		// Remove attachments
 		if ($data['ext']	== 'virtuemart') {
 			foreach ($attachmentArray as $key => $value) {
-				if (JFile::exists($value)) {
-					JFile::delete($value);
+				if (File::exists($value)) {
+					File::delete($value);
 				}
 			}
 		}
@@ -686,21 +692,21 @@ class PhocaEmailSend
 			return false;
 		} else {
 
-			$warning[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
+			$warning[] = Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
 			return true;
 		}*/
 
 
 
 		if (isset($sendMail->message)) {
-			$error[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SENT') . ': '  . $sendMail->message;
+			$error[] = Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_NOT_SENT') . ': '  . $sendMail->message;
 			return false;
 		} else if ($sendMail) {
-			$warning[] = JText::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
+			$warning[] = Text::_('COM_PHOCAEMAIL_ERROR_EMAIL_SENT');
 			return true;
 		} else {
-			$error[] = JText::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_SERVER_SENT_NO_ERROR_MESSAGE') . '. '. JText::_('COM_PHOCAEMAIL_EMAIL_FROM') . ': '.$from . ', ' . JText::_('COM_PHOCAEMAIL_EMAIL_TO'). ': ' .implode(',', $to);
-			$error[] = JText::_('COM_PHOCAEMAIL_EMAIL_NOT_SENT');
+			$error[] = Text::_('COM_PHOCAEMAIL_ERROR_SENDING_EMAIL_SERVER_SENT_NO_ERROR_MESSAGE') . '. '. Text::_('COM_PHOCAEMAIL_EMAIL_FROM') . ': '.$from . ', ' . Text::_('COM_PHOCAEMAIL_EMAIL_TO'). ': ' .implode(',', $to);
+			$error[] = Text::_('COM_PHOCAEMAIL_EMAIL_NOT_SENT');
 			return false;
 		}
 	}

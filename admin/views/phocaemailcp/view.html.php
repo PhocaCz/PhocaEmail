@@ -7,16 +7,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
-class PhocaEmailCpViewPhocaEmailCp extends JViewLegacy
+class PhocaEmailCpViewPhocaEmailCp extends HtmlView
 {
 	protected $t;
 	protected $r;
+	protected $views;
 
-	function display($tpl = null) {
+	public function display($tpl = null) {
 
-		$this->t	= PhocaEmailUtils::setVars();
+		$this->t	= PhocaEmailUtils::setVars('cp');
 		$this->r	= new PhocaEmailRenderAdminview();
 
 		$i = ' icon-';
@@ -32,7 +38,7 @@ class PhocaEmailCpViewPhocaEmailCp extends JViewLegacy
 
 
 
-		//JHTML::_('behavior.tooltip');
+		//JHtml::_('behavior.tooltip');
 		$this->t['version'] = PhocaEmailHelper::getPhocaVersion('com_phocaemail');
 
 		$this->addToolbar();
@@ -46,19 +52,19 @@ class PhocaEmailCpViewPhocaEmailCp extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= PhocaEmailCpHelper::getActions();
-		JToolbarHelper::title( JText::_( 'COM_PHOCAEMAIL_PE_CONTROL_PANEL' ), 'home-2 cpanel fa-home' );
+		ToolbarHelper::title( Text::_( 'COM_PHOCAEMAIL_PE_CONTROL_PANEL' ), 'home-2 cpanel fa-home' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.JText::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
+		$bar = Toolbar::getInstance( 'toolbar' );
+		$dhtml = '<a href="index.php?option=com_phocaemail" class="btn btn-small"><i class="icon-home-2" title="'.Text::_('COM_PHOCAEMAIL_CONTROL_PANEL').'"></i> '.Text::_('COM_PHOCAEMAIL_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper::preferences('com_phocaemail');
-			JToolbarHelper::divider();
+			ToolbarHelper::preferences('com_phocaemail');
+			ToolbarHelper::divider();
 		}
 
-		JToolbarHelper::help( 'screen.phocaemail', true );
+		ToolbarHelper::help( 'screen.phocaemail', true );
 	}
 }
 ?>

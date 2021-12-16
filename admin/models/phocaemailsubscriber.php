@@ -7,16 +7,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.modeladmin');
 
-class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
+class PhocaEmailCpModelPhocaEmailSubscriber extends AdminModel
 {
 	protected	$option 		= 'com_phocaemail';
 	protected 	$text_prefix	= 'com_phocaemail';
 	public 		$typeAlias 		= 'com_phocaemail.phocaemailsubscriber';
 
 	protected function canDelete($record) {
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocaemail.phocaemailsubscriber.'.(int) $record->catid);
@@ -26,7 +32,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 	}
 
 	protected function canEditState($record){
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_phocaemail.phocaemailsubscriber.'.(int) $record->catid);
@@ -36,12 +42,12 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 	}
 
 	public function getTable($type = 'PhocaEmailSubscriber', $prefix = 'Table', $config = array()){
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocaemail.phocaemailsubscriber', 'phocaemailsubscriber', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -52,7 +58,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocaemail.edit.phocaemailsubscriber.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocaemail.edit.phocaemailsubscriber.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -74,7 +80,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 	/*	if ($data['active'] == 1 && !isset($data['date_register'])) {
 
 			$date 			= gmdate('Y-m-d H:i:s');
-			$db	= JFactory::getDBO();
+			$db	= Factory::getDBO();
 
 			$query = 'SELECT a.active FROM #__phocaemail_subscribers AS a'
 					. ' WHERE a.id = '.(int)$data['id']
@@ -95,7 +101,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 
 
 		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Allow an exception to be thrown.
 		try
@@ -140,7 +146,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$result = \JFactory::getApplication()->triggerEvent($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
+			$result = Factory::getApplication()->triggerEvent($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
 
 			if (in_array(false, $result, true))
 			{
@@ -170,7 +176,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 			$this->cleanCache();
 
 			// Trigger the onContentAfterSave event.
-			\JFactory::getApplication()->triggerEvent($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
+			Factory::getApplication()->triggerEvent($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew, $data));
 		}
 		catch (Exception $e)
 		{
@@ -197,7 +203,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 		$table = $this->getTable();
 
 		// Include the content plugins for the on delete events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
@@ -212,7 +218,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = \JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
+					$result = Factory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 
 					if (in_array(false, $result, true))
 					{
@@ -227,7 +233,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 					}
 
 					// Trigger the onContentAfterDelete event.
-					\JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
+					Factory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 
 				}
 				else
@@ -238,12 +244,12 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 					$error = $this->getError();
 					if ($error)
 					{
-						JLog::add($error, JLog::WARNING, 'jerror');
+						Log::add($error, Log::WARNING, 'jerror');
 						return false;
 					}
 					else
 					{
-						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+						Log::add(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), Log::WARNING, 'jerror');
 						return false;
 					}
 				}
@@ -257,7 +263,7 @@ class PhocaEmailCpModelPhocaEmailSubscriber extends JModelAdmin
 
 			//PHOCAEDIT
 			if ((int)$pk > 0) {
-				$db = JFactory::getDBO();
+				$db = Factory::getDBO();
 				$query = ' DELETE '
 						.' FROM #__phocaemail_subscriber_lists'
 						. ' WHERE id_subscriber = '. (int)$pk;

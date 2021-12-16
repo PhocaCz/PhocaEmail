@@ -1,4 +1,8 @@
 <?php defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 /* @package Joomla
  * @copyright Copyright (C) Open Source Matters. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -7,9 +11,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 ?>
-<?php //JHTML::_('behavior.tooltip');
+<?php //JHtml::_('behavior.tooltip');
 
-$this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. JSession::getFormToken().'=1';
+$this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. Session::getFormToken().'=1';
 
 
 JFactory::getDocument()->addScriptDeclaration(
@@ -18,7 +22,7 @@ JFactory::getDocument()->addScriptDeclaration(
 	var form = document.adminForm;
 	if (task == 'phocaemailsendnewsletter.send') {
 		if (form.newsletter.value == ''){
-			alert( '". JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
+			alert( '". Text::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
 		} else {
 
 			var url 						= '". $this->t['url']."';
@@ -37,13 +41,13 @@ JFactory::getDocument()->addScriptDeclaration(
 			var txtSending = '';
 			var txtSendingFinished = '';
 			if (slength == 0) {
-				alert( '". JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true)."' );
+				alert( '". Text::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true)."' );
 			} else {
 				jQuery(\"#phsendoutput\").empty();
 				for (var i = 0; i < slength; i++) {
 
 					var j = i + 1;
-					txtSending = '<div class=\"ph-sending-msg\">". JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true)." (' + j + '/' + slength + ') ...</div>';
+					txtSending = '<div class=\"ph-sending-msg\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true)." (' + j + '/' + slength + ') ...</div>';
 					jQuery(\"#phsendoutput\").append(txtSending);
 
 					dataPost['subscriberid']	= subscribers[nId][i];
@@ -66,7 +70,7 @@ JFactory::getDocument()->addScriptDeclaration(
 					//jQuery(\"#phsendoutput\").append(txtSending);
 				}
 
-				txtSendingFinished = '<div class=\"ph-sending-msg-finish\">". JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true)."</div>';
+				txtSendingFinished = '<div class=\"ph-sending-msg-finish\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true)."</div>';
 				jQuery(\"#phsendoutput\").append(txtSendingFinished);
 
 			}
@@ -87,7 +91,7 @@ Joomla.submitbutton = function(task) {
 	var form = document.adminForm;
 	if (task == 'phocaemailsendnewsletter.send') {
 		if (form.newsletter.value == ""){
-			alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true) ?>" );
+			alert( "<?php echo Text::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true) ?>" );
 		} else {
 
 			var url 						= '<?php echo $this->t['url']; ?>';
@@ -106,13 +110,13 @@ Joomla.submitbutton = function(task) {
 			var txtSending = "";
 			var txtSendingFinished = "";
 			if (slength == 0) {
-				alert( "<?php echo JText::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true) ?>" );
+				alert( "<?php echo Text::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true) ?>" );
 			} else {
 				jQuery("#phsendoutput").empty();
 				for (var i = 0; i < slength; i++) {
 
 					var j = i + 1;
-					txtSending = '<div class="ph-sending-msg"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true) ?> (' + j + '/' + slength + ') ...</div>';
+					txtSending = '<div class="ph-sending-msg"><?php echo Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true) ?> (' + j + '/' + slength + ') ...</div>';
 					jQuery("#phsendoutput").append(txtSending);
 
 					dataPost['subscriberid']	= subscribers[nId][i];
@@ -135,7 +139,7 @@ Joomla.submitbutton = function(task) {
 					//jQuery("#phsendoutput").append(txtSending);
 				}
 
-				txtSendingFinished = '<div class="ph-sending-msg-finish"><?php echo JText::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true) ?></div>';
+				txtSendingFinished = '<div class="ph-sending-msg-finish"><?php echo Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true) ?></div>';
 				jQuery("#phsendoutput").append(txtSendingFinished);
 
 			}
@@ -151,11 +155,11 @@ Joomla.submitbutton = function(task) {
 <?php echo '<div class="span10 form-horizontal">';
 
 echo '<div class="control-group">';
-echo '<div class="control-label">'.JText::_('COM_PHOCAEMAIL_NEWSLETTER').'</div>';
+echo '<div class="control-label">'.Text::_('COM_PHOCAEMAIL_NEWSLETTER').'</div>';
 echo '<div class="controls">' .$this->t['newsletterlist'] ;
 
 echo '<button onclick="Joomla.submitbutton(\'phocaemailsendnewsletter.send\');return false;" class="btn btn-success">';
-echo '<span class="icon-envelope"></span> '. JText::_('COM_PHOCAEMAIL_SEND')  .'</button>';
+echo '<span class="icon-envelope"></span> '. Text::_('COM_PHOCAEMAIL_SEND')  .'</button>';
 
 echo '</div>';
 echo '</div>';
@@ -165,7 +169,7 @@ echo '<div class="control-label"></div>';
 echo '<div class="controls">';
 echo '<div class="btn-wrapper" style="text-align:right;" >';
 echo '<button onclick="Joomla.submitbutton(\'phocaemailwrite.send\');return false;" class="btn btn-success">';
-echo '<span class="icon-envelope"></span> '. JText::_('COM_PHOCAEMAIL_SEND')  .'</button>';
+echo '<span class="icon-envelope"></span> '. Text::_('COM_PHOCAEMAIL_SEND')  .'</button>';
 echo '</div>';
 
 echo '</div>';
@@ -183,11 +187,11 @@ echo '</div>';//end span10
 // Second Column
 echo '<div class="span2">';
 echo '<ul>';
-echo '<li>'.JText::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO'). '</li>';
-echo '<li>'.JText::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO_2'). '</li>';
+echo '<li>'.Text::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO'). '</li>';
+echo '<li>'.Text::_('COM_PHOCAEMAIL_SEND_NEWSLETTER_INFO_2'). '</li>';
 echo '</ul>';
 echo '</div>';//end span2 ?>
 
 <input type="hidden" name="task" value="" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>

@@ -7,12 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 class PhocaEmailNewslettersHelper
 {
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user	= Factory::getUser();
+		$result	= new CMSObject;
 
 		$assetName = 'com_phocaemail';
 

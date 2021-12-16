@@ -2,7 +2,7 @@
 
 
 
-![Phoca Email](https://github.com/PhocaCz/PhocaEmail/blob/master/phocaemail.png)
+![Phoca Email](https://github.com/PhocaCz/PhocaEmail/blob/master/phocaemail.png?raw=true)
 
 # Phoca Email
 
@@ -62,9 +62,13 @@ Phoca Email is a newsletter component and it can be even used for sending emails
 
 
 
-## Version
+## Version (Joomla! 3.x)
 
-3.1.2
+3.1.3
+
+## Version (Joomla! 4.x)
+
+4.0.0
 
 
 

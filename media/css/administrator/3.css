@@ -1,7 +1,19 @@
-.com_phocaemail {
+.com_phocadownload {
 	background: #f9f9f9;
 }
-.com_phocaemail table {
+.com_phocadownload.layout-edit {
+	background: #fff;
+}
+
+.ph-admin-box-content {
+	padding: 20px;
+	background: #F1F5F9;
+	background: #EDF0F5;
+	margin: 0px !important;
+	margin-top: 10px !important;
+}
+
+.com_phocadownload table {
 	background: #fff;
 	border-radius: 3px
 }

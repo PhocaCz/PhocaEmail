@@ -4,10 +4,10 @@
 		<description><![CDATA[ Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components. ]]></description>
 		<element>com_phocaemail</element>
 		<type>component</type>
-		<version>3.1.2</version>
-		<infourl title="Phoca Email 3.1.2">http://www.phoca.cz/version/index.php?phocaemail=3.1.2</infourl>
+		<version>3.1.3</version>
+		<infourl title="Phoca Email 3.1.3">http://www.phoca.cz/version/index.php?phocaemail=3.1.3</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/3.1.2/com_phocaemail_v3.1.2.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/3.1.3/com_phocaemail_v3.1.3.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
@@ -15,7 +15,26 @@
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="3.9"/>
+		<targetplatform name="joomla" version="3.([89]|10)"/>
+		<client>administrator</client>
+	</update>
+	<update>
+		<name><![CDATA[ Phoca Email ]]></name>
+		<description><![CDATA[ Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components. ]]></description>
+		<element>com_phocaemail</element>
+		<type>component</type>
+		<version>4.0.0</version>
+		<infourl title="Phoca Email 4.0.0">http://www.phoca.cz/version/index.php?phocaemail=4.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/4.0.0/com_phocaemail_v4.0.0.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="4.[0]"/>
 		<client>administrator</client>
 	</update>
 </updates>

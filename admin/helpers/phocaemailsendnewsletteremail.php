@@ -7,13 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 require_once( JPATH_SITE.'/components/com_phocaemail/helpers/route.php');
 
 class PhocaEmailSendNewsletterEmail
 {
 	public static function sendNewsLetterEmail($name, $email, $type = 'activate') {
 
-		$params 		= JComponentHelper::getParams('com_phocaemail') ;
+		$params 		= ComponentHelper::getParams('com_phocaemail') ;
 		$recipient 		= $email;
 		$activationLink	= '';
 		$items			= self::getItems();
@@ -25,7 +29,7 @@ class PhocaEmailSendNewsletterEmail
 
 		switch($type) {
 			case 'activate':
-				$subject 	= JText::_('COM_PHOCAEMAIL_ACTIVATE_YOUR_EMAIL_SUBSCRIPTION') . ' '. $items['subscriptionname'];
+				$subject 	= Text::_('COM_PHOCAEMAIL_ACTIVATE_YOUR_EMAIL_SUBSCRIPTION') . ' '. $items['subscriptionname'];
 				$body = $params->get('activation_email', '<div>Hello,<br /> <br /> You recently requested an email subscription to {subscriptionname}.<br /> Please confirm your subscription.</div>
 <p> </p>
 <div><a style="background: #0044cc; color: #fff; padding: 5px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;" href="{activationlink}">Click here to confirm your subscription to our newsletter</a>
@@ -42,7 +46,7 @@ class PhocaEmailSendNewsletterEmail
 
 			case 'unsubscribe':
 			default:
-				$subject 	= $replace['subscriptionname'] . ': '.JText::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED');
+				$subject 	= $replace['subscriptionname'] . ': '.Text::_('COM_PHOCAEMAIL_SUBSCRIPTION_CANCELED');
 
 				$body = $params->get('unsubscribe_email', '<div>Hello,<br /> <br /> You recently requested an unsubscription from our newsletter.<br />This email confirms that you have been successfully unsubscribed from our newsletter.</div>');
 			break;
@@ -53,7 +57,7 @@ class PhocaEmailSendNewsletterEmail
 
 
 
-		$send  		= JFactory::getMailer()->sendMail($items['from'], $items['fromname'], $recipient, $subject, $body, true, null, null, null, null, null);
+		$send  		= Factory::getMailer()->sendMail($items['from'], $items['fromname'], $recipient, $subject, $body, true, null, null, null, null, null);
 
 		if ($send) {
 			return true;
@@ -64,8 +68,8 @@ class PhocaEmailSendNewsletterEmail
 
 	public static function getItems() {
 
-		$app						= JFactory::getApplication();
-		$params 					= JComponentHelper::getParams('com_phocaemail') ;
+		$app						= Factory::getApplication();
+		$params 					= ComponentHelper::getParams('com_phocaemail') ;
 
 		$i['sitename']	= $params->get('site_name', '');
 		if ($i['sitename'] == '') {
@@ -131,7 +135,7 @@ class PhocaEmailSendNewsletterEmail
 
 	public static function getEmailLink($email, $type = 'activate') {
 
-		$db				= JFactory::getDBO();
+		$db				= Factory::getDBO();
 		$token 			= '';
 
 		$query = 'SELECT a.token FROM #__phocaemail_subscribers AS a'
@@ -143,7 +147,7 @@ class PhocaEmailSendNewsletterEmail
 			$token = $user->token;
 		}
 		$link = PhocaEmailHelperRoute::getNewsletterRoute(0, $type, $token);
-		//return JURI::base(true) . JRoute::_($link);
+		//return JUri::base(true) . JRoute::_($link);
 
 		$formatLink = PhocaEmailUtils::getRightPathLink($link);
 		return $formatLink;
@@ -175,14 +179,14 @@ class PhocaEmailSendNewsletterEmail
 
 		if ($pos === false) {
 
-			$uriL = self::ph_str_replace_first(JURI::root(true), '', $uriS);
+			$uriL = self::ph_str_replace_first(Uri::root(true), '', $uriS);
 
 
 			$uriL = ltrim($uriL, '/');
-			$formatLink = JURI::root(false). $uriL;
+			$formatLink = Uri::root(false). $uriL;
 			//$formatLink = $uriS;
 		} else {
-			$formatLink = JURI::root(false). str_replace(JURI::root(true).'/administrator/', '', $uri->toString());
+			$formatLink = Uri::root(false). str_replace(Uri::root(true).'/administrator/', '', $uri->toString());
 		}
 
 		return $formatLink;
@@ -194,7 +198,7 @@ class PhocaEmailSendNewsletterEmail
 	}
 
 	public static function activateUser($uToken) {
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 
 		// Check if it is active yet
 		$query = 'SELECT a.active FROM #__phocaemail_subscribers AS a'
@@ -224,10 +228,10 @@ class PhocaEmailSendNewsletterEmail
 
 	public static function unsubscribeUser($uToken) {
 
-		$params 							= JComponentHelper::getParams('com_phocaemail') ;
+		$params 							= ComponentHelper::getParams('com_phocaemail') ;
 		$unsubscribing_automatic_deletion	= $params->get('unsubscribing_automatic_deletion', 0);
 
-		$db	= JFactory::getDBO();
+		$db	= Factory::getDBO();
 		// Check if it is active yet
 		$query = 'SELECT a.active, a.name, a.email FROM #__phocaemail_subscribers AS a'
 				. ' WHERE a.token = '.$db->quote(htmlspecialchars($uToken))
@@ -261,7 +265,7 @@ class PhocaEmailSendNewsletterEmail
 		$rows = $db->getAffectedRows();
 		//if ($rows > 0 && isset($subscriber->name) && isset($subscriber->email) && $subscriber->name != '' && $subscriber->email != '')  {
         if ($rows > 0 && isset($subscriber->name) && isset($subscriber->email) && $subscriber->email != '')  {
-			$params 				= JComponentHelper::getParams('com_phocaemail') ;
+			$params 				= ComponentHelper::getParams('com_phocaemail') ;
 			$sendUnsubscribeEmail	= $params->get('send_unsubscribe_email', 1);
 			if ($sendUnsubscribeEmail == 1) {
 				self::sendNewsLetterEmail($subscriber->name, $subscriber->email, 'unsubscribe');
@@ -276,7 +280,7 @@ class PhocaEmailSendNewsletterEmail
 
 	public static function storeLists($id, $listArray, $table = '#__phocaemail_subscriber_lists', $item = 'id_subscriber') {
 		if ((int)$id > 0) {
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = ' DELETE '
 					.' FROM '.$table
 					. ' WHERE '.$item.' = '. (int)$id;
