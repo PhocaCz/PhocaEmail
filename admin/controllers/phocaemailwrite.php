@@ -33,7 +33,7 @@ class PhocaEmailCpControllerPhocaEmailWrite extends PhocaEmailCpController
 		$app						= Factory::getApplication();
 
 		$redirect			= 'index.php?option=com_phocaemail&view=phocaemailwrite';
-		$post				= array();//JFactory::getApplication()->input->get('post');
+		$post				= array();//Factory::getApplication()->input->get('post');
 		$post['from']		= $app->input->get( 'from', '',  'string');
 		$post['fromname']	= $app->input->get( 'fromname', '', 'string' );
 		$post['to']			= $app->input->get( 'to', '',  'string' );

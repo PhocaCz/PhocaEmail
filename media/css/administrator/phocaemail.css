@@ -170,7 +170,7 @@ div.icon-48-pe {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;"';
-}	
+}
 
 
 
@@ -202,6 +202,7 @@ div.icon-48-pe {
 	text-align:center;
 	font-size:large;
 	color: #ccc;
+	z-index:99999;
 }
 span.icon-32-email {
 	background: url('images/icon-32-email.png') no-repeat left;
@@ -288,7 +289,7 @@ table.ph-table-form tr td.ph-inputbox {
 .ph-cp-item-icon {
 	background: #fff;
 	border-radius: 5px;
-	
+
 	width: 7rem;
 	height: 7rem;
 	text-align: center;
@@ -296,7 +297,7 @@ table.ph-table-form tr td.ph-inputbox {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	
+
 	border: 0;
 	background-image: linear-gradient(-45deg,#ffffff,#ffffff);
     box-shadow: 1px 2px 1px 0 rgba(0,0,0,.15);
@@ -347,7 +348,7 @@ table.ph-table-form tr td.ph-inputbox {
 }
 
 .ph-cp-item-title {
-	
+
 	display:block;
 	font-size: 0.95em;
 	margin: 0 auto;
@@ -732,4 +733,8 @@ a[target=_blank]:before{
 	margin-bottom: 1em;
 	margin-top: 1em;
 	clear:both;
+}
+
+.com_phocaemail.view-phocaemailsendnewsletter .btn-success {
+	margin-top: 0.3em;
 }

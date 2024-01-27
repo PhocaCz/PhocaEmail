@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $this->t['url'] = 'index.php?option=com_phocaemail&view=phocaemailsendnewslettera&format=json&tmpl=component&'. Session::getFormToken().'=1';
 
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 "Joomla.submitbutton = function(task) {
 	var form = document.adminForm;

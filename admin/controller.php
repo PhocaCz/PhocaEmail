@@ -8,6 +8,7 @@
  */
  defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -28,11 +29,11 @@ $layout	= Factory::getApplication()->input->get('layout');
 
 
 if ($layout == 'edit') {
-	
+
 } else {
 
 	foreach ($l as $k => $v) {
-		
+
 		if ($v[1] == '') {
 			$link = 'index.php?option=com_phocaemail';
 		} else {
@@ -40,9 +41,9 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
-			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1], true );
+			Sidebar::addEntry(Text::_($v[0]), $link.$v[1], true );
 		} else {
-			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1]);
+			Sidebar::addEntry(Text::_($v[0]), $link.$v[1]);
 		}
 
 	}

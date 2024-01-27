@@ -676,7 +676,7 @@ class PhocaEmailSend
 			}
 		}
 
-		//$document  = JFactory::getDocument();
+		//$document  = Factory::getDocument();
 		//$renderer  = $document->loadRenderer('message');
 
 		// - - - - - - - - - -

@@ -15,13 +15,13 @@ class PhocaEmailController extends BaseController
 {
 	public function display($cachable = false, $urlparams = false)
 	{
-		//$paramsC 	= JComponentHelper::getParams('com_phocaemail');
+		//$paramsC 	= ComponentHelper::getParams('com_phocaemail');
 		$cache 		= 0;//$paramsC->get( 'enable_cache', 0 );
 		$cachable 	= false;
 		if ($cache == 1) {
 			$cachable 	= true;
 		}
-		
+
 		$document 	= Factory::getDocument();
 
 		$safeurlparams = array('catid'=>'INT','id'=>'INT','cid'=>'ARRAY','year'=>'INT','month'=>'INT','limit'=>'INT','limitstart'=>'INT',

@@ -64,7 +64,7 @@ $js[] =  ' else if (form.subject.value == ""){'. "\n"
 .'}'. "\n";
 
 
-JFactory::getDocument()->addScriptDeclaration(implode('', $js));
+Factory::getDocument()->addScriptDeclaration(implode('', $js));
 ?>
 
 

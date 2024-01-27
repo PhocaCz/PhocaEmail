@@ -147,7 +147,7 @@ class PhocaEmailSendNewsletterEmail
 			$token = $user->token;
 		}
 		$link = PhocaEmailHelperRoute::getNewsletterRoute(0, $type, $token);
-		//return JUri::base(true) . JRoute::_($link);
+		//return Uri::base(true) . JRoute::_($link);
 
 		$formatLink = PhocaEmailUtils::getRightPathLink($link);
 		return $formatLink;

@@ -2,7 +2,7 @@
 <config>
 	<fields addfieldpath="/administrator/components/com_phocaemail/models/fields">
 		<fieldset name="display" label="COM_PHOCAEMAIL_CONFIG_HEAD_MAIN_LABEL">
-	
+
 <field name="html_message" type="radio" layout="joomla.form.field.radio.switcher" default="1" label="COM_PHOCAEMAIL_FIELD_HTML_MESSAGE_LABEL" description="COM_PHOCAEMAIL_FIELD_HTML_MESSAGE_DESC">
 	<option value="0">COM_PHOCAEMAIL_NO</option>
 	<option value="1">COM_PHOCAEMAIL_YES</option>
@@ -41,12 +41,12 @@
 	<option value="0">COM_PHOCAEMAIL_NO</option>
 	<option value="1">COM_PHOCAEMAIL_YES</option>
 </field>
-	
+
 	</fieldset>
-	
+
 	<fieldset name="newsletter" label="COM_PHOCAEMAIL_CONFIG_HEAD_NEWSLETTER_LABEL">
-	
-	
+
+
 	<field name="enable_subscription" type="radio" layout="joomla.form.field.radio.switcher" default="0" label="COM_PHOCAEMAIL_FIELD_ENABLE_SUBSCRIPTION_LABEL" description="COM_PHOCAEMAIL_FIELD_ENABLE_SUBSCRIPTION_DESC">
 	<option value="0">COM_PHOCAEMAIL_NO</option>
 	<option value="1">COM_PHOCAEMAIL_YES</option>
@@ -72,7 +72,7 @@
     <option value="1">COM_PHOCAEMAIL_YES</option>
 	<option value="2">COM_PHOCAEMAIL_YES_REQUIRED</option>
 </field>
-		
+
 <field 	name="display_privacy_checkbox_form" type="list" class="btn-group" default="0" label="COM_PHOCAEMAIL_FIELD_DISPLAY_PRIVACY_CHECKBOX_FORM_LABEL" description="COM_PHOCAEMAIL_FIELD_DISPLAY_PRIVACY_CHECKBOX_FORM_DESC">
     <option value="0">COM_PHOCAEMAIL_NO</option>
     <option value="1">COM_PHOCAEMAIL_YES</option>
@@ -80,15 +80,15 @@
 
 </field>
 
-<field name="privacy_checkbox_text" default="" buttons="0" width="330" type="editor" filter="JComponentHelper::filterText" label="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_DESC"/>
-	
+<field name="privacy_checkbox_text" default="" buttons="0" width="330" type="editor" filter="\Joomla\CMS\Component\ComponentHelper::filterText" label="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_DESC"/>
+
 
 <field 	name="enable_captcha" type="radio" layout="joomla.form.field.radio.switcher" default="0" label="COM_PHOCAEMAIL_FIELD_ENABLE_CAPTCHA_LABEL" description="COM_PHOCAEMAIL_FIELD_ENABLE_CAPTCHA_DESC">
 	<option value="0">COM_PHOCAEMAIL_NO</option>
     <option value="1">COM_PHOCAEMAIL_YES</option>
 </field>
 
-<field name="recaptcha_sitekey" type="text" default="" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SITEKEY_LABEL"  description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SITEKEY_DESC"/>  
+<field name="recaptcha_sitekey" type="text" default="" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SITEKEY_LABEL"  description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SITEKEY_DESC"/>
 
 <field name="recaptcha_privatekey" type="text" default="" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_PRIVATEKEY_LABEL" description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_PRIVATEKEY_DESC"/>
 
@@ -100,21 +100,21 @@
 <field name="recaptcha_size" type="list" class="btn-group btn-group-yesno" default="2" label="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SIZE_LABEL" description="COM_PHOCAEMAIL_FIELD_RECAPTCHA_SIZE_LABEL">
 	<option value="1">COM_PHOCAEMAIL_NORMAL</option>
 	<option value="2">COM_PHOCAEMAIL_COMPACT</option>
-</field>	
+</field>
 
 <field name="session_suffix" default="" type="text" label="COM_PHOCAEMAIL_FIELD_SESSION_SUFFIX_LABEL" description="COM_PHOCAEMAIL_FIELD_SESSION_SUFFIX_DESC" />
-	
-	
+
+
 	<field name="count_subscription" default="5" size="4" type="text" label="COM_PHOCAEMAIL_COUNT_SUBSCRIPTION_ATTEMPTS_LABEL" description="COM_PHOCAEMAIL_COUNT_SUBSCRIPTION_ATTEMPTS_DESC"/>
-	
+
 	<field name="site_name" default="" type="text" label="COM_PHOCAEMAIL_SITE_NAME_LABEL" description="COM_PHOCAEMAIL_SITE_NAME_DESC"/>
-	
+
 	<field name="subscription_name" default="" type="text" label="COM_PHOCAEMAIL_SUBSCRIPTION_NAME_LABEL" description="COM_PHOCAEMAIL_SUBSCRIPTION_NAME_DESC"/>
-	
+
 	<field name="from_name" default="" type="text" label="COM_PHOCAEMAIL_FROM_NAME_LABEL" description="COM_PHOCAEMAIL_FROM_NAME_DESC"/>
-	
+
 	<field name="email_from" default="" type="text" label="COM_PHOCAEMAIL_EMAIL_FROM_LABEL" description="COM_PHOCAEMAIL_EMAIL_FROM_DESC"/>
-	
+
 	<field name="activation_email" default="&lt;div&gt;Hello,&lt;br /&gt; &lt;br /&gt; You recently requested an email subscription to {subscriptionname}.&lt;br /&gt; Please confirm your subscription.&lt;/div&gt;
 &lt;p&gt; &lt;/p&gt;
 &lt;div&gt;&lt;a style=&quot;background: #0044cc; color: #fff; padding: 5px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;&quot; href=&quot;{activationlink}&quot;&gt;Click here to confirm your subscription to our newsletter&lt;/a&gt;
@@ -125,7 +125,7 @@
 &lt;div&gt;This message was sent to you by {sitename}.&lt;/div&gt;
 &lt;div&gt;You received this message because you requested a subscription to the {subscriptionname}.&lt;/div&gt;
 &lt;div&gt;If you received this in error, please disregard. Do not reply directly to this email.&lt;/div&gt;
-&lt;/div&gt;" type="editor" label="COM_PHOCAEMAIL_ACTIVATION_EMAIL_LABEL" description="COM_PHOCAEMAIL_ACTIVATION_EMAIL_DESC" filter="JComponentHelper::filterText" />
+&lt;/div&gt;" type="editor" label="COM_PHOCAEMAIL_ACTIVATION_EMAIL_LABEL" description="COM_PHOCAEMAIL_ACTIVATION_EMAIL_DESC" filter="\Joomla\CMS\Component\ComponentHelper::filterText" />
 
 
 <field name="unsubscribing_automatic_deletion" type="radio" layout="joomla.form.field.radio.switcher" default="0" label="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBING_AUTOMATIC_DELETION_LABEL" description="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBING_AUTOMATIC_DELETION_DESC">
@@ -139,18 +139,18 @@
 	<option value="1">COM_PHOCAEMAIL_YES</option>
 </field>
 
-	<field name="unsubscribe_email" default="&lt;div&gt;Hello,&lt;br /&gt; &lt;br /&gt; You recently requested an unsubscription from our newsletter.&lt;br /&gt;This email confirms that you have been successfully unsubscribed from our newsletter.&lt;/div&gt;" type="editor" label="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_LABEL" description="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_DESC" filter="JComponentHelper::filterText" />
-	
-	
-	<field name="description" default="" type="editor" label="COM_PHOCAEMAIL_MAIN_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_MAIN_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
-	
-	
+	<field name="unsubscribe_email" default="&lt;div&gt;Hello,&lt;br /&gt; &lt;br /&gt; You recently requested an unsubscription from our newsletter.&lt;br /&gt;This email confirms that you have been successfully unsubscribed from our newsletter.&lt;/div&gt;" type="editor" label="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_LABEL" description="COM_PHOCAEMAIL_FIELD_UNSUBSCRIBE_EMAIL_DESC" filter="\Joomla\CMS\Component\ComponentHelper::filterText" />
+
+
+	<field name="description" default="" type="editor" label="COM_PHOCAEMAIL_MAIN_DESCRIPTION_LABEL" description="COM_PHOCAEMAIL_MAIN_DESCRIPTION_DESC" filter="\Joomla\CMS\Component\ComponentHelper::filterText" />
+
+
 	</fieldset>
-	
+
 	<fieldset name="permissions_label" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
 
 		<field name="rules" type="rules" component="com_phocaemail" filter="rules" label="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_DESC"/>
 	</fieldset>
-	
+
 	</fields>
 </config>

@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <updates>
 	<update>
 		<name><![CDATA[ Phoca Email ]]></name>
@@ -34,7 +35,27 @@
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="4.[0]"/>
+		<targetplatform name="joomla" version="4\.*"/>
+		<client>administrator</client>
+	</update>
+	<update>
+		<name><![CDATA[ Phoca Email ]]></name>
+		<description><![CDATA[ Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components. ]]></description>
+		<element>com_phocaemail</element>
+		<type>component</type>
+		<version>5.0.0</version>
+		<infourl title="Phoca Email 5.0.0">http://www.phoca.cz/version/index.php?phocaemail=5.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/5.0.0/com_phocaemail_v5.0.0.zip</downloadurl>
+		</downloads>
+		<sha512>812dd4c38537027ad1aba8bcaa86b50762e8f0b2638baf221e7f7b3d8943a26fc983b2cae5b5093799892c9c2b0e0c093f148afc25672e63b7e408d16fdd22a8</sha512>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="(4|5)\.*"/>
 		<client>administrator</client>
 	</update>
 </updates>

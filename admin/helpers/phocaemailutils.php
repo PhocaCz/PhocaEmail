@@ -8,9 +8,11 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-use Joomla\CMS\Application\CMSApplication;
+//use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
+
 class PhocaEmailUtils
 {
 	public static function setVars( $task = '') {
@@ -46,10 +48,13 @@ class PhocaEmailUtils
 			return $link;
 		}
 
-		$app    		= CMSApplication::getInstance('site');
-		$router 		= $app->getRouter();
-		$uri 			= $router->build($link);
-		$uriS			= $uri->toString();
+		//$app    		= CMSApplication::getInstance('site');
+		//$router 		= $app->getRouter();
+		//$uri 			= $router->build($link);
+		//$uriS			= $uri->toString();
+
+		$uriS 		= Route::link('site', $link);
+
 
 		// Test if administrator is included in URL - to remove it
 		$pos 			= strpos($uriS, 'administrator');
@@ -112,7 +117,7 @@ class PhocaEmailUtils
 		$paramsC 	= ComponentHelper::getParams('com_phocaemail') ;
 		$siteKey	= strip_tags(trim($paramsC->get( 'recaptcha_sitekey', 'no-key' )));
 		$size		= (int)$paramsC->get( 'recaptcha_size', 1 );
-		
+
 		$dataSize = 'normal';
 		if ($size == 2) {
 			$dataSize = 'compact';
