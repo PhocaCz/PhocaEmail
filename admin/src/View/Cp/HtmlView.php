@@ -34,11 +34,11 @@ class HtmlView extends BaseHtmlView
 		$i = ' icon-';
 		$d = 'duotone ';
 		$this->views= array(
-			'write'				=> array($this->t['l'] . '_SEND_EMAIL', $d.$i.'envelope', '#3366cc'),
+			'emailwrite'		=> array($this->t['l'] . '_SEND_EMAIL', $d.$i.'envelope', '#3366cc'),
 			'sendnewsletter'	=> array($this->t['l'] . '_SEND_NEWSLETTER', $d.$i.'mass-mail', '#4a33cc'),
 			'newsletters'		=> array($this->t['l'] . '_NEWSLETTERS', $d.$i.'components', '#cc3369'),
 			'subscribers'		=> array($this->t['l'] . '_SUBSCRIBERS', $d.$i.'groups', '#cc4a33'),
-			'lists'				=> array($this->t['l'] . '_MAILING_LISTS', $d.$i.'address', '#cc9633'),
+			'emaillists'		=> array($this->t['l'] . '_MAILING_LISTS', $d.$i.'address', '#cc9633'),
 			'info'				=> array($this->t['l'] . '_INFO', $d.$i.'info-circle', '#3378cc')
 		);
 
