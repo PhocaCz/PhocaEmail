@@ -9,11 +9,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Controller;
+namespace Phoca\Component\Phocaemail\Administrator\Controller;
 
 \defined('_JEXEC') or die();
 
-use Phoca\Component\phocaemail\Administrator\Controller\DisplayController;
+use Phoca\Component\Phocaemail\Administrator\Controller\DisplayController;
 
 class SendnewsletterController extends DisplayController
 {

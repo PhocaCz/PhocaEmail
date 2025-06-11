@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="Phoca\Component\Phocaemail\Administrator\Field">
 
-	<fieldset addfieldpath="Phoca\Component\phocaemail\Field">
+	<fieldset addfieldpath="Phoca\Component\Phocaemail\Administrator\Field">
 
 <field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL" required="true" readonly="true" class="readonly" />
 
@@ -12,7 +12,7 @@
 <field name="subject" type="text" class="inputbox" size="40" label="COM_PHOCAEMAIL_FIELD_SUBJECT_LABEL" description="COM_PHOCAEMAIL_FIELD_SUBJECT_DESC" />
 
 
-<field name="ordering" type="PhocaEmailOrdering" table="newsletter" class="form-control inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
+<field name="ordering" type="phocaemailordering" table="newsletter" class="form-control inputbox" label="COM_PHOCAEMAIL_FIELD_ORDERING_LABEL" description="COM_PHOCAEMAIL_FIELD_ORDERING_DESC" />
 
 
 <field name="message" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCAEMAIL_FIELD_MESSAGE_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCAEMAIL_FIELD_MESSAGE_DESC" />

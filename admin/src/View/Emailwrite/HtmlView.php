@@ -7,21 +7,21 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\View\Emailwrite;
+namespace Phoca\Component\Phocaemail\Administrator\View\Emailwrite;
 
 \defined( '_JEXEC' ) or die();
 
 use Joomla\CMS\MVC\View\HtmlView AS BaseHtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\EmailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\EmailwriteHelper;
-use Phoca\Component\phocaemail\Administrator\View\Adminview\Adminview;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailwriteHelper;
+use Phoca\Component\Phocaemail\Administrator\View\Adminview\Adminview;
 use Joomla\CMS\Editor\Editor;
 
 class HtmlView extends BaseHtmlView
@@ -93,7 +93,7 @@ class HtmlView extends BaseHtmlView
 			$context = 'com_phocaemail.vm.write.';
 			$this->re['order_id']		= $app->input->get( 'order_id', '', 'get', 'string' );
 			$this->re['delivery_id']	= $app->input->get( 'delivery_id', '', 'get', 'string');
-			if (File::exists(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php')) {
+			if (is_file(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php')) {
 				require_once(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php');
 			} else {
 				throw new Exception('Error - Phoca PDF VirtueMart Plugin Helper file could not be found in system', 500);

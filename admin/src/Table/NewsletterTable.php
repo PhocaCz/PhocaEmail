@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Table;
+namespace Phoca\Component\Phocaemail\Administrator\Table;
 
 \defined('_JEXEC') or die('Restricted access');
 
@@ -16,7 +16,7 @@ use Joomla\CMS\Table\Table;
 class NewsletterTable extends Table
 {
 	
-	function __construct(DatabaseDriver $db) {
+	function __construct($db) {
 		parent::__construct('#__phocaemail_newsletters', 'id', $db);
 	}
 	

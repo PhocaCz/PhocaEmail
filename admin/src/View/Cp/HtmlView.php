@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\View\Cp;
+namespace Phoca\Component\Phocaemail\Administrator\View\Cp;
 
 \defined( '_JEXEC' ) or die();
 
@@ -15,10 +15,10 @@ use Joomla\CMS\MVC\View\HtmlView AS BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
-use Phoca\Component\phocaemail\Administrator\View\Adminview\Adminview;
-use Phoca\Component\phocaemail\Administrator\Helper\EmailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\CpHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\View\Adminview\Adminview;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\CpHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
 
 class HtmlView extends BaseHtmlView
 {

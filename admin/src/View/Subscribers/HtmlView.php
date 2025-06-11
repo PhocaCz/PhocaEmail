@@ -7,16 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\View\Subscribers;
+namespace Phoca\Component\Phocaemail\Administrator\View\Subscribers;
 
 \defined( '_JEXEC' ) or die();
 
 use Joomla\CMS\MVC\View\HtmlView AS BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Administrator\View\Adminviews\Adminviews;
-use Phoca\Component\phocaemail\Administrator\Helper\SubscriberHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\View\Adminviews\Adminviews;
+use Phoca\Component\Phocaemail\Administrator\Helper\SubscriberHelper;
 
 class HtmlView extends BaseHtmlView
 {
@@ -76,7 +76,7 @@ class HtmlView extends BaseHtmlView
 		}
 
 		if ($canDo->get('core.delete')) {
-			ToolbarHelper::deleteList( $this->t['l'].'_WARNING_DELETE_ITEMS', 'phocaemailsubscribers.delete', $this->t['l'].'_DELETE');
+			ToolbarHelper::deleteList( $this->t['l'].'_WARNING_DELETE_ITEMS', 'subscribers.delete', $this->t['l'].'_DELETE');
 		}
 		ToolbarHelper::divider();
 		ToolbarHelper::help( 'screen.'.$this->t['c'], true );

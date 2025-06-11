@@ -9,17 +9,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
  defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Session\Session;
+
+ use Joomla\CMS\HTML\Helpers\Email;
+ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
-use Phoca\Component\phocaemail\Administrator\Helper\PhocaemailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
 
 class SendHelper
 {
@@ -46,7 +48,7 @@ class SendHelper
 
 		// Attachment
 		$attachmentArray 		= array();
-		$tmpl['path']			= PhocaemailHelper::getPath();
+		$tmpl['path']			= EmailHelper::getPath();
 		if($data['ext']	== 'phocaemail') {
 
 			$tmpl['attachment']		= Folder::files ($tmpl['path']['path_abs_nods'], '.', false, false, array('index.html'));
@@ -56,7 +58,7 @@ class SendHelper
 				$i = 0;
 				foreach ($tmpl['attachment'] as $key => $value) {
 					if(isset($data['attachment'][$i]) && $data['attachment'][$i]) {
-						if (File::exists($tmpl['attachment_full'][$i])) {
+						if (is_file($tmpl['attachment_full'][$i])) {
 							$attachmentArray[] = $tmpl['attachment_full'][$i];
 						} else {
 							$warning[]	= Text::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $tmpl['attachment_full'][$i];
@@ -67,7 +69,7 @@ class SendHelper
 			}
 		} else if ($data['ext']	== 'virtuemart') {
 
-			if (File::exists(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php')) {
+			if (is_file(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php')) {
 				require_once(JPATH_ADMINISTRATOR.'/components/com_phocapdf/helpers/phocapdfrender.php');
 			} else {
 
@@ -104,7 +106,7 @@ class SendHelper
 
 						$pdfCreated = PhocaPDFRender::renderPDF('', $staticData);
 
-						if (File::exists($staticData['file'])) {
+						if (is_file($staticData['file'])) {
 							$attachmentArray[] = $staticData['file'];
 						} else {
 							$warning[]	= Text::_('COM_PHOCAEMAIL_ERROR_FILE_NOT_EXISTS').': '. $staticData['file'];
@@ -674,7 +676,7 @@ class SendHelper
 		// Remove attachments
 		if ($data['ext']	== 'virtuemart') {
 			foreach ($attachmentArray as $key => $value) {
-				if (File::exists($value)) {
+				if (is_file($value)) {
 					File::delete($value);
 				}
 			}

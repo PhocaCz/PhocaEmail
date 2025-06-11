@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
 \defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -69,7 +69,7 @@ class UtilsHelper
 			$formatLink = Uri::root(false). $uriL;
 			//$formatLink = $uriS;
 		} else {
-			$formatLink = Uri::root(false). str_replace(Uri::root(true).'/administrator/', '', $uri->toString());
+			$formatLink = Uri::root(false). str_replace(Uri::root(true).'/administrator/', '', $uriS->toString());
 		}
 
 		return $formatLink;
@@ -89,7 +89,7 @@ class UtilsHelper
 	public static function fixLinksPath($text){
 
 
-		$dom = new DOMDocument('1.0', 'UTF-8');
+		$dom = new \DOMDocument('1.0', 'UTF-8');
 
 		// set error level
 		$internalErrors = libxml_use_internal_errors(true);

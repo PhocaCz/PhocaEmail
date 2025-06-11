@@ -17,7 +17,7 @@ $js = array();
 $js[] =  ''
 		.'Joomla.submitbutton = function(task) {'. "\n"
 		.' var form = document.adminForm;'. "\n"
-		.' if (task == \'phocaemailwrite.send\') {'. "\n"
+		.' if (task == \'emailwrite.send\') {'. "\n"
 		.'  if (form.from.value == ""){'. "\n"
 		.'	 alert( "'. Text::_('COM_PHOCAEMAIL_ERROR_FIELD_FROM').'" );'. "\n"
 		.'	} else if (form.fromname.value == ""){'. "\n"
@@ -181,7 +181,7 @@ Factory::getDocument()->addScriptDeclaration(implode('', $js));
 		<tr>
 			<td class="ph-label" valign="top" colspan="2">
 				<div class="btn-wrapper" >
-					<button onclick="Joomla.submitbutton('phocaemailwrite.send');return false;" class="btn btn-success">
+					<button onclick="Joomla.submitbutton('emailwrite.send');return false;" class="btn btn-success">
 					<span class="icon-envelope"></span> <?php echo Text::_('COM_PHOCAEMAIL_SEND'); ?></button>
 				</div>
 			</td>

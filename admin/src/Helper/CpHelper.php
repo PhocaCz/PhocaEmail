@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
  defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;

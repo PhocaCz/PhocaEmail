@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Controller;
+namespace Phoca\Component\Phocaemail\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
@@ -20,11 +20,11 @@ use Joomla\CMS\Factory;
 class NewslettersController extends AdminController
 {
 
-/*	public function &getModel($name = 'PhocaEmailnewsletter', $prefix = 'PhocaEmailCpModel', $config = array())
+	public function getModel($name = 'Newsletter', $prefix = 'Administrator', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
-	} */
+	}
 
 	public function saveOrderAjax() {
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
@@ -39,3 +39,4 @@ class NewslettersController extends AdminController
 	}
 
 }
+?>

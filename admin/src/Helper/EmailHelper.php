@@ -9,12 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
 \defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -35,11 +35,11 @@ class EmailHelper
 	public static function getPhocaVersion()
 	{
 		$folder = JPATH_ADMINISTRATOR . '/components/com_phocaemail';
-		if (Folder::exists($folder)) {
+		if (is_dir($folder)) {
 			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE .'/components/com_phocaemail';
-			if (Folder::exists($folder)) {
+			if (is_dir($folder)) {
 				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;
@@ -131,10 +131,10 @@ class EmailHelper
 					$subscribers = $db->loadColumn();
 
 					if (!empty($subscribers)) {
-						$newsletters[$k]->slist = new stdClass();
+						$newsletters[$k]->slist = new \stdClass();
 						$newsletters[$k]->slist = implode(',', $subscribers);
 					} else {
-						$newsletters[$k]->slist = new stdClass();
+						$newsletters[$k]->slist = new \stdClass();
 						$newsletters[$k]->slist = null;
 					}
 				} else {

@@ -14,25 +14,21 @@ use Joomla\CMS\Language\Text;
 $wa = $this->document->getWebAssetManager();
 $wa->registerAndUseStyle('com_phocaemail.main');
 
+
+echo '<div id="ph-newsletter-box" class="ph-newsletter-view'.$this->p->get( 'pageclass_sfx' ).'" >';
+
+if ( $this->p->get( 'show_page_heading' ) ) {
+
+    if ($this->p->get('page_heading') != '') {
+	    echo '<h1>'. $this->escape($this->p->get('page_heading')) . '</h1>';
+    } else {
+        echo '<h1>' . Text::_('COM_PHOCAEMAIL_NEWSLETTER') . '</h1>';
+    }
+}
+
+echo $this->t['text'];
+echo '<div>&nbsp;</div>';// end of box
+
+
+echo '</div>';
 ?>
-
-<div id="ph-newsletter-box" class="ph-newsletter-view'<?php echo $this->p->get( 'pageclass_sfx' ); ?>" >
-
-	<?php if ( $this->p->get( 'show_page_heading' ) ) {
-
-			if ($this->p->get('page_heading') != '') { ?>
-				<h1><?php echo $this->escape($this->p->get('page_heading')); ?></h1>
-			<?php } else { ?>
-				<h1><?php echo Text::_('COM_PHOCAEMAIL_NEWSLETTER'); ?></h1>
-			<?php }
-		} ?>
-
-	<?php echo $this->t['text']; ?>
-
-	<?php if(empty($this->task)) { 
-		 echo $this->loadTemplate('form');
-	} ?>
-
-	<div>&nbsp;</div>
-
-</div>

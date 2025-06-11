@@ -7,26 +7,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Controller;
+namespace Phoca\Component\Phocaemail\Administrator\Controller;
 
 \defined('_JEXEC') or die;
+
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
-jimport('joomla.application.component.controlleradmin');
 
 class SubscribersController extends AdminController
 {
-	protected	$option 		= 'com_phocaemail';
 
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
-	public function getModel($name = 'Subscribers', $prefix = '', $config = array())
+	public function getModel($name = 'Subscriber', $prefix = 'Administrator', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
@@ -43,6 +37,5 @@ class SubscribersController extends AdminController
 		if ($return) { echo "1";}
 		Factory::getApplication()->close();
 	}
-
 }
 ?>

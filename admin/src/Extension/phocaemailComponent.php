@@ -7,19 +7,27 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Extension;
+namespace Phoca\Component\Phocaemail\Administrator\Extension;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
-use Phoca\Component\phocaemail\Administrator\Service\Html\HTMLService;
+use Phoca\Component\Phocaemail\Administrator\Service\Html\HTMLService;
 use Psr\Container\ContainerInterface;
+use Joomla\CMS\Component\Router\RouterServiceInterface;
+use Joomla\CMS\Component\Router\RouterServiceTrait;
 
-class phocaemailComponent extends MVCComponent implements BootableExtensionInterface
+
+
+class phocaemailComponent extends MVCComponent implements
+
+    BootableExtensionInterface,
+    RouterServiceInterface
 {
 	use HTMLRegistryAwareTrait;
+    use RouterServiceTrait;
 
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like

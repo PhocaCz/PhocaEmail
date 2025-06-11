@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Site\Model;
+namespace Phoca\Component\Phocaemail\Site\Model;
 
 \defined('_JEXEC') or die();
 
@@ -16,9 +16,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Phoca\Component\phocaemail\Administrator\Helper\EmailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\SendnewsletteremailHelper;
-use Phoca\Component\phocaemail\Administrator\Table\SubscriberTable;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\SendnewsletteremailHelper;
+use Phoca\Component\Phocaemail\Administrator\Table\SubscriberTable;
 
 class NewsletterModel extends BaseDatabaseModel
 {

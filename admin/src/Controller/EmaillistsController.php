@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Controller;
+namespace Phoca\Component\Phocaemail\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 class EmaillistsController extends AdminController
 {
 
-	public function &getModel($name = 'Emaillist', $prefix = '', $config = array())
+	public function getModel($name = 'Emaillist', $prefix = 'Administrator', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

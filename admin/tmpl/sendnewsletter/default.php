@@ -44,52 +44,38 @@ Factory::getDocument()->addScriptDeclaration(
 			}
 
 			var txtSending = '';
-			var txtSendingFinished = '';"
-			//emario insert async function
-			."async function delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }"
-            //END of emario insert async function
-			."if (slength == 0) {
+			var txtSendingFinished = '';
+			if (slength == 0) {
 				alert( '". Text::_('COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS', true)."' );
 			} else {
-				jQuery(\"#phsendoutput\").empty();"
-				//emario insert mainLoop function
-                ."async function mainLoop(slength) {"
-                //END of emario insert mainLoop function
-					."for (var i = 0; i < slength; i++) {
-                        //emario insert await delay
-    					await delay($emailDelay);
-    					//END of emario insert await delay
-						var j = i + 1;
-						txtSending = '<div class=\"ph-sending-msg\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true)." (' + j + '/' + slength + ') ...</div>';
-						jQuery(\"#phsendoutput\").append(txtSending);
+				jQuery(\"#phsendoutput\").empty();
+				for (var i = 0; i < slength; i++) {
 
-						dataPost['subscriberid']	= subscribers[nId][i];
-						jQuery.ajax({
-						   url: url,
-						   type:'POST',
-						   data:dataPost,
-						   dataType:'JSON',
-						   async: false,
-						   success:function(data){
-								if ( data.status == 1 ){
-									jQuery(\"#phsendoutput\").append(data.message);
-									//txtSending += data.message;
-								} else {
-									jQuery(\"#phsendoutput\").append(data.error);
-									//txtSending += data.error;
-								}
+					var j = i + 1;
+					txtSending = '<div class=\"ph-sending-msg\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT', true)." (' + j + '/' + slength + ') ...</div>';
+					jQuery(\"#phsendoutput\").append(txtSending);
+
+					dataPost['subscriberid']	= subscribers[nId][i];
+					jQuery.ajax({
+					   url: url,
+					   type:'POST',
+					   data:dataPost,
+					   dataType:'JSON',
+					   async: false,
+					   success:function(data){
+							if ( data.status == 1 ){
+								jQuery(\"#phsendoutput\").append(data.message);
+								//txtSending += data.message;
+							} else {
+								jQuery(\"#phsendoutput\").append(data.error);
+								//txtSending += data.error;
 							}
-						});
-						//jQuery(\"#phsendoutput\").append(txtSending);
-					}"
-                //emario insert call mainLoop
-                ."const loopLimit = slength;
-                mainLoop(loopLimit);"
-                //END of emario insert call mainLoop
+						}
+					});
+					//jQuery(\"#phsendoutput\").append(txtSending);
+				}
 
-				."txtSendingFinished = '<div class=\"ph-sending-msg-finish\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true)."</div>';
+				txtSendingFinished = '<div class=\"ph-sending-msg-finish\">". Text::_('COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED', true)."</div>';
 				jQuery(\"#phsendoutput\").append(txtSendingFinished);
 
 			}
@@ -98,7 +84,10 @@ Factory::getDocument()->addScriptDeclaration(
 	} else if (task == 'sendnewsletter.cancel') {
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
-}");
+}"
+
+
+);
 
 /*
 ?><script language="javascript" type="text/javascript">
@@ -174,7 +163,7 @@ Joomla.submitbutton = function(task) {
 		<div class="control-group">
 			<div class="control-label"><?php echo Text::_('COM_PHOCAEMAIL_NEWSLETTER'); ?></div>
 				<div class="controls"><?php echo $this->t['newsletterlist']; ?>
-					<button onclick="Joomla.submitbutton(\'sendnewsletter.send\');return false;" class="btn btn-success">
+					<button onclick="Joomla.submitbutton('sendnewsletter.send');return false;" class="btn btn-success">
 					<span class="icon-envelope"></span><?php echo Text::_('COM_PHOCAEMAIL_SEND'); ?></button>
 
 				</div>

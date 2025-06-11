@@ -9,7 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Table;
+namespace Phoca\Component\Phocaemail\Administrator\Table;
 
 \defined('_JEXEC') or die('Restricted access');
 
@@ -18,7 +18,7 @@ use Joomla\CMS\Table\Table;
 class EmaillistTable extends Table
 {
 
-	function __construct(DatabaseDriver $db) {
+	function __construct($db) {
 		parent::__construct('#__phocaemail_lists', 'id', $db);
 	}
 }

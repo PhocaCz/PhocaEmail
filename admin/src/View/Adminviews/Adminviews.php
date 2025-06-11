@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
-namespace Phoca\Component\phocaemail\Administrator\View\AdminViews;
+namespace Phoca\Component\Phocaemail\Administrator\View\AdminViews;
 
 \defined('_JEXEC') or die('Restricted access');
 

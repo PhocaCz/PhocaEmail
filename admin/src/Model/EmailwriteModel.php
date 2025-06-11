@@ -9,7 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Model;
+namespace Phoca\Component\Phocaemail\Administrator\Model;
 
 \defined('_JEXEC') or die();
 

@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Site\Controller;
+namespace Phoca\Component\Phocaemail\Site\Controller;
 
 \defined('_JEXEC') or die();
 
@@ -19,9 +19,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Mail\MailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\SendnewsletteremailHelper;
-use Phoca\Component\phocaemail\Site\Helper\RouteHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\SendnewsletteremailHelper;
+use Phoca\Component\Phocaemail\Site\Helper\RouteHelper;
 
 class NewsletterController extends FormController
 {
@@ -93,7 +93,7 @@ class NewsletterController extends FormController
 				$msg = Text::_('COM_PHOCAEMAIL_ERROR_WRONG_CAPTCHA_ADDED');
 				$app->enqueueMessage($msg, 'error');
 				//$app->redirect(JRoute::_($uri));
-				$app->redirect(JRoute::_($linkNewsletter));//Back to component form if enabled
+				$app->redirect(Route::_($linkNewsletter));//Back to component form if enabled
 
 				return false;
 			}

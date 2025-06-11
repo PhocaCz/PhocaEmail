@@ -7,6 +7,7 @@
 	"extensionName": "Phoca Email",
 	"projectInitials" : "PE",
 	"description": "Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components.",
+	"nameSpace": "Phoca\\Component\\Phocaemail",
 	"projectUrl": "https://www.phoca.cz/phocaemail",
 	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/60-phoca-email-component",
 	"projectMainComponent": "Phoca Email",
@@ -27,44 +28,44 @@
 		"submenu": {
 			"0" : {
 				"image": "icon-16-pe-menu-cp.png",
-				"view": "phocaemailcp",
+				"view": "cp",
 				"link": "option=com_phocaemail",
 				"title": "COM_PHOCAEMAIL_CONTROL_PANEL"
 			},
 			"1" : {
 				"image": "icon-16-pe-menu-write.png",
-				"view": "phocaemailwrite",
-				"link": "option=com_phocaemail&amp;view=phocaemailwrite",
+				"view": "emailwrite",
+				"link": "option=com_phocaemail&amp;view=emailwrite",
 				"title": "COM_PHOCAEMAIL_SEND_EMAIL"
 			},
 			"2" : {
 				"image": "icon-16-pe-menu-sendnewsletter.png",
-				"view": "phocaemailsendnewsletter",
-				"link": "option=com_phocaemail&amp;view=phocaemailsendnewsletter",
+				"view": "sendnewsletter",
+				"link": "option=com_phocaemail&amp;view=sendnewsletter",
 				"title": "COM_PHOCAEMAIL_SEND_NEWSLETTER"
 			},
 			"3" : {
 				"image": "icon-16-pe-menu-newsletter.png",
-				"view": "phocaemailnewsletters",
-				"link": "option=com_phocaemail&amp;view=phocaemailnewsletters",
+				"view": "newsletters",
+				"link": "option=com_phocaemail&amp;view=newsletters",
 				"title": "COM_PHOCAEMAIL_NEWSLETTERS"
 			},
 			"4" : {
 				"image": "icon-16-pe-menu-subscriber.png",
-				"view": "phocaemailsubscribers",
-				"link": "option=com_phocaemail&amp;view=phocaemailsubscribers",
+				"view": "subscribers",
+				"link": "option=com_phocaemail&amp;view=subscribers",
 				"title": "COM_PHOCAEMAIL_SUBSCRIBERS"
 			},
 			"5" : {
 				"image": "icon-16-pe-menu-lists.png",
-				"view": "phocaemaillists",
-				"link": "option=com_phocaemail&amp;view=phocaemaillists",
+				"view": "emaillists",
+				"link": "option=com_phocaemail&amp;view=emaillists",
 				"title": "COM_PHOCAEMAIL_MAILING_LISTS"
 			},
 			"6": {
 				"image": "icon-16-pe-menu-info.png",
-				"view": "phocaemailinfo",
-				"link": "option=com_phocaemail&amp;view=phocaemailinfo",
+				"view": "info",
+				"link": "option=com_phocaemail&amp;view=info",
 				"title": "COM_PHOCAEMAIL_INFO"
 			}
 		}

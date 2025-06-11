@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
 \defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -19,10 +19,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri; */
 
-use Phoca\Component\phocaemail\Administrator\libraries\Render\Adminviews;
+use Phoca\Component\Phocaemail\Administrator\libraries\Render\Adminviews;
 
 class renderadminviews extends Adminviews
 {

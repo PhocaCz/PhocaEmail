@@ -72,7 +72,7 @@ Phoca Email is a newsletter component and it can be even used for sending emails
 
 ## Version (Joomla! 5.x)
 
-5.0.0
+5.1.0
 
 
 

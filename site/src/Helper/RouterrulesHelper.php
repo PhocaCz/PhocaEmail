@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Site\Helper;
+namespace Phoca\Component\Phocaemail\Site\Helper;
 
 \defined('_JEXEC') or die();
 

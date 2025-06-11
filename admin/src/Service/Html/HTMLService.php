@@ -8,7 +8,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Service\Html;
+namespace Phoca\Component\Phocaemail\Administrator\Service\Html;
 
 class HTMLService
 {

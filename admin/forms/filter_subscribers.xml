@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-<fieldset addfieldpath="Phoca\Component\phocaemail\Field">
+<fieldset addfieldpath="Phoca\Component\Phocaemail\Field">
 	<fields name="filter">
 
 

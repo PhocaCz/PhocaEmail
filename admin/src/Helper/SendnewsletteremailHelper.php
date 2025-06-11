@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Helper;
+namespace Phoca\Component\Phocaemail\Administrator\Helper;
 
 \defined('_JEXEC') or die('Restricted access');
 
@@ -15,8 +15,8 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Site\Helper\RouteHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Site\Helper\RouteHelper;
 
 class SendnewsletteremailHelper
 {

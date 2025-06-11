@@ -9,7 +9,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 
-namespace Phoca\Component\phocaemail\Administrator\libraries\Render;
+namespace Phoca\Component\Phocaemail\Administrator\libraries\Render;
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;

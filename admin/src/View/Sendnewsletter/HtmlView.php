@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Administrator\View\Sendnewsletter;
+namespace Phoca\Component\Phocaemail\Administrator\View\Sendnewsletter;
 
 \defined( '_JEXEC' ) or die();
 
@@ -16,10 +16,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-use Phoca\Component\phocaemail\Administrator\Helper\EmailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\SendnewsletterHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Administrator\View\Adminview\Adminview;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\SendnewsletterHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\View\Adminview\Adminview;
 
 class HtmlView extends BaseHtmlView
 {

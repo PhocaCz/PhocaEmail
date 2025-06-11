@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Site\View\Newsletter;
+namespace Phoca\Component\Phocaemail\Site\View\Newsletter;
 
 \defined('_JEXEC') or die();
 
@@ -18,10 +18,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\SendnewsletteremailHelper;
-use Phoca\Component\Site\Helper\RouteHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\UtilsHelper;
-use Phoca\Component\phocaemail\Administrator\Helper\EmaillistsHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\SendnewsletteremailHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\EmaillistsHelper;
+use Phoca\Component\Phocaemail\Site\Helper\RouteHelper;
 
 class HtmlView extends BaseHtmlView
 {
@@ -154,6 +154,7 @@ class HtmlView extends BaseHtmlView
 		    // Display Messages below header
             $this->t['text'] = '';
 		    $messages = $app->getMessageQueue(true);// True will remove all messages from queue
+
             if (!empty($messages)) {
                 foreach($messages as $k => $v) {
 

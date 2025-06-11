@@ -9,15 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 
-namespace Phoca\Component\phocaemail\Administrator\Controller;
+namespace Phoca\Component\Phocaemail\Administrator\Controller;
 
 \defined('_JEXEC') or die();
 
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Phoca\Component\phocaemail\Administrator\Helper\SendHelper;
-use Phoca\Component\phocaemail\Administrator\Controller\DisplayController;
+use Phoca\Component\Phocaemail\Administrator\Helper\SendHelper;
+use Phoca\Component\Phocaemail\Administrator\Controller\DisplayController;
 
 class EmailwriteController extends DisplayController
 {
@@ -76,14 +76,14 @@ class EmailwriteController extends DisplayController
 			$post['areceipt']		= $app->input->get( 'areceipt', 0,  'int' );
 
 			$context 	= 'com_phocaemail.vm.write.';
-			$redirect	= 'index.php?option=com_phocaemail&view=phocaemailwrite&tmpl=component'
+			$redirect	= 'index.php?option=com_phocaemail&view=emailwrite&tmpl=component'
 		.'&ext=virtuemart&type='.$post['type'].'&order_id='.(int)$post['order_id'].'&delivery_id='.(int)$post['delivery_id'];
 			/*$app->getUserStateFromRequest( $context.'ainvoice', 'ainvoice', $post['ainvoice'] );
 			$app->getUserStateFromRequest( $context.'adelnote', 'adelnote', $post['adelnote'] );
 			$app->getUserStateFromRequest( $context.'areceipt', 'areceipt', $post['areceipt'] );*/
 		} else {
 			$context 	= 'com_phocaemail.write.';
-			$redirect	= 'index.php?option=com_phocaemail&view=phocaemailwrite';
+			$redirect	= 'index.php?option=com_phocaemail&view=emailwrite';
 			// Option can be disabled - only for common form
 			//$app->getUserStateFromRequest( $context.'article_id', 'article_id', $post['article_id'], 'int' );
 			//$app->getUserStateFromRequest( $context.'article_name', 'article_name', $post['article_name'], 'string' );

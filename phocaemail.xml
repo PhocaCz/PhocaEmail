@@ -2,39 +2,39 @@
 <extension type="component" method="upgrade" version="5.0">
 	<name>com_phocaemail</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>26/01/2024</creationDate>
+	<creationDate>11/06/2025</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>5.5.1</version>
+	<version>5.1.0</version>
 	<description>COM_PHOCAEMAIL_XML_DESCRIPTION</description>
-    <namespace path="src">Phoca\Component\phocaemail</namespace>
+	<namespace path="src">Phoca\Component\Phocaemail</namespace>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaEmail</projectName>
 
 	<install>
 		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+			<file driver="mysql" charset="utf8">install/sql/mysql/install.utf8.sql</file>
 		</sql>
 	</install>
 
 	<uninstall>
 		<sql>
-			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+			<file driver="mysql" charset="utf8">install/sql/mysql/uninstall.utf8.sql</file>
 		</sql>
 	</uninstall>
 
 	<update>
 		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
+			<schemapath type="mysql">update/sql/mysql</schemapath>
 		</schemas>
 	</update>
 
 	<files folder="site">
-		<!-- folder>layouts</folder -->
-        <folder>src</folder>
-        <folder>tmpl</folder>
+		<folder>tmpl</folder>
+		<folder>src</folder>
+		<folder>layouts</folder>
 		<filename>index.html</filename>
 	</files>
 
@@ -45,33 +45,33 @@
 		<filename>index.html</filename>
 	</media>
 
-	<!-- languages folder="admin/language">
+	<languages folder="admin/language">
 		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaemail.ini</language>
 		<language tag="en-GB" client="site">en-GB/en-GB.com_phocaemail.sys.ini</language>
-	</languages -->
+	</languages>
 
 	<administration>
 
 		<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu.png" alt="COM_PHOCAEMAIL" link="option=com_phocaemail">COM_PHOCAEMAIL</menu>
 
-        <submenu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-cp.png" alt="COM_PHOCAEMAIL_CONTROL_PANEL" view="phocaemailcp" link="option=com_phocaemail">COM_PHOCAEMAIL_CONTROL_PANEL</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_SEND_EMAIL" view="emailwrite" link="option=com_phocaemail&amp;view=emailwrite">COM_PHOCAEMAIL_SEND_EMAIL</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-sendnewsletter.png" alt="COM_PHOCAEMAIL_SEND_NEWSLETTER" view="sendnewsletter" link="option=com_phocaemail&amp;view=sendnewsletter">COM_PHOCAEMAIL_SEND_NEWSLETTER</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="newsletters" link="option=com_phocaemail&amp;view=newsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="subscribers" link="option=com_phocaemail&amp;view=subscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-lists.png" alt="COM_PHOCAEMAIL_MAILING_LISTS" view="emaillists" link="option=com_phocaemail&amp;view=emaillists">COM_PHOCAEMAIL_MAILING_LISTS</menu>
-            <menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-info.png" alt="COM_PHOCAEMAIL_INFO" view="info" link="option=com_phocaemail&amp;view=info">COM_PHOCAEMAIL_INFO</menu>
-        </submenu>
+			<submenu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-cp.png" alt="COM_PHOCAEMAIL_CONTROL_PANEL" view="cp" link="option=com_phocaemail">COM_PHOCAEMAIL_CONTROL_PANEL</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-write.png" alt="COM_PHOCAEMAIL_SEND_EMAIL" view="emailwrite" link="option=com_phocaemail&amp;view=emailwrite">COM_PHOCAEMAIL_SEND_EMAIL</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-sendnewsletter.png" alt="COM_PHOCAEMAIL_SEND_NEWSLETTER" view="sendnewsletter" link="option=com_phocaemail&amp;view=sendnewsletter">COM_PHOCAEMAIL_SEND_NEWSLETTER</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-newsletter.png" alt="COM_PHOCAEMAIL_NEWSLETTERS" view="newsletters" link="option=com_phocaemail&amp;view=newsletters">COM_PHOCAEMAIL_NEWSLETTERS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-subscriber.png" alt="COM_PHOCAEMAIL_SUBSCRIBERS" view="subscribers" link="option=com_phocaemail&amp;view=subscribers">COM_PHOCAEMAIL_SUBSCRIBERS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-lists.png" alt="COM_PHOCAEMAIL_MAILING_LISTS" view="emaillists" link="option=com_phocaemail&amp;view=emaillists">COM_PHOCAEMAIL_MAILING_LISTS</menu>
+				<menu img="media/com_phocaemail/images/administrator/icon-16-pe-menu-info.png" alt="COM_PHOCAEMAIL_INFO" view="info" link="option=com_phocaemail&amp;view=info">COM_PHOCAEMAIL_INFO</menu>
+			</submenu>
 
 		<files folder="admin">
+			<folder>install</folder>
+			<folder>update</folder>
 			<folder>forms</folder>
-			<!-- folder>language</folder -->
-            <folder>services</folder>
-			<folder>sql</folder>
-            <folder>src</folder>
-            <folder>tmpl</folder>
+			<folder>tmpl</folder>
+			<folder>src</folder>
 			<folder>help</folder>
+			<folder>services</folder>
 			<filename>index.html</filename>
 			<filename>config.xml</filename>
 			<filename>access.xml</filename>
@@ -82,6 +82,8 @@
 			<language tag="en-GB">en-GB/en-GB.com_phocaemail.sys.ini</language>
 		</languages>
 	</administration>
+	
+	
 
 	<updateservers>
 		<server type="extension" name="COM_PHOCAEMAIL" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaEmail/master/manifest.xml]]></server>

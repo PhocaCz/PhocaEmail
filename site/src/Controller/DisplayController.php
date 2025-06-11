@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
-namespace Phoca\Component\phocaemail\Site\Controller;
+namespace Phoca\Component\Phocaemail\Site\Controller;
 
 \defined( '_JEXEC' ) or die( 'Restricted access' );
 
