@@ -65,7 +65,7 @@ class RouteHelper
 		$items	= $menus->getItems('component', 'com_phocaemail');
 
 		if(!$items) {
-			return $app->input->get('Itemid', 0, '', 'int');
+			return $app->getInput()->get('Itemid', 0, '', 'int');
 			//return null;
 		}
 

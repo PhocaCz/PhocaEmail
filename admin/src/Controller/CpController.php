@@ -26,8 +26,8 @@ $l['s']		= array('COM_PHOCAEMAIL_SUBSCRIBERS', 'Subscribers');
 $l['l']		= array('COM_PHOCAEMAIL_MAILING_LISTS', 'phocaemaillists');
 $l['in']	= array('COM_PHOCAEMAIL_INFO', 'phocaemailinfo');
 
-$view	= Factory::getApplication()->input->get('view');
-$layout	= Factory::getApplication()->input->get('layout');
+$view	= Factory::getApplication()->getInput()->get('view');
+$layout	= Factory::getApplication()->getInput()->get('layout');
 
 
 if ($layout == 'edit') {
@@ -49,7 +49,7 @@ if ($layout == 'edit') {
 		}
 
 	}
-} 
+}
 
 class CpController extends BaseController {
 	protected $default_view = 'subscribers';

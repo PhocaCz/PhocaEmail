@@ -38,19 +38,19 @@ class HtmlView extends BaseHtmlView
 //		$document				= Factory::getDocument();
 		$model					= $this->getModel();
 //		$session				= Factory::getSession();
-		$task					= $app->input->get('task', '', 'string');
+		$task					= $app->getInput()->get('task', '', 'string');
 		// SUBSCRIBE - controller
-	/*	$email					= $app->input->get('email', '', 'string');
-		$name					= $app->input->get('name', '', 'string');
-		$privacy				= $app->input->post->get( 'privacy', false, 'string'  );
+	/*	$email					= $app->getInput()->get('email', '', 'string');
+		$name					= $app->getInput()->get('name', '', 'string');
+		$privacy				= $app->getInput()->post->get( 'privacy', false, 'string'  );
 
 		$privacy 				= $privacy ? 1 : 0;
 
-		$mailinglist			= $app->input->get('mailinglist', array(), 'array');*/
+		$mailinglist			= $app->getInput()->get('mailinglist', array(), 'array');*/
 		// ACTIVATE, SUBSCRIBE
-		$uToken					= $app->input->get('u', '', 'string');
+		$uToken					= $app->getInput()->get('u', '', 'string');
 		// READ ONLINE
-		$nToken					= $app->input->get('n', '', 'string');
+		$nToken					= $app->getInput()->get('n', '', 'string');
 
 		//$this->t['display_form']					= $this->p->get('display_form', 0);
 		$this->t['description']						= $this->p->get('description', '');
@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 		$this->t['email_value'] = '';
 		if (Session::checkToken('request')) {
 
-			$email = $app->input->get('email', '', 'string');
+			$email = $app->getInput()->get('email', '', 'string');
 			if ($email != '' && MailHelper::isEmailAddress($email)) {
 				$this->t['email_value'] = $email;
 			}

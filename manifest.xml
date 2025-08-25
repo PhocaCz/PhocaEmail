@@ -43,12 +43,12 @@
 		<description><![CDATA[ Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components. ]]></description>
 		<element>com_phocaemail</element>
 		<type>component</type>
-		<version>5.1.0</version>
-		<infourl title="Phoca Email 5.1.0">http://www.phoca.cz/version/index.php?phocaemail=5.1.0</infourl>
+		<version>5.1.1</version>
+		<infourl title="Phoca Email 5.1.1">http://www.phoca.cz/version/index.php?phocaemail=5.1.1</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/5.1.0/com_phocaemail_v5.1.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/5.1.1/com_phocaemail_v5.1.1.zip</downloadurl>
 		</downloads>
-		<sha512>0ec6b891d9e244d1aaa5d4257d1172782baa66bd157e5eb20f76836880c769c87ced400e1ac01c18ebcae2b85d02d43c697ea145c2880d7b6741d9903ede0eb0</sha512>
+		<sha512>cf1f96106da7ce2513c379ceefa837a6d023b77aa005f49e7273ec3f38f8d13c36166cfc6c5ed98e14bef3d347468399a38d6082583919bc5146eb7e77e9e3eb</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>

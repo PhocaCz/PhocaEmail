@@ -40,8 +40,8 @@ class JsonView extends BaseHtmlView
 		}
 
 		$app				= Factory::getApplication();
-		$this->t['nid']		= $app->input->get( 'newsletterid', '', 'int'  );
-		$this->t['sid']		= $app->input->get( 'subscriberid', '', 'int'  );
+		$this->t['nid']		= $app->getInput()->get( 'newsletterid', '', 'int'  );
+		$this->t['sid']		= $app->getInput()->get( 'subscriberid', '', 'int'  );
 
 		$db = Factory::getDBO();
 		$app = Factory::getApplication();

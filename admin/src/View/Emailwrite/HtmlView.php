@@ -39,7 +39,7 @@ class HtmlView extends BaseHtmlView
 
 		$this->form		= $this->get('Form');
 
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$app				= Factory::getApplication();
 		$doc 				= Factory::getDocument();
@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 		}";
 		$doc->addScriptDeclaration($js);*/
 
-		$this->t['tmpl'] = $app->input->get( 'tmpl', '', 'get', 'string' );
+		$this->t['tmpl'] = $app->getInput()->get( 'tmpl', '', 'get', 'string' );
 		if ($this->t['tmpl'] == 'component'){
 			$css ='#system-message ul {margin-left: -35px;}
 			#system-message dt {display:none;}
@@ -85,21 +85,21 @@ class HtmlView extends BaseHtmlView
 		// - - - - - - - - - - -
 		// Third Extension
 		// - - - - - - - - - - -
-		$this->re['ext']	= $app->input->get( 'ext', '', 'get', 'string' );
+		$this->re['ext']	= $app->getInput()->get( 'ext', '', 'get', 'string' );
 
 		if ($this->re['ext'] == 'virtuemart') {
 			// - - - - - - - - - -
 			// VirtueMart
 			$context = 'com_phocaemail.vm.write.';
-			$this->re['order_id']		= $app->input->get( 'order_id', '', 'get', 'string' );
-			$this->re['delivery_id']	= $app->input->get( 'delivery_id', '', 'get', 'string');
+			$this->re['order_id']		= $app->getInput()->get( 'order_id', '', 'get', 'string' );
+			$this->re['delivery_id']	= $app->getInput()->get( 'delivery_id', '', 'get', 'string');
 			if (is_file(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php')) {
 				require_once(JPATH_ROOT.'/plugins/phocapdf/virtuemart/virtuemarthelper.php');
 			} else {
 				throw new Exception('Error - Phoca PDF VirtueMart Plugin Helper file could not be found in system', 500);
 			}
 
-			$d	= Factory::getApplication()->input->get('request');
+			$d	= Factory::getApplication()->getInput()->get('request');
 			$r	= PhocaPDFVirtueMartHelper::getDeliveryData($d, $this->re['order_id'], $this->re['delivery_id']);
 
 			if($this->re['type'] == 'invoice') {

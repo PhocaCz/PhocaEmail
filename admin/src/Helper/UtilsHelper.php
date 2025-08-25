@@ -22,7 +22,7 @@ class UtilsHelper
 	{
 		$a			= array();
 		$app		= Factory::getApplication();
-		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
+		$a['o'] 	= htmlspecialchars(strip_tags($app->getInput()->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));
 		$a['l'] 	= strtoupper($a['o']);
@@ -134,9 +134,9 @@ class UtilsHelper
 		$app 		= Factory::getApplication();
 		$paramsC 	= ComponentHelper::getParams('com_phocaemail') ;
 		$secretKey	= strip_tags(trim($paramsC->get( 'recaptcha_privatekey', '' )));
-		//$response 	= $app->input->post->get('g-recaptcha-response', '', 'string');
+		//$response 	= $app->getInput()->post->get('g-recaptcha-response', '', 'string');
 		//$response	= $ POST['g-recaptcha-response'];
-		$response 	= $app->input->post->get('g-recaptcha-response', '', 'string');
+		$response 	= $app->getInput()->post->get('g-recaptcha-response', '', 'string');
 		$remoteIp	= $_SERVER['REMOTE_ADDR'];
 		$urlVerify	= 'https://www.google.com/recaptcha/api/siteverify';
 

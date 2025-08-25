@@ -37,30 +37,30 @@ class EmailwriteController extends DisplayController
 		$app				= Factory::getApplication();
 
 		$redirect			= 'index.php?option=com_phocaemail&view=emailwrite';
-		$post				= array();//Factory::getApplication()->input->get('post');
-		$post['from']		= $app->input->get( 'from', '',  'string');
-		$post['fromname']	= $app->input->get( 'fromname', '', 'string' );
-		$post['to']			= $app->input->get( 'to', '',  'string' );
-		$post['cc']			= $app->input->get( 'cc', '',  'string' );
-		$post['bcc']		= $app->input->get( 'bcc', '',  'string');
-		$post['subject']	= $app->input->get( 'subject', '', 'string');
-		$post['message']	= $app->input->get( 'message', '', 'raw');
+		$post				= array();//Factory::getApplication()->getInput()->get('post');
+		$post['from']		= $app->getInput()->get( 'from', '',  'string');
+		$post['fromname']	= $app->getInput()->get( 'fromname', '', 'string' );
+		$post['to']			= $app->getInput()->get( 'to', '',  'string' );
+		$post['cc']			= $app->getInput()->get( 'cc', '',  'string' );
+		$post['bcc']		= $app->getInput()->get( 'bcc', '',  'string');
+		$post['subject']	= $app->getInput()->get( 'subject', '', 'string');
+		$post['message']	= $app->getInput()->get( 'message', '', 'raw');
 
-		$post['attachment']	= $app->input->get( 'attachment', array(),  'array' );
+		$post['attachment']	= $app->getInput()->get( 'attachment', array(),  'array' );
 
 		// Option - can be disabled
-		$post['article_name']= $app->input->get( 'article_name', Text::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),  'string' );
-		$post['togroups']	= $app->input->get( 'togroups', array(), 'array' );
-		$post['ccgroups']	= $app->input->get( 'ccgroups', array(),  'array' );
-		$post['bccgroups']	= $app->input->get( 'bccgroups', array(),  'array' );
-		$post['tousers']	= $app->input->get( 'tousers', array(),  'array' );
-		$post['ccusers']	= $app->input->get( 'ccusers', array(),  'array' );
-		$post['bccusers']	= $app->input->get( 'bccusers', array(),  'array' );
-		$post['article_id']	= $app->input->get( 'article_id', '',  'int' );
+		$post['article_name']= $app->getInput()->get( 'article_name', Text::_('COM_PHOCAEMAIL_SELECT_ARTICLE'),  'string' );
+		$post['togroups']	= $app->getInput()->get( 'togroups', array(), 'array' );
+		$post['ccgroups']	= $app->getInput()->get( 'ccgroups', array(),  'array' );
+		$post['bccgroups']	= $app->getInput()->get( 'bccgroups', array(),  'array' );
+		$post['tousers']	= $app->getInput()->get( 'tousers', array(),  'array' );
+		$post['ccusers']	= $app->getInput()->get( 'ccusers', array(),  'array' );
+		$post['bccusers']	= $app->getInput()->get( 'bccusers', array(),  'array' );
+		$post['article_id']	= $app->getInput()->get( 'article_id', '',  'int' );
 
 		// Different Extensions
-		$post['type']		= $app->input->get( 'type', '',  'string' );
-		$post['ext']		= $app->input->get( 'ext', 'phocaemail',  'string' );
+		$post['type']		= $app->getInput()->get( 'type', '',  'string' );
+		$post['ext']		= $app->getInput()->get( 'ext', 'phocaemail',  'string' );
 
 
 		// New form - possible TO DO - overwrite all values to new form (based on form xml)
@@ -69,11 +69,11 @@ class EmailwriteController extends DisplayController
 
 		//Add to state (if we are returning back)
 		if ($post['ext'] == 'virtuemart') {
-			$post['order_id']		= $app->input->get( 'order_id', 0,  'int' );
-			$post['delivery_id']	= $app->input->get( 'delivery_id', 0,  'int' );
-			$post['ainvoice']		= $app->input->get( 'ainvoice', 0,  'int' );
-			$post['adelnote']		= $app->input->get( 'adelnote', 0,  'int' );
-			$post['areceipt']		= $app->input->get( 'areceipt', 0,  'int' );
+			$post['order_id']		= $app->getInput()->get( 'order_id', 0,  'int' );
+			$post['delivery_id']	= $app->getInput()->get( 'delivery_id', 0,  'int' );
+			$post['ainvoice']		= $app->getInput()->get( 'ainvoice', 0,  'int' );
+			$post['adelnote']		= $app->getInput()->get( 'adelnote', 0,  'int' );
+			$post['areceipt']		= $app->getInput()->get( 'areceipt', 0,  'int' );
 
 			$context 	= 'com_phocaemail.vm.write.';
 			$redirect	= 'index.php?option=com_phocaemail&view=emailwrite&tmpl=component'
@@ -136,9 +136,9 @@ class EmailwriteController extends DisplayController
 			//
 			// line: cca 518
 			// FROM:
-			// $new_state = $app->input->get($request, null, 'default', $type);
+			// $new_state = $app->getInput()->get($request, null, 'default', $type);
 			// TO:
-			// $new_state = $app->input->get($request, null, 'default', $type, $mask);
+			// $new_state = $app->getInput()->get($request, null, 'default', $type, $mask);
 
 			// ==========================================================================================
 

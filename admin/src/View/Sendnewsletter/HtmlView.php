@@ -32,7 +32,7 @@ class HtmlView extends BaseHtmlView
 		$this->t	= UtilsHelper::setVars('sendnewsletter');
 		$this->r	= new Adminview();
 
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
 		$app				= Factory::getApplication();
 		$doc 				= Factory::getDocument();

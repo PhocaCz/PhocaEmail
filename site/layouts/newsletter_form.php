@@ -11,6 +11,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Phoca\Component\Phocaemail\Administrator\Helper\UtilsHelper;
+
+
+
 $d 		= $displayData;
 
 $display_name_form				= $d['params']->get( 'display_name_form', 2 );
@@ -91,7 +95,7 @@ if ($enable_captcha == 1) {
 	echo '</div>';
 
 	echo '<div class="controls">';
-	echo PhocaEmailUtils::renderReCaptcha();
+	echo UtilsHelper::renderReCaptcha();
 	echo '</div>';
 
 	echo '</div>';// end control group

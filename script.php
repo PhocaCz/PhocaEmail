@@ -224,7 +224,7 @@ class com_phocaemailInstallerScript
 	transition: background .2s;
 }
 
-.g5i .g5-icon {
+.g5i .g5-icon {b
 	line-height: 11px;
 	vertical-align: middle;
 }

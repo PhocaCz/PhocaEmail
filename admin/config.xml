@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<fields addfieldpath="/administrator/components/com_phocaemail/models/fields">
+	<fields addfieldpath="Phoca\Component\Phocaemail\Administrator\Field" addfieldprefix="Phoca\Component\Phocaemail\Administrator\Field">
 		<fieldset name="display" label="COM_PHOCAEMAIL_CONFIG_HEAD_MAIN_LABEL">
 
             <field name="html_message" type="radio" layout="joomla.form.field.radio.switcher" default="1"
@@ -60,7 +60,7 @@
 
     	</fieldset>
 
-        <fieldset name="newsletter" label="COM_PHOCAEMAIL_CONFIG_HEAD_NEWSLETTER_LABEL">
+        <fieldset name="newsletter" label="COM_PHOCAEMAIL_CONFIG_HEAD_NEWSLETTER_LABEL" addfieldpath="Phoca\Component\Phocaemail\Administrator\Field">
 
             <field name="enable_subscription" type="radio" layout="joomla.form.field.radio.switcher" default="0"
                    label="COM_PHOCAEMAIL_FIELD_ENABLE_SUBSCRIPTION_LABEL"
@@ -203,11 +203,11 @@
 
         </fieldset>
 
-        <!--<fieldset name="rate_limiting" label="COM_PHOCAEMAIL_CONFIG_HEAD_RATE_LIMITING_LABEL">
+        <fieldset name="rate_limiting" label="COM_PHOCAEMAIL_CONFIG_HEAD_RATE_LIMITING_LABEL">
             <field name="email_rate" type="number"
                 description="COM_PHOCAEMAIL_RATE_DESC" label="COM_PHOCAEMAIL_RATE_LABEL"
-                min="0" step="1" default="200" />
-        </fieldset>-->
+                min="0" step="1" default="0" />
+        </fieldset>
 
         <fieldset name="permissions_label" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
             <field name="rules" type="rules" component="com_phocaemail" filter="rules"
