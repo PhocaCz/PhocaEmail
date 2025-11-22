@@ -209,7 +209,7 @@
                 min="0" step="1" default="0" />
         </fieldset>
 
-        <fieldset name="permissions_label" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+        <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
             <field name="rules" type="rules" component="com_phocaemail" filter="rules"
                    label="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"
                    description="COM_PHOCAEMAIL_FIELD_JCONFIG_PERMISSIONS_DESC"/>
