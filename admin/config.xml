@@ -102,7 +102,7 @@
                 <option value="2">COM_PHOCAEMAIL_YES_REQUIRED</option>
             </field>
 
-            <field name="privacy_checkbox_text" default="" buttons="0" width="330" type="editor"
+            <field name="privacy_checkbox_text" default="" buttons="0" type="editor"
                    filter="\Joomla\CMS\Component\ComponentHelper::filterText"
                    label="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_LABEL"
                    description="COM_PHOCAEMAIL_FIELD_PRIVACY_CHECKBOX_DESCRIPTION_DESC"/>
