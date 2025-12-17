@@ -25,7 +25,9 @@ if ($emailRate > 0) {
 }
 
 
-Factory::getDocument()->addScriptDeclaration(
+$app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->addInlineScript(
 	"Joomla.submitbutton = function(task) {
 		var form = document.adminForm;
 		if (task == 'sendnewsletter.send') {

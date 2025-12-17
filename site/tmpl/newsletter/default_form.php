@@ -40,6 +40,4 @@ if ($this->t['display_subscription_form'] == 1) {
 
 echo '<div>&nbsp;</div>';// end of box
 
-
 echo '</div>';
-?>

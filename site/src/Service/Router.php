@@ -48,6 +48,3 @@ class Router extends RouterView
         $this->attachRule(new RouterrulesHelper($this));
 	}
 }
-
-?>
-

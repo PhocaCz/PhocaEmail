@@ -126,7 +126,10 @@ class Adminviews
             . '  }' . "\n"
             . '  Joomla.tableOrdering(order, dirn, \'\');' . "\n"
             . '}' . "\n";
-        Factory::getDocument()->addScriptDeclaration($js);
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->addInlineScript($js);
+        //Factory::getDocument()->addScriptDeclaration($js);
     }
 
     public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
@@ -189,7 +192,11 @@ class Adminviews
         $s[] = '   var phSystemMsg = jQuery("#system-message-container").html();';
         $s[] = '   jQuery("#ph-system-message-container").html(phSystemMsg);';
         $s[] = '});';
-        Factory::getDocument()->addScriptDeclaration(implode("\n", $s));
+
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->addInlineScript(implode("\n", $s));
+        //Factory::getDocument()->addScriptDeclaration(implode("\n", $s));
     }
 
     public function startTable($id, $class = '') {

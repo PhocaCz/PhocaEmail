@@ -58,4 +58,24 @@
 		<targetplatform name="joomla" version="5\.*"/>
 		<client>administrator</client>
 	</update>
+	<update>
+		<name><![CDATA[ Phoca Email ]]></name>
+		<description><![CDATA[ Phoca Email is a newsletter component and it can be even used for sending emails from Joomla! administration and Joomla! components. ]]></description>
+		<element>com_phocaemail</element>
+		<type>component</type>
+		<version>6.0.0</version>
+		<infourl title="Phoca Email 6.0.0">http://www.phoca.cz/version/index.php?phocaemail=6.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/6.0.0/com_phocaemail_v6.0.0.zip</downloadurl>
+		</downloads>
+		<sha512>76a53685bd8de89e4ef41f712fb71d208104e6d384ec3371d3d4622d162e6b7e511482c7ceccd23b1ae08a01e6fa44ae3d4182fc9d5fbd77ef35a552663f56d0</sha512>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="(5|6)\.*"/>
+		<client>administrator</client>
+	</update>
 </updates>

@@ -135,6 +135,3 @@ echo '<input type="hidden" name="task" value="newsletter.subscribe" />';
 echo  HTMLHelper::_('form.token');
 
 echo '</form>';
-
-
-?>

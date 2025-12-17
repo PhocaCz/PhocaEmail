@@ -29,6 +29,4 @@ if ( $this->p->get( 'show_page_heading' ) ) {
 echo $this->t['text'];
 echo '<div>&nbsp;</div>';// end of box
 
-
 echo '</div>';
-?>

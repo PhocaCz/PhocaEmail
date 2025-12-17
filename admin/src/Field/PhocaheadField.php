@@ -12,6 +12,8 @@
 namespace Phoca\Component\Phocaemail\Administrator\Field;
 
 defined('JPATH_BASE') or die;
+
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -22,18 +24,22 @@ class PhocaHeadField extends FormField
 {
 	protected $type = 'PhocaHead';
 	protected function getLabel() { return '';}
-	
+
 	protected function getInput() {
-	
-		HTMLHelper::stylesheet( 'media/com_phocaemail/css/administrator/phocaemailoptions.css' );
+
+		$app = Factory::getApplication();
+		$wa  = $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocaemail.phocaemailoptions', 'media/com_phocaemail/css/administrator/phocaemailoptions.css', array('version' => 'auto'));
+
+		//HTMLHelper::stylesheet( 'media/com_phocaemail/css/administrator/phocaemailoptions.css' );
 		echo '<div style="clear:both;"></div>';
 		$phocaImage	= ( (string)$this->element['phocaimage'] ? $this->element['phocaimage'] : '' );
 		$image 		= '';
-		
+
 		if ($phocaImage != ''){
 			$image 	= HTMLHelper::_('image', 'media/com_phocaemail/images/administrator/'. $phocaImage, '' );
 		}
-		
+
 		if ($this->element['default']) {
 			if ($image != '') {
 				return '<div class="ph-options-head">'

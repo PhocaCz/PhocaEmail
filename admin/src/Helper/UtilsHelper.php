@@ -124,7 +124,12 @@ class UtilsHelper
 		if ($size == 2) {
 			$dataSize = 'compact';
 		}
-		$document->addScript('https://www.google.com/recaptcha/api.js');
+
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->registerAndUseScript('com_phocaemail.recaptcha.api.js', 'https://www.google.com/recaptcha/api.js', ['version' => 'auto']);
+
+		//$document->addScript('https://www.google.com/recaptcha/api.js');
 		return '<div class="g-recaptcha" data-sitekey="'.$siteKey.'" data-size="'.$dataSize.'"></div>';
 	}
 

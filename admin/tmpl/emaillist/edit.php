@@ -13,8 +13,9 @@ use Joomla\CMS\Language\Text;
 
 $r = $this->r;
 
-Factory::getDocument()->addScriptDeclaration(
-
+$app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->addInlineScript(
 'Joomla.submitbutton = function(task) {
 	if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
 		Joomla.submitform(task, document.getElementById("adminForm"));
