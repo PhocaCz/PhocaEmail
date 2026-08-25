@@ -28,72 +28,100 @@ if ($emailRate > 0) {
 $app = Factory::getApplication();
         $wa  = $app->getDocument()->getWebAssetManager();
         $wa->addInlineScript(
-	"Joomla.submitbutton = function(task) {
-		var form = document.adminForm;
-		if (task == 'sendnewsletter.send') {
-			if (form.newsletter.value == ''){
-				alert( '". Text::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
-			} else {
+    "Joomla.submitbutton = async function(task) {
+        var form = document.adminForm;
+        if (task == 'sendnewsletter.send') {
+            if (form.newsletter.value == ''){
+                alert( '". Text::_('COM_PHOCAEMAIL_ERROR_FIELD_NEWSLETTER', true)."' );
+            } else {
 
-				var url 						= '". $this->t['url']."';
-				var dataPost 					= {};
-				var nId							= form.newsletter.value;
-				dataPost['newsletterid']		= nId;
+                var url 						= '". $this->t['url']."';
+                var dataPost 					= {};
+                var nId							= form.newsletter.value;
+                dataPost['newsletterid']		= nId;
 
-				var subscribers	= [];
-				".'		' . $this->t['subscribersjs']."
-				if (typeof subscribers[nId] !== 'undefined') {
-					var slength = subscribers[nId].length;
-				} else {
-					var slength = 0;
-				}
+                var subscribers	= [];
+                ".'		' . $this->t['subscribersjs']."
 
-				var txtSending = '';
-				var txtSendingFinished = '';
-				async function delay(ms) {
-					return new Promise(resolve => setTimeout(resolve, ms));
-				}
-				if (slength == 0) {
-					alert( '" . Text::_("COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS", true) . "' );
-				} else {
-					jQuery(\"#phsendoutput\").empty();
-					async function mainLoop(slength) {
-						for (var i = 0; i < slength; i++) {
-							var j = i + 1;
-							txtSending = '<div class=\"ph-sending-msg\">" . Text::_("COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT", true) . " (' + j + '/' + slength + ') ...</div>';
-							jQuery(\"#phsendoutput\").append(txtSending);
+                if (typeof subscribers[nId] !== 'undefined') {
+                    var slength = subscribers[nId].length;
+                } else {
+                    var slength = 0;
+                }
 
-							dataPost['subscriberid']	= subscribers[nId][i];
-							jQuery.ajax({
-							   url: url,
-							   type:'POST',
-							   data:dataPost,
-							   dataType:'JSON',
-							   async: false,
-							   success:function(data){
-									if ( data.status == 1 ){
-										jQuery(\"#phsendoutput\").append(data.message);
-									} else {
-										jQuery(\"#phsendoutput\").append(data.error);
-									}
-								}
-							});
-							if(i < slength-1) {
-								await delay($emailDelay);
-							}
+                var txtSending = '';
+                var txtSendingFinished = '';
 
-						}
-						txtSendingFinished = '<div class=\"ph-sending-msg-finish\">" . Text::_("COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED", true) . "</div>';
-						jQuery(\"#phsendoutput\").append(txtSendingFinished);
-					}
-					const loopLimit = slength;
-					mainLoop(loopLimit);
-				}
-			}
-		} else if (task == 'sendnewsletter.cancel') {
-			Joomla.submitform(task, document.getElementById('adminForm'));
-		}
-	}"
+                async function delay(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+
+                if (slength == 0) {
+                    alert( '" . Text::_("COM_PHOCAEMAIL_ERROR_THERE_ARE_NO_SUBSCRIBERS", true) . "' );
+                } else {
+                    jQuery(\"#phsendoutput\").empty();
+
+                    async function mainLoop(slength) {
+                        for (var i = 0; i < slength; i++) {
+                            var j = i + 1;
+
+                            txtSending = '<div class=\"ph-sending-msg\">" . Text::_("COM_PHOCAEMAIL_SENDING_EMAIL_PLEASE_WAIT", true) . " (' + j + '/' + slength + ') ...</div>';
+                            jQuery(\"#phsendoutput\").append(txtSending);
+
+                            dataPost['subscriberid'] = subscribers[nId][i];
+
+                            try {
+                                var data = await jQuery.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    data: dataPost,
+                                    dataType: 'JSON'
+                                });
+
+                                if (data.status == 1) {
+                                    jQuery(\"#phsendoutput\").append(data.message);
+                                } else {
+                                    jQuery(\"#phsendoutput\").append(data.error);
+                                }
+
+                            } catch (error) {
+                                var errorMessage = '<div class=\"ph-sending-msg-error\">'
+                                    + 'AJAX error while sending to subscriber '
+                                    + dataPost['subscriberid']
+                                    + ': ' + error.status + ' ' + error.statusText;
+
+                                if (error.responseText) {
+                                    errorMessage += '<br>Response: ' + error.responseText;
+                                }
+
+                                errorMessage += '</div>';
+
+                                jQuery(\"#phsendoutput\").append(errorMessage);
+
+                                return;
+                            }
+
+                            jQuery(\"#phsendoutput\").scrollTop(
+                                jQuery(\"#phsendoutput\")[0].scrollHeight
+                            );
+
+                            if (i < slength - 1) {
+                                await delay($emailDelay);
+                            }
+                        }
+
+                        txtSendingFinished = '<div class=\"ph-sending-msg-finish\">" . Text::_("COM_PHOCAEMAIL_SENDING_EMAIL_FINISHED", true) . "</div>';
+                        jQuery(\"#phsendoutput\").append(txtSendingFinished);
+                    }
+
+                    const loopLimit = slength;
+                    await mainLoop(loopLimit);
+                }
+            }
+        } else if (task == 'sendnewsletter.cancel') {
+            Joomla.submitform(task, document.getElementById('adminForm'));
+        }
+    }"
 );
 
 ?>
