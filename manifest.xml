@@ -68,7 +68,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaEmail/releases/download/6.1.0/com_phocaemail_v6.1.0.zip</downloadurl>
 		</downloads>
-		<sha512>b13e91dd01ec2118aec793bc0b2697cd4b3e49f1f8a3c9e08e81eb304074d98f3d918fe1279812dffc74f3727f85032659d44168c67dd0a1d699a99318585e1c</sha512>
+		<sha512>fc4a6cdfef57fd6ae15e1f7551da945e6a53e3b6d8d9b60523e1a2e03a50e53340cf078ae03173fa8441d4c9f37e1144caa8623b1b7898cc3abe2a59a681c56a</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
