@@ -51,6 +51,11 @@ $r = $this->r;
 				<p>© 2007 - <?php echo date("Y") . ' ' . Text::_($this->t['l'] . '_TRANSLATER'); ?></p>
 				<p><?php echo Text::_($this->t['l'] . '_TRANSLATION_SUPPORT_URL'); ?></p>
 
+				<?php
+				echo Text::_($this->t['l'] . '_FOSS_DECLARATION');
+				echo Text::_($this->t['l'] . '_FOSS_DECLARATION_DESCRIPTION');
+				?>
+
 				<div class="ph-cp-hr"></div>
 				<div class="btn-group ph-cp-btn-update">
 					<a class="btn btn-large btn-primary" 

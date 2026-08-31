@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="6.0">
 	<name>com_phocaemail</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>17/12/2025</creationDate>
+	<creationDate>31/08/2026</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>6.0.0</version>
+	<version>6.1.0</version>
 	<description>COM_PHOCAEMAIL_XML_DESCRIPTION</description>
 	<namespace path="src">Phoca\Component\Phocaemail</namespace>
 	<scriptfile>script.php</scriptfile>
@@ -72,7 +72,9 @@
 			<folder>src</folder>
 			<folder>help</folder>
 			<folder>services</folder>
+			<filename>FOSS.md</filename>
 			<filename>index.html</filename>
+			<filename>LICENSE</filename>
 			<filename>config.xml</filename>
 			<filename>access.xml</filename>
 		</files>
